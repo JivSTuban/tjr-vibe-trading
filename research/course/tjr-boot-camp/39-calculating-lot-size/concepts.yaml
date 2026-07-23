@@ -1,0 +1,55 @@
+- name: Three sizing methods (set / calculate / full-port)
+  teacher_definition: "There's using a set lot size... you can calculate your lot size every single time... and you can also full port which you will never do."
+  source_timestamp: "00:37"
+  codex_interpretation: "Allowed sizing methods = {set-lot, per-trade-calculate}. Full-port is forbidden."
+  confidence: high
+  requires_confirmation: false
+
+- name: Per-trade lot-size formula inputs
+  teacher_definition: "Account balance, risk amount and percent, and then stop loss in Pips. 1000 account, risk one percent, stop loss 30 pips -> 0.03 lots -> risking ten dollars."
+  source_timestamp: "02:14"
+  codex_interpretation: "lot = (account * risk%) / (SL_pips * pip_value_per_lot). Example: $1000 * 1% = $10 risk; 30 pip stop -> 0.03 lots. Round to 2 decimals (0.01 granularity)."
+  confidence: high
+  requires_confirmation: true
+
+- name: Contract size / units per lot
+  teacher_definition: "Most offshore brokerages are 100 units per lot... my broker (Hankotrade) is 10 units per lot. You find the line where it says contract size in MetaTrader details. This could really mess you up."
+  source_timestamp: "05:32"
+  codex_interpretation: "pip_value depends on contract size (units per lot): standard offshore = 100, Hankotrade = 10. MUST read from broker symbol details; mis-config = 10x sizing error. Mandatory per-broker/instrument parameter."
+  confidence: high
+  requires_confirmation: true
+
+- name: Set lot size (base = 1% risk)
+  teacher_definition: "Account $100k, 1% risk, 400 pip stop -> 25 lots... that is going to be our set lot size. My normal risk is just one percent."
+  source_timestamp: "09:44"
+  codex_interpretation: "Base/normal risk = 1% per trade. Set lot sized from the MINIMUM expected SL at 1% risk, then held fixed."
+  confidence: high
+  requires_confirmation: false
+
+- name: Fixed lots => risk floats with stop width
+  teacher_definition: "If we have a larger stop loss and price goes to eight points, that is two times my regular one percent risk... if price is 3x that, I'm risking three percent."
+  source_timestamp: "10:17"
+  codex_interpretation: "With fixed lots, realized_risk% = base_risk% * (actual_SL / base_SL). Wider stop -> proportionally higher realized risk (2%, 3%). Rarely exceeds 3%."
+  confidence: high
+  requires_confirmation: true
+
+- name: Set-lot risk tiers (normal / de-risk / confident)
+  teacher_definition: "Normal risk is one percent (set lot). De-risk is 50% of normal. Confident is 2x, putting me at 2%... you guys should never use confident."
+  source_timestamp: "12:52"
+  codex_interpretation: "Tiers: normal=1% (set lot), de-risk=0.5% (half lot), confident=2% (double lot). Confident is disabled for unproven traders. Engine default cap = 1%; only allow de-risk down."
+  confidence: high
+  requires_confirmation: false
+
+- name: Conviction/news modifiers for lot size
+  teacher_definition: "De-risk = high impact news, wait-for-news days, bank holidays... I used my de-risk lot size on the Fourth of July. Normal = no news / news that won't affect the market. Confident = no-news day, all biases in line, love the setup."
+  source_timestamp: "13:02"
+  codex_interpretation: "Lot tier selection: de-risk on high-impact-news/holiday/choppy days; normal on clean days; confident only when biases fully aligned (disabled for students). Ties to L38 news/holiday guardrails."
+  confidence: high
+  requires_confirmation: false
+
+- name: Per-pair set-lot and one-pair rule
+  teacher_definition: "Your set stop loss is going to be different for every single pair... you guys should only be trading one pair right now anyways. Every pair's stop loss is wider/smaller based on volatility and volume."
+  source_timestamp: "11:38"
+  codex_interpretation: "Set-lot must be computed per instrument (volatility-dependent base SL). Beginners restricted to one pair. Guardrail: single-instrument focus early."
+  confidence: high
+  requires_confirmation: false

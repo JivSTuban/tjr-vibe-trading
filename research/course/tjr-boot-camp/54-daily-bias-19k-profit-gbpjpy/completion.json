@@ -1,0 +1,12 @@
+{
+  "lesson_number": 54,
+  "video_id": "Oi_mK1Lt-iQ",
+  "slug": "daily-bias-19k-profit-gbpjpy",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 44842,
+  "concepts_count": 8,
+  "rules_count": 4,
+  "examples_count": 2,
+  "notes": "Winning worked example - the canonical 'TJR 4X strat' A+. GBPJPY short with full weekly+daily-bearish alignment: daily BOS + daily-order-block mitigation -> swept London session highs then Asian session highs -> 5m BOS (entered off 1m, discretionary) -> TP1 at an order block. Management: 50% off at TP1 + stop to break-even on the runner; realized ~$19k on the closed half, ~$13k floating. This is the high-score template (contrast with lesson 53's skip). Gold long (trade-the-daily) captured as a secondary forward-looking example. All rules status: proposed. All 8 files written."
+}

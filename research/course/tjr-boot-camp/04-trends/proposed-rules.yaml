@@ -1,0 +1,39 @@
+- id: tjr-trends-r01
+  teacher_statement: "When market is trending higher it moves in higher highs and higher lows; for downtrends it is lower highs and lower lows."
+  source_timestamp: "02:20"
+  proposed_machine_rule: "Classify trend from swing points: UPTREND if the latest swing high > previous swing high AND latest swing low > previous swing low. DOWNTREND if latest swing high < previous swing high AND latest swing low < previous swing low. Otherwise UNDEFINED/consolidation."
+  status: proposed
+  ambiguity: "No definition of how swing highs/lows are identified (fractal size, lookback, close vs wick). Minimum number of confirming swings (2? 3?) is not stated."
+  counterexamples: []
+
+- id: tjr-trends-r02
+  teacher_statement: "Higher high, now lower low because we just surpassed this — it broke structure, it's probably going to flip its direction. Continues until it breaks its trend."
+  source_timestamp: "04:41"
+  proposed_machine_rule: "A trend remains in force until a break of structure: in an uptrend, treat the trend as broken when price closes below the most recent higher-low; in a downtrend, when price closes above the most recent lower-high. On break, flip expected direction. (Full BOS mechanics deferred to Lesson 06.)"
+  status: proposed
+  ambiguity: "TJR does not specify wick vs body close, penetration threshold, or which swing (last vs a protected/major swing) defines the break. Explicitly deferred to Lesson 06."
+  counterexamples: []
+
+- id: tjr-trends-r03
+  teacher_statement: "Going against the trend is never smart. The trend is your friend. Move with the momentum — don't try to catch a retracement."
+  source_timestamp: "05:07"
+  proposed_machine_rule: "Directional gate: only permit entries in the direction of the prevailing trend. Reject any trade signal that is counter to the current trend classification, and reject retracement-fade (counter-trend) entries."
+  status: proposed
+  ambiguity: "Which timeframe's trend is 'the' trend for the gate is resolved by r04 (HTF), but the exact HTF for a given holding period is not fixed."
+  counterexamples: []
+
+- id: tjr-trends-r04
+  teacher_statement: "Higher time frames hold higher power. If the 4-hour is bearish, why do we care what the 15-minute is saying? Use the lower time frame in confluence with the higher trend."
+  source_timestamp: "07:41"
+  proposed_machine_rule: "When lower-timeframe and higher-timeframe trend classifications conflict, the higher timeframe wins for direction. Only take LTF signals whose direction agrees with the HTF trend (confluence required)."
+  status: proposed
+  ambiguity: "Exact HTF/LTF pairing not fixed (he cites weekly/daily/4H as HTF and 30m/15m/5m as LTF at different points). No rule for how many timeframes must agree."
+  counterexamples: []
+
+- id: tjr-trends-r05
+  teacher_statement: "Let the 4-hour / daily / weekly define direction, then scale down. Liquidity sweep on the 30-minute, break of structure to the downside on the 5-minute, with 4-hour and daily bearish = we caught the top of the next leg down."
+  source_timestamp: "08:40"
+  proposed_machine_rule: "Entry sequence for a with-trend (HTF-down) short: (1) HTF (4H+daily) trend = down; (2) liquidity sweep on ~30m; (3) break of structure to the downside on ~5m; only then enter short. Mirror for longs. Absence of the LTF BOS => no trade."
+  status: proposed
+  ambiguity: "Timeframes are examples ('like the 30 minute', 'the five minute'), not fixed constants. Sweep definition and BOS threshold undefined here (see Lessons 06 & 08)."
+  counterexamples: []

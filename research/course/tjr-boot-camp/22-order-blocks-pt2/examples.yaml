@@ -1,0 +1,111 @@
+# Trade examples TJR walks through on charts. Most are illustrative "spot the OB"
+# scan-throughs (no stated P/L) rather than complete logged trades. suitable_for_dataset
+# is true only where instrument + direction + a usable outcome/structure are identifiable.
+
+- timestamp: "04:11"
+  instrument: unstated (daily/1h chart, likely FX)
+  timeframe: Daily -> 1h
+  direction: long (bullish OB)
+  setup_components:
+    - downtrend then break of structure to the upside
+    - down-move (leg) prior to the BOS = order block
+    - stop under the OB leg low
+    - price rallies, retraces back into OB, fills orders, continues up
+  stated_outcome: "price rally then draws back into the OB and booms" — likely news-driven but "still applicable"; no numeric P/L
+  suitable_for_dataset: false
+
+- timestamp: "05:34"
+  instrument: unstated
+  timeframe: unstated (illustrative)
+  direction: long (bullish OB)
+  setup_components:
+    - big down move / BOS down, then big rally up / BOS up
+    - down-leg before the up-BOS = OB and also a liquidity sweep
+    - price draws back into OB range, fills orders, goes higher
+  stated_outcome: illustrative; price continues higher, no numeric outcome
+  suitable_for_dataset: false
+
+- timestamp: "06:47"
+  instrument: unstated
+  timeframe: 4h -> 1h (multi-TF)
+  direction: short (bearish OB)
+  setup_components:
+    - BOS to the downside
+    - up-move (leg) prior to BOS = OB; on 1h the up-move that took out highs caused the down-move
+    - whole OB spans several hourly candles (4h break of structure)
+    - stop must be wide (above the HTF OB), NOT tight to the hourly
+    - target previous areas of liquidity on higher timeframes
+  stated_outcome: illustrative multi-TF teaching example (the core timeframe-coherence lesson); no numeric P/L
+  suitable_for_dataset: false
+
+- timestamp: "10:50"
+  instrument: GBPUSD
+  timeframe: Daily -> 4h -> 1h -> 15m
+  direction: long (bullish OB / daily play)
+  setup_components:
+    - downtrend on GBPUSD, then daily break of structure to upside = changing direction
+    - down-leg prior to BOS = order block (retracement zone)
+    - 4h BOS confirms the retracement; imbalance inside used as a target
+    - scale to 1h then 15m; wait for NY session open (9:30)
+    - monitor highs — "this high nothing... this high something" — 15m BOS = entry
+    - TP1 = nearer highs/liquidity, TP2 = within imbalance (50% of it), TP3 = higher highs
+  stated_outcome: "we literally took this trade / this buy trade"; TJR estimates "pretty much a one-to-twelve (1:12) risk-reward ratio"
+  suitable_for_dataset: true
+
+- timestamp: "15:47"
+  instrument: unstated (1h/15m FX)
+  timeframe: 15m / 1h -> 15m, during London session
+  direction: long (bullish OB)
+  setup_components:
+    - BOS down then liquidity sweep of lows, BOS to upside on 15m
+    - down-move prior to the up-BOS = OB; price taps in and rallies
+    - wait for London session open first; price comes into OB after open
+    - monitor highs; BOS = entry; alternatively refine via FVG (price fills FVG, breaks back above, long)
+    - stop below entry structure; targets previous areas of liquidity; TP1 hit
+  stated_outcome: illustrative worked entry; TP1 gets hit, price draws to where orders were filled previously; no numeric R
+  suitable_for_dataset: false
+
+- timestamp: "18:09"
+  instrument: unstated
+  timeframe: unstated (illustrative scan)
+  direction: long (bullish OB)
+  setup_components:
+    - liquidity sweep, regular structure, down-move prior to break
+    - price comes in, fills, rallies
+  stated_outcome: quick illustrative confirmation; no outcome
+  suitable_for_dataset: false
+
+- timestamp: "18:32"
+  instrument: GBPJPY (GJ / "GBP JPY", also called GJ)
+  timeframe: unstated (volatile pair note)
+  direction: long (bullish OB)
+  setup_components:
+    - liquidity sweep, BOS to upside
+    - looking for the down-move prior — "doesn't quite hit it"
+    - TJR notes sometimes price won't reach the OB and fills "off of other things"
+  stated_outcome: OB not quite tapped — illustrative caveat that setups don't always fill cleanly; no P/L
+  suitable_for_dataset: false
+
+- timestamp: "20:42"
+  instrument: unstated
+  timeframe: 4h -> 15m
+  direction: long (bullish OB)
+  setup_components:
+    - 4h BOS to upside; leg down that caused the move up = OB
+    - monitor highs on 15m for a BOS to enter — "boom nothing, boom we get a break of structure"
+    - long off candle close; stop under structure
+    - target sequence of previous liquidity + FVG within range — "everything gets hit"
+  stated_outcome: illustrative; all targets ("previous areas of liquidity") get hit; no numeric R
+  suitable_for_dataset: false
+
+- timestamp: "22:45"
+  instrument: unstated
+  timeframe: HTF -> 15m
+  direction: short (bearish OB)
+  setup_components:
+    - liquidity sweep, BOS down on the candle
+    - price pushes up into OB range; scale down to 15m; BOS down on 15m = entry
+    - short; stop either above the entry candle or above the OB itself (play safe)
+    - target previous areas of liquidity — repeatedly "gets hit"
+  stated_outcome: illustrative short; multiple liquidity targets get hit; no numeric R
+  suitable_for_dataset: false

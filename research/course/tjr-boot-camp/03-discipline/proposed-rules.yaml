@@ -1,0 +1,47 @@
+- id: tjr-discipline-r01
+  teacher_statement: "Sometimes you guys are bailing out of a trade... that is the foundation and those are the holes we need to plug up. Our mindset is the only difference."
+  source_timestamp: "03:34"
+  proposed_machine_rule: "Do not close a valid, in-progress trade before its predefined SL or TP for discretionary/fear reasons. Once entered per the strategy rules, only SL, TP, or a rule-defined exit condition may close the position — no manual early bail."
+  status: proposed
+  ambiguity: "'Valid trade' and legitimate early-exit conditions (e.g., invalidation) are defined in the strategy lessons, not here. Without that, 'no bailing' cannot distinguish fear-exit from a rule-based exit."
+  counterexamples: []
+
+- id: tjr-discipline-r02
+  teacher_statement: "Sometimes you aren't confident enough to take those trades. You are taking very similar trades to me if not the same trades as me."
+  source_timestamp: "03:47"
+  proposed_machine_rule: "Do not skip a signal that meets all defined setup criteria due to low confidence/hesitation. If the setup is valid per the ruleset, execute it (subject to risk limits). Confidence is not an input to the take/skip decision."
+  status: proposed
+  ambiguity: "Requires the objective setup checklist from later lessons to define 'valid signal.' Hesitation is not machine-detectable; this is really a rule to remove discretion once criteria are met."
+  counterexamples: []
+
+- id: tjr-discipline-r03
+  teacher_statement: "Do a single habit every single day starting today... one thing out of your comfort zone that will benefit your life, keep it throughout the summer and for the rest of your life."
+  source_timestamp: "04:57"
+  proposed_machine_rule: "Enforce at least one daily discipline-habit completion, tracked as an unbroken streak. Log completion each day; surface streak length and flag any missed day."
+  status: proposed
+  ambiguity: "The habit is user-chosen and non-trading, so this is a human-accountability guardrail (checklist/streak tracker), not an auto-trading rule. Which habit and its 'done' criteria are user-defined."
+  counterexamples: []
+
+- id: tjr-discipline-r04
+  teacher_statement: "A habit forms over ~21 days; a routine/ritual over ~60 days. Get one percent better every single day."
+  source_timestamp: "09:40"
+  proposed_machine_rule: "Track habit-streak milestones at 21 days (habit-formed) and 60 days (routine/ritual). Optionally set a 1%/day improvement KPI target for the discipline track."
+  status: proposed
+  ambiguity: "21/60-day figures are pop-psychology heuristics TJR hedges ('I believe it's 21 days'); not validated. '1% better' is not concretely measurable for arbitrary habits."
+  counterexamples: []
+
+- id: tjr-discipline-r05
+  teacher_statement: "Once you get to that weak point the motivation is gone and the discipline is all you have left. The only way you get there is not through motivation but discipline."
+  source_timestamp: "27:07"
+  proposed_machine_rule: "Do not gate trade execution on emotional/motivational state — execute the strategy deterministically from fixed rules regardless of how the trader 'feels' that day. (Pairs with the loss-lesson degraded-state kill switch for the inverse case: manually disabling trading when compromised.)"
+  status: proposed
+  ambiguity: "Tension with the loss-lesson rule to take days off when emotionally compromised: here 'ignore feelings and execute the plan'; there 'stop when tilted.' Reconcile as: follow the plan when trading, but a manual kill switch may disable a session entirely. Emotion is not auto-detectable."
+  counterexamples: []
+
+- id: tjr-discipline-r06
+  teacher_statement: "You can't treat this like a casino, you can't be over-trading, over-leveraging... trade with risk management, with no emotion, with discipline."
+  source_timestamp: "24:56"
+  proposed_machine_rule: "Cap trade frequency and leverage/risk: enforce a max-trades-per-session limit and a fixed per-trade risk (risk-management sizing), and reject any order exceeding the configured leverage/risk ceiling. No revenge/tilt over-trading."
+  status: proposed
+  ambiguity: "No concrete numbers given in this lesson (max trades, max leverage, risk % per trade all unspecified). Values must come from the risk-management / loss lessons before this is enforceable."
+  counterexamples: []

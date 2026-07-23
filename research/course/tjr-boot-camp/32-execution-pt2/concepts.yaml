@@ -1,0 +1,83 @@
+- name: "Execution / entry point (scope)"
+  teacher_definition: "This lesson teaches ONLY where to execute (the entry trigger) -- not stop-loss placement, take-profit, or daily bias. 'This is literally just showing where to execute.'"
+  source_timestamp: "06:44"
+  codex_interpretation: "Defines the entry-trigger stage of the model. Must be combined with SL/TP/bias rules from other lessons before it is a complete trade rule. Not usable standalone."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Liquidity sweep"
+  teacher_definition: "Price takes out the liquidity resting beyond a prior swing high/low ('what lies underneath these lows? liquidity... take out this high'). Recap from prior lessons."
+  source_timestamp: "04:46"
+  codex_interpretation: "Step 1 of both models. Precise swing-detection / sweep definition is assumed from earlier building-block lessons, not re-defined here."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Break of structure (BOS)"
+  teacher_definition: "After the liquidity sweep, structure breaks in the opposite direction; the BOS is the execution point in Model A."
+  source_timestamp: "04:53"
+  codex_interpretation: "Step 2. Whether BOS requires a candle CLOSE through the level or just a wick is not specified here (see L33 ambiguities). ASR often renders 'break of structure' as 'breaker structure' -- means BOS, not breaker block."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Order block (OB)"
+  teacher_definition: "The candle / leg that caused the liquidity to get taken out -- 'the candle that caused these highs to get taken out' / 'the candle that filled those orders' / 'the leg down that caused orders to get filled'."
+  source_timestamp: "10:54"
+  codex_interpretation: "The origin/displacement candle of the move that broke structure. Exact boundary (body vs wick, which candle) not defined here; assumed from prior OB lesson."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Model A: Liquidity Sweep + Break of Structure"
+  teacher_definition: "Sweep liquidity -> break structure -> execute on the break of structure. The simplest but 'riskiest / lowest confluence' entry."
+  source_timestamp: "02:14"
+  codex_interpretation: "Base entry pattern. TJR flags it as lowest-confluence -- should be gated by OB/FVG/equilibrium + daily bias before live use."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Model B: Liquidity Sweep + BOS + Order Block entry"
+  teacher_definition: "Sweep -> break structure -> identify the order block that caused the move -> EXECUTE when price returns into the order block (not on the BOS). Entry need not be exact ('doesn't matter if it's exact... execute on this down wick')."
+  source_timestamp: "10:22"
+  codex_interpretation: "Retracement-to-OB limit entry. Higher precision than Model A. Fill on price re-entering the OB price range; wick-touch acceptable. SL/TP still undefined here."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Execute on return to order block, not on BOS"
+  teacher_definition: "'Where are we executing? Not on the break of structure down here -- we're executing when it comes into the order block.'"
+  source_timestamp: "11:19"
+  codex_interpretation: "Key entry-timing rule for Model B: wait for the retrace into the OB rather than entering at the structural break."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Entry need not be exact"
+  teacher_definition: "'Doesn't matter if it's exact or not -- execute on this down wick.'"
+  source_timestamp: "15:24"
+  codex_interpretation: "OB entry tolerance is loose; any touch/poke into the OB zone counts. Exact tick-level precision is not required. Quantitative tolerance unspecified."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Building blocks are draws for price"
+  teacher_definition: "The building blocks (liquidity, imbalance/FVG, OB) are draws -- price ranges current price is likely to draw back to, to induce liquidity / fill more orders."
+  source_timestamp: "07:28"
+  codex_interpretation: "Framing: unfilled imbalances / liquidity pools act as magnets/targets. Relevant to take-profit logic (deferred) as well as entries."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Pattern is timeframe-agnostic / repeatable"
+  teacher_definition: "These patterns appear 'on every single time frame' and 'pretty much every single time'; drill them until recognition is robotic ('aimbot')."
+  source_timestamp: "14:34"
+  codex_interpretation: "Model is claimed fractal across timeframes. Supports a scanner that detects the sweep->BOS->OB sequence on multiple timeframes. Robustness of 'every single time' claim is unverified -- treat as motivational, not literal."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Back-test drill homework (10 examples each)"
+  teacher_definition: "Homework: find 10 examples of liquidity sweep + BOS, and 10 examples of sweep + BOS + OB entry, on any pair(s); observe what price does afterward. Do more if you can."
+  source_timestamp: "09:32"
+  codex_interpretation: "Learning-drill sample count. 10 is a familiarization count, almost certainly NOT a statistically sufficient validation sample for a live rule."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Execution is the gate to bias & take-profit lessons"
+  teacher_definition: "'If you can't do that we can't move on to daily bias... we can't move on to how to find take profits, because this is how we execute.'"
+  source_timestamp: "21:41"
+  codex_interpretation: "Confirms curriculum order: execution (entry) is prerequisite to daily bias (Days 34-35) and take-profit lessons. Confirms SL/TP/bias are genuinely NOT in this lesson."
+  confidence: high
+  requires_confirmation: false

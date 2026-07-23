@@ -1,0 +1,71 @@
+- id: tjr-fear-r01
+  teacher_statement: >
+    "One trade a day while risking one percent a day." Repeated as the standing plan. [06:57],
+    [18:24], [04:57]
+  source_timestamp: "06:57"
+  proposed_machine_rule: >
+    Fixed risk = 1% of account per trade; max 1 trade per day. (Reconciles with Day 25's
+    '1-2 trades/day' cap -- Fear states 1/day + 1% as the concrete default.)
+  status: proposed
+  ambiguity: >
+    TJR frames these as HIS personal defaults ('for me personally'). Day 25 allowed up to 2
+    trades/day. Confirm the canonical cap (1 vs 2) and the 1% figure against the coming risk/
+    trading-plan lessons.
+  counterexamples: []
+
+- id: tjr-fear-r02
+  teacher_statement: >
+    Go live only after "at least 3 months of profitability with 10%+ gain" on demo/small size.
+    [06:57], [03:36]
+  source_timestamp: "06:57"
+  proposed_machine_rule: >
+    Gate live/scaled trading behind a proven-profitability window: >= 3 consecutive months with
+    >= 10% total gain at 1% risk / 1 trade a day before increasing capital.
+  status: proposed
+  ambiguity: >
+    '10% gain' -- over the 3 months total, or ~10%/month? He says '10% gain over 3 months' [03:36]
+    but also '10% a month' for a funded pass [13:19]. Clarify.
+  counterexamples: []
+
+- id: tjr-fear-r03
+  teacher_statement: >
+    "Start a $100 account and risk 1% / a dollar per trade." Never fund an account with money you
+    can't afford to lose (~90% blow the first live account). [10:57], [07:45]
+  source_timestamp: "10:57"
+  proposed_machine_rule: >
+    Begin live at minimal size ($100) at 1% risk; only fund with loss-affordable capital; on a
+    blow-up, revert to demo, re-prove profitability, then re-enter live.
+  status: proposed
+  ambiguity: >
+    "$100" and "~90% blow-up" are illustrative/anecdotal, not hard thresholds.
+  counterexamples: []
+
+- id: tjr-fear-r04
+  teacher_statement: >
+    Under $10k affordable capital -> take a funded challenge (pass = ~10% in a month); over $10k
+    -> trade own live account. [12:43], [13:19]
+  source_timestamp: "12:43"
+  proposed_machine_rule: >
+    Account-state machine: if affordable capital < $10k route to a funded/prop challenge
+    (target ~10%/month to pass) then convert payouts to live; else fund own live account.
+  status: proposed
+  ambiguity: >
+    Prop-firm-specific ($10k threshold, 10%/month target) -- not a market rule; depends on the
+    chosen prop firm's ruleset.
+  counterexamples: []
+
+- id: tjr-fear-r05
+  teacher_statement: >
+    "Be robotic with this... trading should be boring... stick to your trading plan." Don't chase
+    a new strategy every day. Take every valid setup (fear = skipping valid entries). [18:12],
+    [15:39]
+  source_timestamp: "18:12"
+  proposed_machine_rule: >
+    Enforce a single fixed strategy/plan deterministically: take every plan-conformant setup
+    within the 1-trade/day, 1%-risk envelope; never skip a valid entry and never substitute a new
+    strategy mid-stream.
+  status: proposed
+  ambiguity: >
+    "Valid setup" is defined by the (not-yet-ingested) assembled strategy; this rule is a
+    behavioral wrapper, not a standalone entry condition.
+  counterexamples: []

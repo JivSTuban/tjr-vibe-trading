@@ -1,0 +1,69 @@
+- id: tjr-equilibrium-r01
+  teacher_statement: >
+    "Measuring literally the high from the low and finding the 50 mark." Equilibrium = the
+    50% of a swing high to swing low (or low to high). [06:45], [07:53]
+  source_timestamp: "06:45"
+  proposed_machine_rule: >
+    Compute equilibrium = (swing_high + swing_low) / 2 (the 0.5 fib) of the reference swing.
+    Classify current price: below eq = discount, above eq = premium.
+  status: proposed
+  ambiguity: >
+    WHICH swing (which timeframe / which leg -- impulse leg, the leg that broke structure, or
+    the full HTF range) is NOT defined in this lesson. Load-bearing gap; wait for Day 28.
+  counterexamples: []
+
+- id: tjr-equilibrium-r02
+  teacher_statement: >
+    Discount (below 50%) = buy zone; premium (above 50%) = sell zone. Banks buy at a discount,
+    sell at a premium. [08:13], [11:18]
+  source_timestamp: "08:13"
+  proposed_machine_rule: >
+    Directional gate: only allow LONG entries when price is in discount (< equilibrium); only
+    allow SHORT entries when price is in premium (> equilibrium). Reject counter-zone entries.
+  status: proposed
+  ambiguity: >
+    TJR misspeaks once at [07:00] ("above 50 = discount to go short"); canonical mapping is
+    above 50 = premium = short. Confirm no deeper premium/discount sub-levels are intended.
+  counterexamples: []
+
+- id: tjr-equilibrium-r03
+  teacher_statement: >
+    "I'm not the type of person to enter purely off equilibrium." Use it as a gauge, then
+    find a reason: order block, fair value gap, or a break of structure while in a discount.
+    [08:21], [08:37]
+  source_timestamp: "08:21"
+  proposed_machine_rule: >
+    Do NOT trigger on equilibrium alone. Require BOTH: (a) price in the correct zone
+    (discount for long / premium for short), AND (b) a concrete trigger -- OB tap, FVG
+    fill+reaction, or MSS/BOS in the trade direction.
+  status: proposed
+  ambiguity: >
+    "Reaction off" a level is not quantified (no candle-close / rejection-wick definition).
+  counterexamples: []
+
+- id: tjr-equilibrium-r04
+  teacher_statement: >
+    "Equilibrium which we can pair together with a fair value gap -- the perfect tools to
+    combine. A fair value gap within a discounted price + a reaction, enter." [09:51]
+  source_timestamp: "09:51"
+  proposed_machine_rule: >
+    High-conviction long: an FVG located inside the discount zone with a bullish reaction ->
+    enter. Symmetric for shorts: FVG inside premium + bearish reaction.
+  status: proposed
+  ambiguity: >
+    Overlap requirement (FVG fully vs partially inside the discount) undefined.
+  counterexamples: []
+
+- id: tjr-equilibrium-r05
+  teacher_statement: >
+    Didn't enter on the BOS ("bad risk reward"); waited for the OB (instant entry at that
+    price) or FVG (enter on reaction). [13:55]
+  source_timestamp: "13:55"
+  proposed_machine_rule: >
+    When a direct BOS entry yields poor R:R, defer to a retracement entry into an OB (limit at
+    the OB price) or FVG (on reaction) located at a discount/premium.
+  status: proposed
+  ambiguity: >
+    "Bad risk reward" threshold not stated (no min R:R). OB = instant/limit fill vs FVG =
+    reaction-confirmed distinction should be codified explicitly.
+  counterexamples: []

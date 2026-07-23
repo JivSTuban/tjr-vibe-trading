@@ -1,0 +1,13 @@
+course: "TJR Boot Camp"
+lesson_number: 35
+lesson_slug: daily-bias-pt2
+title: "Boot Camp Day 35: Daily Bias pt. 2"
+video_id: UPA9LQW7phk
+source_reference: https://youtu.be/UPA9LQW7phk
+duration_s: 900
+processed_at: "2026-07-23"
+primary_topic: concept
+transcript_source: en-orig-asr
+builds_on:
+  - lesson_number: 34
+    note: "Daily Bias pt. 1"

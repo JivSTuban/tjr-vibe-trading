@@ -1,0 +1,44 @@
+{
+  "lesson_number": 34,
+  "slug": "daily-bias",
+  "video_id": "sjuWqKDsQtI",
+  "title": "Boot Camp Day 34: Daily Bias",
+  "duration_s": 1220,
+  "primary_topic": "concept",
+  "processed_at": "2026-07-23",
+  "transcript_source": "en-orig-asr",
+  "files_written": [
+    "metadata.yaml",
+    "lesson-summary.md",
+    "concepts.yaml",
+    "proposed-rules.yaml",
+    "examples.yaml",
+    "ambiguities.md",
+    "verification-questions.md",
+    "completion.json"
+  ],
+  "counts": {
+    "concepts": 15,
+    "rules": 9,
+    "examples": 4,
+    "ambiguities": 9,
+    "verification_questions": 10
+  },
+  "coverage": {
+    "htf_bias_determination_captured": true,
+    "timeframes_used": ["weekly", "daily", "4H", "1H", "15m", "5m"],
+    "bias_signals_captured": [
+      "trend / market structure",
+      "break of structure (BOS)",
+      "draw on liquidity",
+      "liquidity sweep",
+      "order block",
+      "fair value gap / imbalance",
+      "equilibrium"
+    ],
+    "session_timing_captured": true,
+    "trade_examples_captured": 4
+  },
+  "notes": "Emphasis brief (premium/discount, exact session clock times, prior-session highs/lows as named liquidity, numeric equilibrium) is only partially present in-lesson; gaps flagged in ambiguities.md and verification-questions.md. All rules status: proposed.",
+  "status": "complete"
+}

@@ -1,0 +1,31 @@
+- id: tjr-liquidity-pt3-r01
+  teacher_statement: "It doesn't mean when this high gets hit we press sell... if you did that you would lose way more than you win. We wait for confirmation through break of structure / other confluences."
+  source_timestamp: "06:24"
+  proposed_machine_rule: "Never enter on a liquidity-level touch. Required entry sequence: (1) sweep of a prominent BSL/SSL level; (2) break of structure in the reversal direction; (3) a confluence — fair value gap / imbalance fill and/or order block reaction (preferably on a lower timeframe). Only then enter."
+  status: proposed
+  ambiguity: "'Prominent' has no formula. BOS timeframe, and whether one confluence suffices or multiple are needed, are not fixed. FVG/OB definitions are forward references."
+  counterexamples: []
+
+- id: tjr-liquidity-pt3-r02
+  teacher_statement: "If bearish, target previous prominent lows (where market makers exit shorts). Mirror for longs."
+  source_timestamp: "07:42"
+  proposed_machine_rule: "Set take-profit at the nearest untapped previous prominent opposite-side liquidity: for shorts, the nearest previous prominent low; for longs, the nearest previous prominent high."
+  status: proposed
+  ambiguity: "'Nearest' vs 'next major' target selection is unspecified; multiple imbalances/lows may exist (video shows several possible TP zones)."
+  counterexamples: []
+
+- id: tjr-liquidity-pt3-r03
+  teacher_statement: "Identify liquidity/BOS on a higher timeframe, then scale down (4h -> 1h -> 5m) to enter on an imbalance/FVG fill or order block."
+  source_timestamp: "13:03"
+  proposed_machine_rule: "Two-timeframe workflow: mark prominent liquidity + confirm sweep/BOS on the higher timeframe (e.g. daily/4h); drop to a lower timeframe (e.g. 1h/5m) to trigger entry on an FVG/imbalance fill or order block reaction."
+  status: proposed
+  ambiguity: "The exact HTF/LTF pairing is illustrative, not a fixed spec; needs to be pinned to a concrete combo."
+  counterexamples: []
+
+- id: tjr-liquidity-pt3-r04
+  teacher_statement: "Homework: find 5 liquidity sweeps and pair each with a confluence (BOS, filled imbalance, hidden order block, reaction) showing where you'd enter."
+  source_timestamp: "17:37"
+  proposed_machine_rule: "Validation: for each detected sweep, require the engine to confirm a downstream confluence chain (BOS -> FVG/OB reaction) before labeling it a valid setup; sweeps without the chain are non-signals."
+  status: proposed
+  ambiguity: "Study instruction; encoded as a signal-validation requirement, not a discrete trade rule."
+  counterexamples: []

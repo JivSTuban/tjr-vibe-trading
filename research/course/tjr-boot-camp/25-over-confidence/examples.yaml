@@ -1,0 +1,21 @@
+# TJR references a real trade from "today" but does NOT walk the chart/levels.
+# Captured only as context; not usable for a labeled dataset.
+- timestamp: "03:23"
+  instrument: unspecified
+  timeframe: unspecified
+  direction: unspecified
+  setup_components:
+    - "referenced only: 'we hit a great trade... hit all of our take profits' (see trade-recap video)"
+  stated_outcome: "winner -- hit all take profits (no entry/SL/TP levels given)"
+  suitable_for_dataset: false
+
+# Contextual (not a setup): a no-news day where 'everyone won' cited as evidence that
+# high-probability conditions (no high-impact news) produce wins.
+- timestamp: "17:34"
+  instrument: unspecified
+  timeframe: unspecified
+  direction: unspecified
+  setup_components:
+    - "no high-impact news that day = high-probability conditions"
+  stated_outcome: "TJR claims 'everyone won' -- anecdotal, no chart"
+  suitable_for_dataset: false

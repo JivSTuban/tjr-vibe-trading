@@ -1,0 +1,50 @@
+# Entry-trigger rules ONLY. TJR explicitly excludes stop-loss, take-profit, and daily bias from this lesson.
+# All rules status: proposed. None are complete trade rules on their own.
+
+- id: "tjr-execution-pt2-r01"
+  teacher_statement: "Liquidity sweep... break of structure... this is an execution point. [02:14, 05:02]"
+  source_timestamp: "05:02"
+  proposed_machine_rule: "MODEL A (base entry trigger): (1) detect a liquidity sweep of a prior swing high/low on the chosen timeframe; (2) detect a subsequent break of structure in the opposite direction; (3) the confirmed BOS is the entry signal. ENTRY-TRIGGER ONLY -- SL/TP/direction-bias not defined by this rule."
+  status: proposed
+  ambiguity: "Swing-detection rule for the sweep, and BOS confirmation rule (candle close-through vs wick), are not specified here. TJR calls this the 'riskiest / lowest-confluence' variant."
+  counterexamples: []
+
+- id: "tjr-execution-pt2-r02"
+  teacher_statement: "Where's our order block? What was the candle that caused these highs to get taken out? ...this candle is the candle that filled those orders. [10:54, 11:13]"
+  source_timestamp: "10:54"
+  proposed_machine_rule: "Define the ORDER BLOCK as the origin candle/leg of the displacement move that caused the liquidity sweep + break of structure (the candle that 'filled the orders'). Mark its price range as the entry zone."
+  status: proposed
+  ambiguity: "Exact OB boundary (candle body vs full range incl. wick; which candle if the leg spans several) is not defined in this lesson -- assumed from prior OB lesson."
+  counterexamples: []
+
+- id: "tjr-execution-pt2-r03"
+  teacher_statement: "Where are we executing? Not on the break of structure down here -- we're executing when it comes into the order block. [11:19]"
+  source_timestamp: "11:19"
+  proposed_machine_rule: "MODEL B entry timing: after sweep+BOS+OB identified, DO NOT enter at the BOS. Arm a zone/limit order and fill the entry only when price RETRACES back into the order-block price range."
+  status: proposed
+  ambiguity: "None on timing; but how deep price must retrace into the OB (touch edge vs 50% vs full fill) is unspecified (see r04)."
+  counterexamples: []
+
+- id: "tjr-execution-pt2-r04"
+  teacher_statement: "Doesn't matter if it's exact or not -- execute on this down wick. [15:24]"
+  source_timestamp: "15:24"
+  proposed_machine_rule: "OB entry tolerance: fill on any touch/poke of the order-block zone (wick-touch counts); exact tick-level entry not required. Implement as: trigger when price wick enters the OB range."
+  status: proposed
+  ambiguity: "No quantitative tolerance (ticks/points/percentage of OB depth) is given for 'doesn't matter if it's exact.'"
+  counterexamples: []
+
+- id: "tjr-execution-pt2-r05"
+  teacher_statement: "Find 10 examples of a liquidity sweep + break of structure, and 10 of sweep + BOS + order block entry... and just look at what happens afterwards. Do more if you can. [09:32, 20:41]"
+  source_timestamp: "09:32"
+  proposed_machine_rule: "Validation drill: before enabling either model, generate >=10 historical instances per model and log the post-signal outcome. NOTE: 10 is a learning-familiarization count, NOT a statistically sufficient validation sample -- treat true validation threshold as TBD (define elsewhere)."
+  status: proposed
+  ambiguity: "10 is a drill count. Statistically adequate sample size for live deployment is not addressed by TJR."
+  counterexamples: []
+
+- id: "tjr-execution-pt2-r06"
+  teacher_statement: "This is just showing where to execute -- this isn't showing how to set stop losses, this isn't showing how to take profit... if you can't do that we can't move on to daily bias / take profits. [06:44, 21:41]"
+  source_timestamp: "06:44"
+  proposed_machine_rule: "Guardrail: Models A/B from this lesson are ENTRY-TRIGGER stages only and MUST NOT be deployed as complete trade rules. Require SL, TP (Days deferred), and daily-bias directional filter (Days 34-35) to be attached before any live/backtest execution."
+  status: proposed
+  ambiguity: "None -- explicit scope limitation stated by TJR multiple times."
+  counterexamples: []

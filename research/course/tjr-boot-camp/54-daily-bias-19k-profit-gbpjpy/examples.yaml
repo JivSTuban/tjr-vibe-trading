@@ -1,0 +1,35 @@
+- timestamp: "07:42"
+  instrument: GBPJPY (GJ)
+  timeframe: "bias: weekly bearish, daily bearish; 4H/1H liquidity; entry 1m (plan 5m)"
+  direction: short
+  setup_components:
+    - "Daily bias bearish (weekly also bearish) - full alignment down"
+    - "Daily break of structure to the downside"
+    - "Tapped into a daily order block"
+    - "4H: highs resting above; 1H: London session highs + Asian session highs as liquidity"
+    - "Reacting off a bearish order block (leg-up then leg-down structure)"
+    - "Swept London session highs, then Asian session highs (buy-side liquidity)"
+    - "Break of structure on the 5m (plan) - entered off the 1m on the break candle ('loved the movement')"
+    - "TP1 set at an order block below"
+  stated_outcome: >-
+    WIN. TP1 (order block) hit; price took out New York highs during Asian session
+    then a quick move down. Took off 50% at TP1 and moved stop to break-even on the
+    runner. Realized ~$19k ('19 bands') on the closed half; ~$13k floating on the
+    remainder. Described as 'pinpoint copy-and-paste TJR 4X strat.'
+  suitable_for_dataset: true
+
+- timestamp: "04:33"
+  instrument: Gold (XAUUSD)
+  timeframe: "bias: weekly bearish / daily bullish; hourly OB; targets weekly highs"
+  direction: long
+  setup_components:
+    - "Trade the daily (bullish) despite weekly bearish"
+    - "Broke structure up out of a downtrend"
+    - "Wants an order block to fill a daily imbalance"
+    - "London high taken, price into the hourly order block that caused the rally/BOS"
+    - "Targets stacked liquidity above; likely going after weekly highs"
+    - "A weekly close above would flip weekly bias bullish (aligns with monthly uptrend)"
+  stated_outcome: >-
+    Not taken (forward-looking bias only; GJ was the focus). Presented as a
+    valid trade-with-the-daily long scenario targeting weekly highs.
+  suitable_for_dataset: false

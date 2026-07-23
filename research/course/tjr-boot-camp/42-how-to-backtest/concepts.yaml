@@ -1,0 +1,34 @@
+- name: Bar replay leaks completed HTF candles (look-ahead)
+  teacher_definition: "If you go bar replay on the 15 minute and switch to daily to see the daily bias, it shows you the full daily candle... that's the issue with bar replay, it's not live data."
+  source_timestamp: "01:47"
+  codex_interpretation: "Bar replay exposes future information: the completed higher-TF candle whose close is in the simulated future. This is a look-ahead-bias warning. Backtest must use as-of (partial) candle state per timeframe."
+  confidence: high
+  requires_confirmation: false
+
+- name: Target-practice / Aimbot backtesting
+  teacher_definition: "The best way to back test is just going back on a full chart to a random day, scrolling, and analyzing top-down... spotting examples of your strategy coming up (liquidity sweep, break of structure, order block, enter). Do it repeatedly until it's robotic."
+  source_timestamp: "02:51"
+  codex_interpretation: "Backtest = repeated top-down pattern-recognition drills on historical full charts to make building-block detection instant. For an engine: validate detector accuracy on historical data with correct top-down context."
+  confidence: high
+  requires_confirmation: false
+
+- name: Validate via live/demo, not bar replay
+  teacher_definition: "The best way to test your strategy is through live market... if you want to back test, live test on demo using your strategy. I judge my trading ability purely off live markets."
+  source_timestamp: "04:36"
+  codex_interpretation: "Primary validation gate = live/demo forward-testing. Bar replay is secondary and biased. For the engine: treat forward-test/demo as the authoritative validation, backtest as a detector sanity check."
+  confidence: high
+  requires_confirmation: false
+
+- name: Bar replay under-tests psychology and win rate
+  teacher_definition: "Bar replay is lagging... it doesn't bring the emotions in because candles as they're forming scare you. You'll probably get a worse win rate on bar replay than in live markets."
+  source_timestamp: "04:28"
+  codex_interpretation: "Bar-replay metrics diverge from live: it removes emotion (understated difficulty) and can't read adaptive bias (worse win rate). For an automated engine, emotion is a non-factor, but the look-ahead concern still applies."
+  confidence: medium
+  requires_confirmation: false
+
+- name: Weekend review routine
+  teacher_definition: "Go back over the previous week every single day, find one or two good trades you could have taken on a pair, and find all our building blocks throughout those days."
+  source_timestamp: "07:57"
+  codex_interpretation: "Structured historical review: label 1-2 valid setups per day and mark all building blocks; produces a self-supervised recognition dataset."
+  confidence: medium
+  requires_confirmation: false

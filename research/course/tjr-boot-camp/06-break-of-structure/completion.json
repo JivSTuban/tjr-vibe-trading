@@ -1,0 +1,12 @@
+{
+  "lesson_number": 6,
+  "video_id": "PmhuPbY8ZHo",
+  "slug": "break-of-structure",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 117641,
+  "concepts_count": 16,
+  "rules_count": 9,
+  "examples_count": 10,
+  "notes": "CORE lesson: BOS is the confirmation primitive for the whole strategy. Anchor rule (high confidence, stated + dictated 'write that down' twice): a BOS requires a candle BODY CLOSE beyond the MOST-RECENT opposing swing; a wick alone is NOT a BOS. Direction logic: uptrend -> watch most-recent low for close-below; downtrend -> watch most-recent high for close-above. Swings defined as a 2-candle pattern (up-then-down = high; down-then-up = low), swing price = extreme wick. BOS/MSS/'trend shift' used SYNONYMOUSLY here (always reversal) — TJR does NOT draw the SMC BOS-continuation vs CHoCH-reversal distinction (flagged low-confidence). Timeframe-relative: a daily BOS against a still-bullish weekly = retracement (HTF monthly>weekly>daily). Explicit counterexamples: wick-no-close, liquidity sweep fake (forward-links to Lesson 08), and consolidation (no trend -> no BOS). Examples are structural/drawn (no prices/RR). Instruments named: Gold, GBPUSD (GU), GBPJPY (GJ). Homework: 10 real BOS + 10 fakes = 20 examples. All 8 files written; none skipped."
+}

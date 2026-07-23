@@ -1,0 +1,79 @@
+course: "TJR Boot Camp"
+lesson_number: 29
+concepts:
+  - name: "Trading plan (foolproof / idiot-proof checklist)"
+    teacher_definition: "An outline of how you should structure your trading so 'you can't [mess] up' — a foolproof, idiot-proof plan you build with a pencil and paper by answering a set of questions and writing the answers down. Purpose: make trading robotic and emotionless day in and day out."
+    source_timestamp: "[04:57] / [05:08] / [05:22] / [06:29]"
+    codex_interpretation: "A configurable process framework with five decision domains (risk, timing, news, instrument, entry) plus a set of hard pre-trade gates. Maps directly onto the parameter set and go/no-go logic of an automated trading system."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Pre-designated risk"
+    teacher_definition: "Deciding in advance exactly how much you are willing to lose each day so 'when we lose it we're not crying.' Called one of the most important things in the plan. You cannot take a trade until you have figured out your pre-designated risk for the day."
+    source_timestamp: "[06:08] / [06:16] / [18:50]"
+    codex_interpretation: "A daily max-loss / risk budget that must be set before session start; a required precondition (gate) for any trade."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Set (predetermined) lot size vs calculated lot size"
+    teacher_definition: "Two ways to size positions. Set lot size = fixed predefined lots (TJR cycles between three: high risk, regular risk, low risk). Calculated lot size = use a lot-size calculator, input account balance + risk % + stop-loss in pips, it outputs a lot size you enter into MetaTrader. TJR says beginners should use a calculated lot size and should NOT use a predetermined lot size 'because you won't know what you're risking.'"
+    source_timestamp: "[06:36] / [07:16] / [07:31] / [07:57]"
+    codex_interpretation: "Position-sizing mode. For an automated system, calculated sizing (balance x risk% / stop-distance) is the safe default; fixed-lot tiers are an advanced override."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Trades per day limit"
+    teacher_definition: "TJR recommends one trade a day; he sometimes takes two but de-risks both so their combined risk equals one trade's risk. Beginners should stick to one. Aim for 1-2 high-probability quality setups, not five (you'll lose four and win one)."
+    source_timestamp: "[08:11] / [08:18] / [09:04] / [09:41]"
+    codex_interpretation: "A daily trade-count cap. Default = 1/day for beginners; 2/day allowed only if per-trade risk is halved so daily risk is unchanged."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Designated trading session / time window"
+    teacher_definition: "Treat trading like a job and designate the times you trade. TJR trades the New York Stock Exchange open (AM session), taking a trade within the first hour and a half; if none appears he takes none. Sessions available: Asian (called a terrible session), London open, London close into NY open, NY AM, NY PM. Choose by your time zone, sleep schedule, and work schedule."
+    source_timestamp: "[10:00] / [10:34] / [11:01] / [11:15]"
+    codex_interpretation: "A kill-zone / time filter. TJR's personal window = first 90 minutes after NYSE open. Trades outside the chosen window are rejected."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "News-trading rule"
+    teacher_definition: "Decide whether you trade on/around news. Excludes high-impact news (not CPI, NFP, FOMC, PPI) which should be avoided. For regular red/orange-folder news you read the bias; if it aligns with your bias you may trade. Beginners avoiding news altogether get an 'insane win rate.' If news breaks the market, done for the day. Example self-set threshold: a ~5-point spike within a 5-minute candle -> decide in advance to trade or opt out (number is arbitrary/user-defined)."
+    source_timestamp: "[11:30] / [11:37] / [12:02] / [12:45] / [12:48]"
+    codex_interpretation: "A news filter with two layers: (1) hard block around high-impact releases, (2) configurable volatility threshold (points/candle) to stand aside. The 5-point/5-min value is illustrative, not a firm rule."
+    confidence: medium
+    requires_confirmation: true
+
+  - name: "Single instrument (one pair) focus"
+    teacher_definition: "Most beginners should trade only one pair/instrument. Master one and turn profitable before adding another; each additional instrument adds lower probability, risk, and hardship. Options: S&P 500, NASDAQ, US30, a forex pair, commodities, crypto. TJR's own: S&P, gold, GBP/JPY, GBP/USD; he only added instruments after being profitable with just GBP/JPY. Action: write down your pair and delete the rest of your watchlist."
+    source_timestamp: "[13:35] / [13:50] / [15:35] / [16:12]"
+    codex_interpretation: "An instrument-universe constraint. Default = single symbol until proven profitable; markets behave differently so mastery is per-instrument."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Confluences / building blocks (entry model)"
+    teacher_definition: "The building blocks you require for an entry. Must be found via backtesting: test a confluence combo (e.g., liquidity sweep -> break of structure) for ~two weeks, record win rate and emotions, and journal. Entry options: enter on liquidity sweep + break of structure alone, OR wait for extra confirmation via a Fair Value Gap or Order Block entry for better risk-reward. Recommended: only take trades aligned with daily bias, with a liquidity sweep and break of structure all aligned with the daily bias and overall market trend."
+    source_timestamp: "[16:39] / [17:09] / [17:34] / [18:00]"
+    codex_interpretation: "The entry-signal stack: BSL/SSL liquidity sweep -> BOS -> optional FVG/OB refinement, gated by HTF daily bias. Exact machine definitions (timeframes, tolerances) are deferred to the next lesson and must not be inferred here."
+    confidence: medium
+    requires_confirmation: true
+
+  - name: "Daily bias alignment"
+    teacher_definition: "Take trades only in the direction of the daily bias / overall market trend, because that is where the market wants to go, which makes the setup high probability. TJR's live example: S&P daily is bullish -> we look for buys only."
+    source_timestamp: "[18:00] / [18:22] / [18:29]"
+    codex_interpretation: "HTF directional filter: only long in bullish daily bias, only short in bearish daily bias. Standard SMC/ICT trend-continuation constraint."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "The 'leave' filter (pre-trade go/no-go gates)"
+    teacher_definition: "Execute robotically: if the setup doesn't follow your trading plan, leave; if you already took your trade for the day, leave; if you already maxed your pre-designated risk, leave; if it's a US bank holiday and you can't trade your pair, leave; if you don't get your confluences, don't take a trade. If yes to everything, 'press the damn button.'"
+    source_timestamp: "[18:22] / [19:26] / [19:45] / [19:57] / [20:16]"
+    codex_interpretation: "An AND-chain of hard pre-trade gates; a trade is permitted only if all conditions pass. This is the executable core of the plan."
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Journaling and backtesting for validation"
+    teacher_definition: "When testing confluences, write down your win rate, write down how it felt / your emotions, and journal (repeated for emphasis). Validate a confluence combo over roughly two weeks before adopting it."
+    source_timestamp: "[17:13] / [17:23] / [17:29]"
+    codex_interpretation: "A validation loop: sample-period backtest + performance and psychological logging before promoting a rule to live use."
+    confidence: high
+    requires_confirmation: false

@@ -1,0 +1,12 @@
+{
+  "lesson_number": 20,
+  "video_id": "qhuFg_OXdmE",
+  "slug": "order-blocks",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 12000,
+  "concepts_count": 8,
+  "rules_count": 5,
+  "examples_count": 1,
+  "notes": "Day 1 of a 3-day OB series (concept/'why' only). TJR explicitly defers OB drawing/spotting to Day 2 and full application to Day 3. Core definition captured verbatim: OB = 'the move/leg that causes the liquidity sweep' (bullish = up-leg sweeping a low + BOS up; bearish = down-leg sweeping a high + BOS down); OB = accumulation area price range where orders were filled. Key rule: only ONE OB per trend; new OB only on next trend shift; OBs are fractal (every TF incl 1m). Entry priority for retracements: OB > FVG > equilibrium. NO trade example walked through — examples.yaml holds only a GBPJPY 15m news-illustration (34 pips, PPI/FOMC) as a no-trade guardrail, suitable_for_dataset=false. UNDEFINED and sent to ambiguities.md: OB candle-vs-leg unit, zone boundaries (body vs wick), mitigation/valid-invalid, entry confirmation, SL/TP (none given). OB pairs with FVG lessons 16/18 (TJR equates their return-to-fill mechanic); depends on prior liquidity-sweep + break-of-structure lessons. All 8 files written."
+}

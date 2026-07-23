@@ -1,0 +1,15 @@
+- id: tjr-help-me-help-you-r01
+  teacher_statement: "Don't over trade, don't over leverage, be disciplined... follow those rules very strictly."
+  source_timestamp: "04:07"
+  proposed_machine_rule: "Enforce a max-trades-per-day cap and a max-leverage/max-risk-per-day cap; block further executions once exceeded. (Numeric limits to be sourced from L39 risk tiers / later lessons.)"
+  status: proposed
+  ambiguity: "No numeric limits given in this lesson for trades/day or leverage."
+  counterexamples: []
+
+- id: tjr-help-me-help-you-r02
+  teacher_statement: "How my daily bias changes as market gives us more price action upon New York Stock Exchange open."
+  source_timestamp: "07:13"
+  proposed_machine_rule: "Re-evaluate daily bias at/after the New York session open using freshly formed price action; allow bias to update rather than fixing it pre-open."
+  status: proposed
+  ambiguity: "Mechanism, exact time, and update criteria are not described here — only mentioned as a future topic."
+  counterexamples: []

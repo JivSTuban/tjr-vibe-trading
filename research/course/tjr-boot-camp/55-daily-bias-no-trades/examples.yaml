@@ -1,0 +1,58 @@
+# No-trades day: each pair is a labeled SKIP (negative/no-signal example).
+- timestamp: "11:39"
+  instrument: SPX (S&P 500)
+  timeframe: "daily/4H/1H/15m all bullish"
+  direction: none (skipped long)
+  setup_components:
+    - "Full bullish timeframe alignment; targeting a monthly high draw on liquidity"
+    - "BUT price never drew into the marked HTF order block (building block)"
+    - "Only a small FVG play available - not taken"
+    - "A late-session long 'looked solid' but was too late into New York session"
+  stated_outcome: >-
+    NO TRADE. Skipped because the marked HTF building block was never tapped and
+    the only entry appeared too late in the NY session. Labeled skip: missing
+    HTF-building-block-tap gate + session-timing cutoff.
+  suitable_for_dataset: true
+
+- timestamp: "11:49"
+  instrument: Gold (XAUUSD)
+  timeframe: "daily+4H bullish, 1H bearish/choppy"
+  direction: none (skipped short)
+  setup_components:
+    - "Considered shorting a break of structure (red line mapped)"
+    - "Bullish on daily and 4H, bearish only on the hourly"
+    - "1H super choppy"
+  stated_outcome: >-
+    NO TRADE. Caught himself: shorting would break the trading plan (hourly-only
+    justification against a bullish daily/4H). Notes it would have hit TP1 then
+    returned to break-even. Labeled skip: don't-trade-off-hourly-alone gate.
+  suitable_for_dataset: true
+
+- timestamp: "07:29"
+  instrument: GBPUSD (GU)
+  timeframe: "weekly+daily bullish, 4H bearish"
+  direction: none (avoided)
+  setup_components:
+    - "Retracing on weekly and daily; 4H conflicts with HTF"
+    - "No 1-hour bullish confirmation yet"
+    - "CPI news in GBP that session"
+  stated_outcome: >-
+    NO TRADE (completely avoided). Labeled skip: missing 1H-confirmation gate +
+    news-currency avoidance (CPI on GBP).
+  suitable_for_dataset: true
+
+- timestamp: "14:39"
+  instrument: GBPJPY (GJ)
+  timeframe: "daily/4H/1H downtrend; 4X-strat setup"
+  direction: none (skipped short)
+  setup_components:
+    - "Daily-bias-aligned short off the New York session highs (the only trade he wanted)"
+    - "Order block never got taken out"
+    - "Price never swept the 30-minute high that the Forex strategy requires"
+    - "A 5m break of structure down did occur - but precondition unmet"
+  stated_outcome: >-
+    NO TRADE. Skipped strictly per plan because the required 30-minute-high sweep
+    never happened, despite a 5m BOS. Price later moved in his direction; he was
+    okay sticking to the bias. Labeled skip: 4X-strat 30m-high-sweep precondition
+    unmet.
+  suitable_for_dataset: true

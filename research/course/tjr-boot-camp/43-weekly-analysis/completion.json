@@ -1,0 +1,12 @@
+{
+  "lesson_number": 43,
+  "video_id": "9SUJfAo6Sl8",
+  "slug": "weekly-analysis",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 42753,
+  "concepts_count": 7,
+  "rules_count": 4,
+  "examples_count": 0,
+  "notes": "Weekly top-down markup + news-calendar review. examples.yaml skipped (no discrete completed trade walked through; instrument analysis is forward-looking bias, not a resolved trade). verification-questions.md skipped; open items captured in ambiguities.md (news timezones, BOS definition)."
+}

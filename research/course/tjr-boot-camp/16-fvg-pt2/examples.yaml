@@ -1,0 +1,57 @@
+examples:
+  - timestamp: "05:56"
+    instrument: unnamed
+    timeframe: unnamed
+    direction: long
+    setup_components:
+      - breaker structure confirms bullish bias
+      - massive up (displacement) candle 2 with no wicks filling the gap
+      - price draws back into the bullish FVG ("chop chop chop")
+      - break of structure, then rally / continuation
+    stated_outcome: >
+      Rally / bullish continuation after price fills the FVG and breaks
+      structure. Called a "perfect example" of a bullish FVG being used.
+    suitable_for_dataset: false
+
+  - timestamp: "06:41"
+    instrument: unnamed
+    timeframe: unnamed
+    direction: short
+    setup_components:
+      - break of structure confirms bearish bias
+      - bearish FVG measured bottom-of-first-wick to top-of-third-wick
+      - price retraces up into the bearish FVG ("chop chop chop fill drop")
+      - continuation lower
+    stated_outcome: >
+      Price fills the bearish FVG and continues lower — bearish continuation.
+    suitable_for_dataset: false
+
+  - timestamp: "09:11"
+    instrument: unnamed
+    timeframe: unnamed
+    direction: short
+    setup_components:
+      - breaker structure to the downside (price falling)
+      - fair value gap within the down move
+      - price fills FVG, closes bearish inside it
+      - enter with stop above previous high, target previous lows
+    stated_outcome: >
+      Hypothetical homework-style trade plan (not a claimed executed result);
+      TJR notes "we're not even at the point of being able to execute yet."
+    suitable_for_dataset: false
+
+  - timestamp: "09:44"
+    instrument: unnamed
+    timeframe: unnamed
+    direction: none (counter-example)
+    setup_components:
+      - candle-1 and candle-3 wicks already overlap/fill candle-2 body
+      - liquidity void already filled
+    stated_outcome: >
+      NOT a valid FVG — used as the invalid/already-filled counter-example for
+      the homework "identify non-valid FVGs" task.
+    suitable_for_dataset: false
+
+# NOTE: All examples are hand-drawn / narrated chart illustrations with no named
+# instrument, timeframe, date, or price levels. None are suitable for the
+# backtest dataset (suitable_for_dataset: false for all).

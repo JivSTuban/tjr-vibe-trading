@@ -1,0 +1,12 @@
+{
+  "lesson_number": 42,
+  "video_id": "NPG_BZ_83fo",
+  "slug": "how-to-backtest",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 41000,
+  "concepts_count": 5,
+  "rules_count": 3,
+  "examples_count": 0,
+  "notes": "BACKTESTING METHODOLOGY lesson. TJR rejects bar replay - key reason is that it leaks completed HTF candles (LOOK-AHEAD BIAS) and can't do point-in-time top-down. Prefers full-chart 'target/Aimbot practice' pattern-spotting + LIVE/DEMO validation as authoritative. For the engine this maps to: no-look-ahead point-in-time candle reconstruction across all timeframes; forward/demo test as promotion gate; detector precision/recall validation. No numeric params. examples.yaml SKIPPED (no trade examples). 7 of 8 files written."
+}

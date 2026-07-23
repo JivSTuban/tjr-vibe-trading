@@ -1,0 +1,54 @@
+# Live mock trades on a PPI news day (day NOT traded). Chart levels were pointed at
+# on-screen; numeric prices largely not verbalized. R-multiple stated for S&P.
+- timestamp: "03:07"
+  instrument: S&P 500
+  timeframe: "HTF bias weekly/daily/4H/1H; execution 15m/5m"
+  direction: long (mock)
+  setup_components:
+    - "weekly bullish, daily bullish (came into daily order block, reacted smoothly)"
+    - "4H bullish, 1H bullish -- all aligned"
+    - "pre-marked 15m lows, hourly lows, resting liquidity"
+    - "PPI release -> 15m liquidity swept"
+    - "break of structure to the upside"
+    - "retrace into equilibrium (bare equilibrium, not OB/FVG)"
+    - "confirmation: candle CLOSED back above equilibrium AND break of structure over the prior high"
+    - "stop under the liquidity sweep"
+    - "targets off 4H candle bodies and highs to the left (limited left-side structure)"
+  stated_outcome: "Mock long. Price ran heavily into profit; approx +1.6R with just two take-profits (loose mock, not TP-specific)."
+  suitable_for_dataset: true
+
+- timestamp: "06:15"
+  instrument: GBP/JPY
+  timeframe: "HTF bias weekly/daily/4H/1H"
+  direction: none (would be short; not taken)
+  setup_components:
+    - "bullish weekly BUT bearish daily -> use daily bias (bearish)"
+    - "weekly retracing toward weekly equilibrium / weekly FVG"
+    - "4H bearish (just filled a small FVG)"
+    - "1H bullish (not yet aligned)"
+    - "15m BOS-down while 1H bullish = a 1H retrace, not a signal"
+  stated_outcome: "NO trade. Needs hourly confirmation to the downside before shorting; 4H bearish but 1H not bearish yet, so biases not aligned for execution."
+  suitable_for_dataset: true
+
+- timestamp: "09:01"
+  instrument: Gold (XAU/USD)
+  timeframe: "HTF bias weekly/daily/4H/1H"
+  direction: none (avoided)
+  setup_components:
+    - "bearish weekly BUT bullish daily -> use daily bias (bullish, intraday)"
+    - "4H bearish, 1H bearish (conflict with bullish daily)"
+    - "would require fading the daily to trade the 4H/1H down = trading a daily retrace"
+  stated_outcome: "NO trade -- conflicting biases; never trade retraces except on the weekly. Instead marked FVG / equilibrium / order block draw zones to prep a future in-alignment long."
+  suitable_for_dataset: true
+
+- timestamp: "12:19"
+  instrument: GBP/USD
+  timeframe: "HTF bias weekly/daily/4H/1H; execution 15m"
+  direction: none (would be long; not taken)
+  setup_components:
+    - "weekly / daily / 4H / 1H all bullish -- fully aligned"
+    - "liquidity sweep at Forex open (not enough on its own)"
+    - "wanted a 4H or 1H retracement; only got a weak 15m BOS-down"
+    - "pre-marked order block never got hit -> no execution point"
+  stated_outcome: "NO trade despite full alignment -- building block not hit and no execution point. Demonstrates alignment is necessary but not sufficient."
+  suitable_for_dataset: true

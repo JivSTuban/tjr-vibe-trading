@@ -1,0 +1,105 @@
+- name: Order Block (OB) — definition
+  teacher_definition: >
+    "Essentially all an order block is is that move up that causes the liquidity
+    sweep." Restated: "it is the move prior to the liquidity sweep that causes
+    the liquidity sweep." On a bearish example: "it's the leg down prior to the
+    liquidity sweep." The OB is the initiating leg/move that takes out a high or
+    low (liquidity sweep) and leads to the break of structure that shifts market
+    structure.
+  source_timestamp: "03:10"
+  codex_interpretation: >
+    Directionally: bullish OB = the up-leg that sweeps a prior low and breaks
+    structure upward; bearish OB = the down-leg that sweeps a prior high and
+    breaks structure downward. TJR frames it as a "move/leg," NOT explicitly as
+    "the last opposing candle before displacement" — the standard SMC
+    single-candle definition is our inference and is not stated here.
+  confidence: high
+  requires_confirmation: true
+
+- name: Why it's called an "order block" (accumulation area)
+  teacher_definition: >
+    "When liquidity gets swept orders get filled… that's why it's called an
+    order block." The OB is "this whole price range… where the orders were
+    filled." He also calls it an "accumulation area": "that's where orders were
+    accumulated… I call them like accumulation areas… pretty much the same
+    thing."
+  source_timestamp: "03:17"
+  codex_interpretation: >
+    OB = a zone (price range) where institutional orders were filled on the
+    initiating leg. "Accumulation area" is TJR's synonym. Exact zone boundaries
+    (body vs wick, high/low) are never specified — see ambiguities.md.
+  confidence: high
+  requires_confirmation: true
+
+- name: OB behavior — price returns to fill more orders (FVG analogy)
+  teacher_definition: >
+    "Similarly to how fair value gaps… they want to push price back within this
+    price range… to fill more orders to either move the market down further or
+    move the market up further." On a retracement into the OB there are "more
+    resting orders waiting to be filled in the opposite direction," which then
+    send price further in the trend direction.
+  source_timestamp: "04:52"
+  codex_interpretation: >
+    Behavioral expectation: after displacement/BOS, price often retraces into
+    the OB where resting liquidity refills, then continues the new trend. OB and
+    FVG share the same "return-to-fill" mechanic (cross-ref lessons 16/18).
+  confidence: high
+  requires_confirmation: true
+
+- name: OB as #1 retracement entry / point of interest
+  teacher_definition: >
+    The liquidity sweep + break of structure is "the top of the entry" / start
+    of the move. If you miss it, there are three retracement options; "the first
+    option every single time for me is going to be an order block" because "it's
+    still at the top of the move and oftentimes you can get an even better
+    entry." Priority: order block first, then fair value gap, then equilibrium.
+  source_timestamp: "06:57"
+  codex_interpretation: >
+    Entry priority ranking for retracement plays: OB > FVG > equilibrium (FVG
+    and equilibrium described as "pretty similar"). OB preferred because it sits
+    highest/deepest in the move, giving the best RR. No confirmation, SL, or TP
+    is specified in this lesson.
+  confidence: high
+  requires_confirmation: true
+
+- name: One order block per trend
+  teacher_definition: >
+    "There's only one order block within a whole trend." OBs form off a
+    liquidity sweep + orders filled + start of a new trend. A new OB is only
+    made on the next trend shift. Inside a trend there can be FVGs and
+    equilibrium getting filled, but only one OB.
+  source_timestamp: "07:53"
+  codex_interpretation: >
+    Constraint: mark exactly one OB per structural trend leg — the initiating
+    leg at the trend's origin (post sweep + BOS). Additional retracement POIs
+    within the same trend are FVGs/equilibrium, not new OBs. A fresh OB is
+    minted only at the next MSS/trend shift.
+  confidence: high
+  requires_confirmation: true
+
+- name: OBs are fractal (every timeframe)
+  teacher_definition: >
+    "There can be order blocks on every single time frame… all of these
+    concepts are applicable on every single time frame." Cites seeing them on
+    1-minute charts every day/hour.
+  source_timestamp: "09:23"
+  codex_interpretation: >
+    OB detection logic is timeframe-agnostic; applies from HTF down to 1m. Which
+    timeframe(s) to use for the tradeable OB is not specified here (deferred to
+    Day 3 "putting it all together").
+  confidence: medium
+  requires_confirmation: true
+
+- name: No trading on high-impact news (tangent)
+  teacher_definition: >
+    Shows PPI + FOMC in play (FOMC ~2 hours out). On the 15m chart GBPJPY moved
+    only 34 pips since the U.S. open despite being "extremely volatile" — "this
+    is why we need to know when news is going on… why you should not be trading
+    today."
+  source_timestamp: "11:58"
+  codex_interpretation: >
+    Behavioral guardrail: avoid trading during/around high-impact news (PPI,
+    FOMC). Choppy, compressed ranges make setups unreliable. Not the lesson's
+    focus but a stated rule.
+  confidence: medium
+  requires_confirmation: true

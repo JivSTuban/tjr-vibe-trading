@@ -1,0 +1,12 @@
+{
+  "lesson_number": 1,
+  "video_id": "Xq6-oO2n6-U",
+  "slug": "take-action",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 220797,
+  "concepts_count": 13,
+  "rules_count": 6,
+  "examples_count": 1,
+  "notes": "Boot-camp intro / 'contract' psychology lesson — TJR states 'you aren't going to learn anything' [00:47]; no chart-execution rules. All 6 proposed rules are BEHAVIORAL guardrails (daily-cadence+catch-up, mandatory journaling [the only thing TJR explicitly calls a 'rule', 40:29], delete-a-time-sink-app, 1-2yr profitability horizon, no strategy-hopping, blank-slate). One trade example: the historical 'London fake out' on GJ/GBPJPY at London open with a 15-pip SL [37:20] — flagged suitable_for_dataset:false as legacy backstory, superseded by Lesson 08 liquidity framework. Wrote all 4 mandatory files + proposed-rules.yaml + examples.yaml + ambiguities.md + verification-questions.md (all 8 files; none skipped). ASR notes: 'jits/jit lips' = greeting signature; 'GJ' = GBPJPY; 'MPC' = NPC; 'ICT' = the trader he says he did NOT learn from. Cross-lesson hook: 'took out a high -> sell' + 15-pip SL is the seed of Lesson 08's sweep->MSS/BOS chain. SRT is ASR with each cue duplicated across two lines."
+}

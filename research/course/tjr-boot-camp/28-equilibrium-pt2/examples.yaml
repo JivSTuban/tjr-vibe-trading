@@ -1,0 +1,50 @@
+# Day 28 walks several chart scans plus ONE real Discord swing trade. Directions/structure
+# are given; exact price levels/dates are NOT, so none are fully dataset-usable, but the real
+# short is the most complete.
+
+- timestamp: "14:56"
+  instrument: unspecified (real Discord swing trade)
+  timeframe: daily / 4h / 1h (multi-TF)
+  direction: short
+  setup_components:
+    - "daily/weekly downtrend bias ('weren't in a weekly uptrend')"
+    - "daily break of structure to the downside"
+    - "measured high->low; daily EQUILIBRIUM got hit"
+    - "scale to 4h: price filled a massive imbalance (FVG) at/near equilibrium"
+    - "scale to 1h: 1h break of structure to the downside = entry trigger"
+    - "shorted, stop above the swing high"
+    - "targets = successive previous areas of liquidity"
+  stated_outcome: "4 take-profits set, hit 3 of them (winner). No exact prices given."
+  suitable_for_dataset: false
+
+- timestamp: "05:36"
+  instrument: unspecified (downtrend chart scan)
+  timeframe: daily -> lower
+  direction: short
+  setup_components:
+    - "break of structure to downside, new low"
+    - "price pushes above equilibrium (premium), fills FVG, takes liquidity"
+    - "wait for retrace into equilibrium + FVG + BOS, enter, target prior liquidity"
+  stated_outcome: "illustrative; no levels"
+  suitable_for_dataset: false
+
+- timestamp: "08:13"
+  instrument: unspecified (uptrend chart scan)
+  timeframe: multi (daily/1h/15m)
+  direction: long
+  setup_components:
+    - "break of structure to upside, measure low->high"
+    - "price falls into equilibrium; liquidity sweep + BOS + order block on LTF"
+    - "fill + BOS to upside, long, target prior liquidity (caught a real long that day)"
+  stated_outcome: "illustrative long ('I literally caught a long off this today'); no prices"
+  suitable_for_dataset: false
+
+- timestamp: "13:25"
+  instrument: Gold (XAUUSD)
+  timeframe: monthly / 4h
+  direction: long (monthly uptrend)
+  setup_components:
+    - "monthly break / monthly retrace pattern; monthly low->high"
+    - "currently in equilibrium; look for FVG + OB, scale to 4h, wait for BOS confirmation"
+  stated_outcome: "illustrative (live, in-progress); no entry taken on screen"
+  suitable_for_dataset: false

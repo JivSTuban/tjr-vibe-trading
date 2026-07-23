@@ -1,0 +1,64 @@
+- id: tjr-how-to-read-news-data-r01
+  teacher_statement: "There's a couple news events that I always avoid, write these down: CPI, PPI, FOMC, and NFP (non-farm payroll). Those four I do not trade whatsoever."
+  source_timestamp: "06:57"
+  proposed_machine_rule: "Block ALL new entries for the entire trading session/day if the economic calendar contains any event whose name matches {CPI, PPI, FOMC / FOMC statement / federal funds rate / interest-rate decision, NFP / non-farm payroll / non-farm employment} AND the event's currency is one of the traded pair's currencies (USD covers gold and SPX)."
+  status: proposed
+  ambiguity: "Session vs full calendar-day scope not explicitly bounded; TJR says he won't trade that whole day. FOMC also has minutes/press-conference — treat all FOMC-tagged events as blocking. Whether the block covers non-USD pairs on a USD-only heavy day: he'd still consider GBP/JPY, so hard-block applies only to pairs containing the event's currency."
+  counterexamples: []
+
+- id: tjr-how-to-read-news-data-r02
+  teacher_statement: "If there is a red news folder, no matter what, I will always always always wait until the news comes out."
+  source_timestamp: "03:56"
+  proposed_machine_rule: "For any red-folder (high-impact) event on a traded currency that is NOT in the r01 hard-block set, do not open new entries before the release; wait until the release time passes."
+  status: proposed
+  ambiguity: "Explicit number of minutes BEFORE the release to stop opening trades is never stated. TJR only warns 'news comes out five minutes later it stops you out' [24:17]. T_before is unspecified — see ambiguities.md (confidence low)."
+  counterexamples: []
+
+- id: tjr-how-to-read-news-data-r03
+  teacher_statement: "Wait for news to come out, let price develop... after like 15 or 20 minutes... 15, 20, 30 minutes, let price develop, and then we can look to take a trade."
+  source_timestamp: "10:17"
+  proposed_machine_rule: "After a red/orange release (non-r01), keep new entries blocked for at least 30 minutes after the scheduled release time (T_after=30 min conservative; TJR range 15-30). Only after this window, and only if price has not shown large displacement, may entries be considered."
+  status: proposed
+  ambiguity: "TJR gives a 15/20/30-minute range, not a single fixed value. Chose 30 as conservative upper bound; confirm intended default."
+  counterexamples: []
+
+- id: tjr-how-to-read-news-data-r04
+  teacher_statement: "See if it drastically affected the market with large wicks, large moves. If it does that, don't trade. Do not trade."
+  source_timestamp: "06:20"
+  proposed_machine_rule: "If, in the post-release window, the traded instrument prints abnormally large wicks/range (displacement) versus its recent average, keep the news block active for the remainder of the session (no new entries)."
+  status: proposed
+  ambiguity: "'Drastically' / 'large wicks' is not quantified (no ATR multiple or pip threshold given). Needs a numeric displacement threshold to be testable."
+  counterexamples: []
+
+- id: tjr-how-to-read-news-data-r05
+  teacher_statement: "This is a lot of red folders so low probability — de-risk. See what happens in the market; if it makes a big move, we're done."
+  source_timestamp: "08:36"
+  proposed_machine_rule: "If the day contains 2 or more red-folder events on traded currencies, flag the session as low-probability: reduce risk-per-trade (halve default) and prefer no-trade even outside individual event windows; abort the session if a big post-release move occurs."
+  status: proposed
+  ambiguity: "'De-risk' / 'risk less' has no exact percentage. Threshold of 2+ red folders is inferred from his 'three red folders = terrible probability day' framing, not stated as a hard count."
+  counterexamples: []
+
+- id: tjr-how-to-read-news-data-r06
+  teacher_statement: "Greater than forecast is good for the currency... good for the currency means good for the dollar (DXY), not the S&P 500... good for the dollar bad for SPX, bad for gold, bad for GU, bad for EU."
+  source_timestamp: "12:07"
+  proposed_machine_rule: "Compute advisory news bias: bias(currency) = bullish if actual > forecast, bearish if actual < forecast. Map to pair via slash side: numerator currency direction = +bias, denominator currency direction = -bias. Emit as ADVISORY metadata only; never as an entry signal."
+  status: proposed
+  ambiguity: "'Good/bad for currency' inverts for some releases (e.g. unemployment where higher is bad) — TJR relies on Forex Factory's per-event 'usual effect' text rather than a universal actual>forecast rule. Rule must read the event's stated usual-effect direction, not blindly assume higher=good."
+  counterexamples:
+    - "Unemployment rate / jobless claims: a higher actual is typically BAD for the currency; the actual>forecast=good heuristic would flip. Forex Factory's 'usual effect' line resolves this per event."
+
+- id: tjr-how-to-read-news-data-r07
+  teacher_statement: "News bias is not the be-all... price action is superior, that's why we have to wait for news to come out. (Showed CPI < forecast yet DXY rallied.)"
+  source_timestamp: "22:37"
+  proposed_machine_rule: "Never trigger or block entries on news bias direction alone. News bias is advisory context; post-release realized price action takes precedence over the forecast-vs-actual bias."
+  status: proposed
+  ambiguity: "None material; this is a guardrail against over-trusting bias."
+  counterexamples: []
+
+- id: tjr-how-to-read-news-data-r08
+  teacher_statement: "Make sure you guys are checking Forex Factory every single morning before you trade... look for a reason not to trade, not a reason to trade."
+  source_timestamp: "24:11"
+  proposed_machine_rule: "Before any session, the engine must ingest the day's filtered economic calendar (traded currencies only) and evaluate r01-r05 gates BEFORE permitting any entry. Absence of a fetched calendar = block trading (fail-safe)."
+  status: proposed
+  ambiguity: "'Every morning' cadence and the exact daily cutoff time are process guidance, not a hard scheduler spec."
+  counterexamples: []

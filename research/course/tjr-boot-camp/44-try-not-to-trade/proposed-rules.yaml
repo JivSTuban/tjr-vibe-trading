@@ -1,0 +1,39 @@
+- id: tjr-try-not-to-trade-r01
+  teacher_statement: "If your daily bias says bullish but a bearish setup shows up, are you going to take it? Most beginners take those trades and those are the losing trades that stack up."
+  source_timestamp: "09:01"
+  proposed_machine_rule: "Reject any entry whose direction is opposite the established daily bias."
+  status: proposed
+  ambiguity: "Requires an upstream daily-bias value; how bias is derived is covered elsewhere (lessons 43/49)."
+  counterexamples: []
+
+- id: tjr-try-not-to-trade-r02
+  teacher_statement: "When there's no sense of direction in the market — a whole bunch of nothing — this is a sign in itself to say don't trade."
+  source_timestamp: "05:04"
+  proposed_machine_rule: "Suppress entries when the market is classified as choppy/directionless (repeated failed BOS and liquidity sweeps within a range, low net displacement over the lookback)."
+  status: proposed
+  ambiguity: "No numeric threshold for 'directionless' — needs a defined chop metric and cutoff."
+  counterexamples: []
+
+- id: tjr-try-not-to-trade-r03
+  teacher_statement: "If a smaller time frame move changes that decision in your head you're messed up, because higher time frames hold higher power."
+  source_timestamp: "12:14"
+  proposed_machine_rule: "Do not flip trade direction or bias based on a lower-timeframe structure event that contradicts the higher-timeframe decision; classify it as an HTF retrace."
+  status: proposed
+  ambiguity: "Which TF pairs count as 'higher power' relative to each other should follow the standard ladder (M>W>D>4H>1H>15m>5m>1m)."
+  counterexamples: []
+
+- id: tjr-try-not-to-trade-r04
+  teacher_statement: "If you're only trading one pair, don't trade that day. The best traders take the most days off in the market."
+  source_timestamp: "09:54"
+  proposed_machine_rule: "If no instrument in the watchlist produces a setup that passes all filters, take no trades that day (no-trade is a valid, preferred outcome)."
+  status: proposed
+  ambiguity: "No explicit max-trades-per-day number given here; 'take days off' is directional guidance, not a hard cap."
+  counterexamples: []
+
+- id: tjr-try-not-to-trade-r05
+  teacher_statement: "Go into the market not wanting to trade, and make it so the market gives you no other option but to take a trade because you know so damn well it's going to make you money."
+  source_timestamp: "11:44"
+  proposed_machine_rule: "Set the entry-conviction bar high: only fire when the full confluence stack (bias + trend + building-block interaction + confirmation) is satisfied; otherwise no entry."
+  status: proposed
+  ambiguity: "'No other option' is qualitative; must be operationalized as the concrete confluence checklist from this and adjacent lessons."
+  counterexamples: []

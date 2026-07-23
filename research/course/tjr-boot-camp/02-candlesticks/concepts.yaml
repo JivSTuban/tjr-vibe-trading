@@ -1,0 +1,90 @@
+- name: Candlestick (describes price via body + wicks)
+  teacher_definition: "These candlesticks describe price through bodies and wicks. They are called candlesticks because they leave wicks, and each candlestick tells a story."
+  source_timestamp: "01:11"
+  codex_interpretation: "A candlestick is the OHLC glyph for one period: a body (open-to-close span) plus upper/lower wicks (high/low extremes). Standard charting primitive."
+  confidence: high
+  requires_confirmation: false
+
+- name: Timeframe = time for candle to close
+  teacher_definition: "The timeframe (1m, 2m, 3m, 5m, 7m, 8m, etc.) represents the time that it takes for the candlestick to close. On the five minute chart, one candle represents five minutes of price action / market movement."
+  source_timestamp: "03:04"
+  codex_interpretation: "Each candle aggregates a fixed duration of price into one OHLC bar; on an N-minute chart every candle spans N minutes before closing. Unambiguous."
+  confidence: high
+  requires_confirmation: false
+
+- name: Open and Close (body endpoints)
+  teacher_definition: "Price opened where the body of the candle starts and closed at the five minute mark. On a bullish/green candle the open is the bottom of the body and the close is the top. On a bearish candle the open is higher (top of body) and the close is lower (bottom of body)."
+  source_timestamp: "04:49"
+  codex_interpretation: "Body top/bottom = open or close depending on direction. Bullish: open=body-bottom, close=body-top (close>open). Bearish: open=body-top, close=body-bottom (close<open). Textbook OHLC."
+  confidence: high
+  requires_confirmation: false
+
+- name: Bullish (green) vs Bearish (red) candle
+  teacher_definition: "Green means price went up (bullish); red means price went down (bearish). A green candle goes up and ends up here; a red candle closes lower with the open higher."
+  source_timestamp: "04:32"
+  codex_interpretation: "Direction/color convention: close>open = bullish (green), close<open = bearish (red). Standard default colouring."
+  confidence: high
+  requires_confirmation: false
+
+- name: Wick (snail trail — where price went but did not close)
+  teacher_definition: "The little wicks left behind show where price went during that duration of time but it never ended up closing there — it just shows where price went, a little snail trail. If there's a wick up here, within that candle price moved up to that point but didn't close there."
+  source_timestamp: "05:29"
+  codex_interpretation: "A wick marks a price excursion that was not sustained to the close. Upper wick = rejected upside probe; lower wick = rejected downside probe."
+  confidence: high
+  requires_confirmation: false
+
+- name: High and Low (wick extremes)
+  teacher_definition: "Up here is the highest price point that price went to within these minutes, and down here is the lowest point it went to. Same on a bearish candle — top of wick is highest, bottom is lowest."
+  source_timestamp: "06:25"
+  codex_interpretation: "Top of upper wick = period high; bottom of lower wick = period low. Completes OHLC."
+  confidence: high
+  requires_confirmation: false
+
+- name: Single-candlestick patterns only (reject multi-candle patterns)
+  teacher_definition: "I hate candlestick patterns based on mountain tops, W's, Head & Shoulders — that's BS. I hate every candlestick pattern that contains more than two candles. The only ones I like, because they show price action and dictate where price is going, are single candlestick patterns: doji's, long-legged doji's (same thing), cross doji's, inverse cross doji's, dragonfly doji's, and hammers."
+  source_timestamp: "07:42"
+  codex_interpretation: "Tradeable candle vocabulary restricted to single-candle forms (doji family + hammer). Multi-candle chart patterns (H&S, double top/W) excluded. Long-legged doji treated as identical to doji here."
+  confidence: high
+  requires_confirmation: true
+
+- name: Doji = indecision (one confluence, not a standalone trade)
+  teacher_definition: "Doji's are just small bodies of candles — small body, long wicks, or just a small body in general. They show indecision in the market, indecision with a bias in one direction. We are obviously not taking a trade off of this, but we need to be able to read the candlesticks. This is only one confluence."
+  source_timestamp: "11:05"
+  codex_interpretation: "Doji = small-body candle signalling indecision. It is one confluence only; never a standalone entry. Combine with liquidity sweep + break of structure (later lessons). No numeric body-size threshold given."
+  confidence: high
+  requires_confirmation: true
+
+- name: Rejection candle / long wick = failure to close + likely liquidity grab
+  teacher_definition: "A candle that opens, pushes all the way up but closes back down leaving a fat wick up here means strong bulls but not strong enough to close; it left a wick meaning it was not strong enough to close above whatever resided above, and more than likely it was taking that liquidity."
+  source_timestamp: "09:50"
+  codex_interpretation: "A long wick against the close direction = attempted-then-rejected level; TJR attributes it to liquidity being taken. Descriptive here; links to the liquidity thread (lesson 08). Not a formalized rule in this lesson."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Strong close vs weak close
+  teacher_definition: "A strong close is what a regular full candlestick looks like — full body, not a high wick against the close, small opposing wick relative to the body, able to close and continue. Weak = a wick to the downside then moving back up (or failing to close in the intended direction)."
+  source_timestamp: "15:14"
+  codex_interpretation: "Strong close = large body with small opposing wick, momentum continues. Weak close = large opposing wick / reversal after the wick. Purely qualitative; no wick:body ratio specified (see ambiguities)."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Only formed (closed) candles count
+  teacher_definition: "People get caught up in the candle that's forming and not the candle that has formed. We can only make bias and decision on candles that have formed, not candles that are forming — that's why we always wait for a close, for a break of structure. It's not an actual candle until price action is done within the timeframe."
+  source_timestamp: "16:58"
+  codex_interpretation: "Hard gating rule: analyze and act only on CLOSED candles; ignore the live forming candle. Directly testable (wait-for-close)."
+  confidence: high
+  requires_confirmation: false
+
+- name: Confirmation candle (sweep then strong opposite close)
+  teacher_definition: "A candle with a long lower wick that sweeps liquidity and then closes strongly bullish acts almost like a confirmation candle — a massive wick to the downside, tiny wick to the upside, closing almost as bullish as it could, telling you exactly where price wants to go."
+  source_timestamp: "16:10"
+  codex_interpretation: "A single closed candle that sweeps a level and closes strongly in the opposite direction is treated as confirmation of intended direction. Illustrative; thresholds (wick length, sweep depth) undefined."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Candlesticks tell the whole story (Wicks don't lie)
+  teacher_definition: "Wicks don't lie. Wicks and candlesticks tell the whole story of price action. If you cannot understand candlesticks you won't be able to understand the market, because we have to read these things."
+  source_timestamp: "20:44"
+  codex_interpretation: "Philosophical framing that candle reading is foundational to the whole method. Context, not a machine rule."
+  confidence: medium
+  requires_confirmation: false

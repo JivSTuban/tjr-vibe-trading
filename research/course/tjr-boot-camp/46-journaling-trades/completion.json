@@ -1,0 +1,12 @@
+{
+  "lesson_number": 46,
+  "video_id": "CZRs2NuLQIw",
+  "slug": "journaling-trades",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 64548,
+  "concepts_count": 7,
+  "rules_count": 4,
+  "examples_count": 0,
+  "notes": "Journal schema + concrete risk (1-3%, default 1%) and session filter (NY/London, not Asian). Live S&P trade mentioned only as an aside without full setup detail -> not logged in examples.yaml (noted in ambiguities.md). verification-questions.md skipped."
+}

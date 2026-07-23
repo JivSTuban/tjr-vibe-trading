@@ -1,0 +1,91 @@
+- name: No-trade is a valid and correct outcome
+  teacher_definition: >-
+    "No trades taken for me today. Didn't really like anything I saw. Honestly
+    completely okay with that. Stuck to my trading plan, stuck to all my rules.
+    Better than taking a trade and losing when you don't stick to your rules."
+  source_timestamp: "15:57"
+  codex_interpretation: >-
+    Absence of a qualifying setup must yield a no-signal state, never a forced
+    entry. This lesson is a labeled skip example: each pair failed a specific gate.
+  confidence: high
+  requires_confirmation: false
+
+- name: Require a marked HTF building-block tap before entry
+  teacher_definition: >-
+    On SPX (everything bullish) he still won't buy: "I would like a high-timeframe
+    building block to get put into and then take a trade off that." He won't take
+    a small FVG play; price hasn't drawn into his marked order block for days.
+  source_timestamp: "03:47"
+  codex_interpretation: >-
+    Precondition: even with full timeframe alignment, require price to tap a
+    pre-marked HTF building block (order block) before signalling; reject
+    LTF-only FVG entries. Consistent with lesson 50's HTF-vs-LTF critique.
+  confidence: high
+  requires_confirmation: true
+
+- name: Require 1H confirmation for a conflicted pair
+  teacher_definition: >-
+    GU: weekly+daily bullish but 4H bearish -> "I wouldn't necessarily want to be
+    looking for a trade until we get at least 1-hour bullish confirmation." Plus
+    it has CPI news -> completely avoid.
+  source_timestamp: "07:29"
+  codex_interpretation: >-
+    When 4H conflicts with daily/weekly, require a 1H BOS/confirmation in the
+    HTF-bias direction before enabling signals; combine with news-currency
+    avoidance.
+  confidence: high
+  requires_confirmation: true
+
+- name: News correlation direction (X/USD opposite, GBP/Y correlated)
+  teacher_definition: >-
+    Anything against the dollar - GBP/USD, gold vs USD, SPX vs USD - reacts
+    OPPOSITE to a USD release; a GBP pair against something else (GBP/JPY) is
+    CORRELATED to GBP. Bearish CPI for GBP means bearish for GBP/USD and GBP/JPY;
+    bullish news for gold, GU and SPX came out an hour before open.
+  source_timestamp: "01:44"
+  codex_interpretation: >-
+    Directional impact of a release depends on the quote structure: pairs quoted
+    vs the release currency at the denominator move opposite; pairs with the
+    release currency at the numerator move with it. Codeable given the release's
+    currency and each symbol's base/quote.
+  confidence: high
+  requires_confirmation: true
+
+- name: 30-minute-high sweep is a required component of the 4X strat
+  teacher_definition: >-
+    The only GJ trade he wanted never triggered: "this right here was the order
+    block, never got taken out; never came up into that 30-minute high like our
+    Forex strategy says." He got a 5m BOS down but stuck to the plan and skipped.
+  source_timestamp: "14:39"
+  codex_interpretation: >-
+    Adds a concrete precondition to the 4X strat: price must sweep a 30-minute
+    high (buy-side) / low before the short/long entry is valid. Absent this, no
+    trade - even with a 5m BOS.
+  confidence: high
+  requires_confirmation: true
+
+- name: Don't trade off hourly price action alone
+  teacher_definition: >-
+    Nearly shorted a gold break of structure but caught it: "that would be
+    breaking our trading plan... no reason to take a trade purely based off our
+    hourly price action when we can wait for something better." He was bullish
+    daily+4H, bearish only on the hourly.
+  source_timestamp: "11:49"
+  codex_interpretation: >-
+    Reject entries justified only by lower-timeframe (hourly) structure that
+    contradicts the daily/4H bias. Wait for HTF-aligned confirmation.
+  confidence: high
+  requires_confirmation: false
+
+- name: Session-timing cutoff for new entries
+  teacher_definition: >-
+    Declined a solid-looking SPX long because "it's super late into New York
+    session." Recommended the Discord wait for an Asian session trade instead of
+    forcing a New York trade after CPI made the pound pairs low-volume in NY.
+  source_timestamp: "11:39"
+  codex_interpretation: >-
+    Enforce a session-end cutoff after which no new entries are opened; prefer the
+    next session when the current one is exhausted/low-volume. No numeric cutoff
+    time stated.
+  confidence: medium
+  requires_confirmation: true

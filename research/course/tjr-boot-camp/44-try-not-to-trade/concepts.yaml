@@ -1,0 +1,48 @@
+- name: Setup-must-align-with-daily-bias
+  teacher_definition: "The first step is making sure that the trade setup is in line with your daily bias. If your daily bias says bullish but a bearish setup shows up, are you going to take it? Most beginners take those trades and those are the losing trades that stack up."
+  source_timestamp: "02:31"
+  codex_interpretation: "Hard gate: reject any setup whose direction contradicts the established daily bias. First filter in the suppression stack."
+  confidence: high
+  requires_confirmation: false
+
+- name: Good-trade confluence stack
+  teacher_definition: "Bullish on the daily, bullish on the four hour because we broke structure to the upside, taking out an hourly building block, then showing confirmation on the five minute — that's a trade I would want to take."
+  source_timestamp: "02:58"
+  codex_interpretation: "Ideal long: daily bias up AND 4H BOS up AND price interacting with an hourly building block AND 5m BOS confirmation. All layers agree."
+  confidence: high
+  requires_confirmation: false
+
+- name: No-trade in directionless / choppy markets
+  teacher_definition: "When there's no sense of direction in the market — that's garbage, a whole bunch of nothing. This is a sign in itself to say don't trade that, because the highest probability markets are trending markets."
+  source_timestamp: "04:56"
+  codex_interpretation: "Chop filter: if price is ranging with repeated failed BOS / liquidity sweeps and no clean trend, suppress trading. Needs a quantitative chop definition."
+  confidence: medium
+  requires_confirmation: true
+
+- name: HTF-dominance (don't flip on a lower-TF move)
+  teacher_definition: "If a smaller time frame move changes that decision in your head you're messed up, because the higher time frames hold higher power. A five minute break of structure could very well just be a 15 minute retrace; a 15 minute break of structure could be an hourly retrace."
+  source_timestamp: "12:14"
+  codex_interpretation: "Never override an HTF-derived decision with an opposite LTF structure event; treat the LTF break as a retrace of the higher TF."
+  confidence: high
+  requires_confirmation: false
+
+- name: Trade fewer days (best traders take most days off)
+  teacher_definition: "The best traders take the most days off in the market. The more days that you are in this market the higher probability it is that you will lose, statistically speaking. Why take a trade in low probability conditions in an already low probability market?"
+  source_timestamp: "09:59"
+  codex_interpretation: "Behavioral guardrail: default to not trading; treat market exposure as a cost. Prefer no-trade over a marginal setup."
+  confidence: high
+  requires_confirmation: false
+
+- name: Don't force a trade / cycle or skip
+  teacher_definition: "Stop trying to force a trade on a pair when you can cycle over to another one, and if you're only trading one pair, don't trade that day. Go into the market not wanting to trade, and make it so the market gives you no other option but to take a trade."
+  source_timestamp: "09:48"
+  codex_interpretation: "If the primary instrument fails filters, evaluate others; if none qualify, no-trade for the day. Entry threshold should be conviction-high ('no other option')."
+  confidence: high
+  requires_confirmation: false
+
+- name: Review losses on the chart (game film)
+  teacher_definition: "The history is right there; it tells you exactly why you lost, exactly where price wanted to go. Go back and look at what price actually did and get it in your head that that trade was the one you were supposed to take. That's the backtesting you need — live demo trading, then journaling / trade reviews."
+  source_timestamp: "24:41"
+  codex_interpretation: "Post-loss review loop: replay chart, identify the correct trade vs. the taken trade, log it. Supports a self-improving journal (ties to lessons 46, 41)."
+  confidence: high
+  requires_confirmation: false

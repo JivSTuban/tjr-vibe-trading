@@ -1,0 +1,12 @@
+{
+  "lesson_number": 50,
+  "video_id": "__fKQR5RR08",
+  "slug": "daily-bias-backtesting-9k-loss-spx",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 126054,
+  "concepts_count": 9,
+  "rules_count": 6,
+  "examples_count": 2,
+  "notes": "Worked example: live multi-pair daily bias + a $9.5k SPX LOSS recap where the bias was correct but execution failed (used LTF liquidity sweep instead of the marked HTF building blocks). Key transferable lessons: lose to HTF reversal not execution error; daily+4H confluence gate; nested BOS (1H precedes 4H); HTF vs LTF liquidity sweep distinction; trade extensions not retracements; no revenge trade. Gold long (weekly-bearish/daily-bullish, London-low sweep, 5m-BOS trigger) captured as the better waiting setup. All rules status: proposed. All 8 spec files written."
+}

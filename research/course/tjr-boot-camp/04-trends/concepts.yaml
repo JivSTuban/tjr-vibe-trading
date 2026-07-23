@@ -1,0 +1,62 @@
+- name: Trend (definition & purpose)
+  teacher_definition: "Why do we even care about the trend — because it dictates where the market is going. Markets move off of momentum; once a market starts trending, odds are it's going to continue in that direction. Like a basketball pushed on a flat surface, it keeps rolling because of momentum. The market gets a little push / a market structure shift and starts trending."
+  source_timestamp: "01:09"
+  codex_interpretation: "A trend is a directional, momentum-driven state of the market that is expected to persist until broken. It is the top-level directional context ('umbrella') under which all entries are taken."
+  confidence: high
+  requires_confirmation: false
+
+- name: Uptrend (higher highs & higher lows)
+  teacher_definition: "When market is trending higher it moves in higher highs and higher lows. When it pushes past a high it makes a new high that's higher than the previous one, and it makes a new low that's higher than the previous one — and it continues all the way until it breaks its trend."
+  source_timestamp: "02:20"
+  codex_interpretation: "Uptrend := a sequence of higher highs (HH) AND higher lows (HL). In an uptrend the lows do not go lower than the previous lows. Defined purely by swing-point structure."
+  confidence: high
+  requires_confirmation: false
+
+- name: Downtrend (lower highs & lower lows)
+  teacher_definition: "Same thing but the exact opposite: for downtrends it is lower highs and lower lows. Each low is lower than the previous, each high is lower than the previous, and it continues. In a downtrend the highs are not going higher than the previous highs."
+  source_timestamp: "03:14"
+  codex_interpretation: "Downtrend := a sequence of lower highs (LH) AND lower lows (LL). Mirror of the uptrend definition. This is the swing-point vocabulary that Lesson 06 (Break of Structure) is built on."
+  confidence: high
+  requires_confirmation: false
+
+- name: Consolidation / ranging (third market state)
+  teacher_definition: "There's three different ways that market moves — either through trends or just consolidation. A higher high and higher low that stayed static, stagnant, didn't make a move is NOT a trend; it's consolidation, until it breaks the floor/low and changes market structure into a (down)trend."
+  source_timestamp: "12:20"
+  codex_interpretation: "Consolidation/ranging is the negation of a trend: swing points that do NOT progressively extend, bounded by a floor and ceiling. Market has 3 states — uptrend, downtrend, consolidation. A break of a range boundary starts/resumes a trend."
+  confidence: high
+  requires_confirmation: false
+
+- name: Break of structure / trend flip (preview)
+  teacher_definition: "Higher high, higher low… then a higher high and now a lower low because we just surpassed this — it broke structure, it's probably going to flip its direction. Once we broke structure and changed direction of the trend we continued that for a while. The next trading video will jump into break of structure — I might even do two trading videos on that."
+  source_timestamp: "04:41"
+  codex_interpretation: "BOS = the point where a trend's defining swing sequence is violated (e.g. an uptrend's higher-low is broken), signaling a probable flip in direction. Only previewed here; the mechanics/threshold are explicitly deferred to Lesson 06. This lesson supplies the swing-point definitions BOS depends on."
+  confidence: high
+  requires_confirmation: true
+
+- name: Trade with the trend (directional filter)
+  teacher_definition: "Going against the trend is never smart. The trend is your friend. If you want to get to the end of a road you take the car going downhill — the momentum takes you there — not uphill. There's no reason to catch a retracement; you don't know how deep it is, but the extension always goes past the high. Move with the momentum."
+  source_timestamp: "05:07"
+  codex_interpretation: "A hard directional gate: only take trades in the direction of the prevailing trend; never counter-trend, never fade a retracement mid-trend. Bias toward catching the next with-trend impulse ('leg')."
+  confidence: high
+  requires_confirmation: false
+
+- name: Higher timeframes hold higher power (HTF authority)
+  teacher_definition: "People get so caught up in different time frames — a hundred, probably a couple thousand trend switches on the 15-minute inside one weekly uptrend. But higher time frames hold higher power. If the 4-hour is bearish, why do we care what the 15-minute is saying? Use the 15-minute in confluence with the higher trend."
+  source_timestamp: "07:41"
+  codex_interpretation: "HTF (4H/daily/weekly) sets the permitted trade direction; LTF trend switches are subordinate and only valid when in confluence with HTF bias. Directional conflict resolves in favor of the higher timeframe."
+  confidence: high
+  requires_confirmation: false
+
+- name: HTF bias + LTF optimized entry (multi-timeframe workflow)
+  teacher_definition: "Let the 4-hour / daily / weekly tell us direction, then scale down to lower time frames and be able to catch the large high-time-frame trend moves but with an optimized entry. Example: liquidity sweep on the 30-minute, then a break of structure to the downside on the 5-minute, while the 4-hour and daily are bear bear bear — that means we just caught the top of the next leg down."
+  source_timestamp: "08:40"
+  codex_interpretation: "Two-stage process: (1) HTF defines direction/bias; (2) LTF (30m sweep + 5m BOS) times a precise entry in that direction. Confluence of HTF trend + LTF liquidity sweep + LTF BOS = reversal-at-extreme entry (matches Lesson 08 liquidity model). Optimized entry => tighter stop => higher RR."
+  confidence: high
+  requires_confirmation: true
+
+- name: Line-chart simplification (trend-reading aid)
+  teacher_definition: "Simplify the f*** out of it — take out the color of the candlesticks, use a line chart, and just read high-low-high-low, higher-high-higher-low. Zoom out on a high time frame and literally just look where is price going."
+  source_timestamp: "18:00"
+  codex_interpretation: "Pedagogical/analytical aid: reduce price to a line to read swing structure without candle noise. Not a rule; a technique for identifying trend direction."
+  confidence: medium
+  requires_confirmation: false

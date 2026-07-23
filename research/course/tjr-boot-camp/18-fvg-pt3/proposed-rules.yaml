@@ -1,0 +1,97 @@
+rules:
+  - id: tjr-fvg-pt3-r01
+    teacher_statement: >
+      "Liquidity sweep, break of structure, imbalance fill, break of structure" — the
+      full building-block sequence for a trade, taken in line with HTF bias.
+    source_timestamp: "07:49"
+    proposed_machine_rule: >
+      ENTER only when ALL hold in order and in the HTF-bias direction:
+      (1) HTF/daily bias direction established via HTF BOS;
+      (2) a liquidity sweep aligned with that bias occurs;
+      (3) a mid-TF (15m/5m) BOS in the bias direction leaves an unfilled FVG;
+      (4) price retraces and fills that FVG;
+      (5) a lower-TF (5m/1m) BOS in the bias direction prints -> entry at that BOS
+      candle close. If any step is absent, no trade.
+    status: proposed
+    ambiguity: >
+      Exact timeframe pairing per instrument is not fixed (15m/5m/1m, 4h/15m, 1h/15m
+      all shown). "Fill" depth of the FVG before the BOS is undefined.
+    counterexamples: []
+
+  - id: tjr-fvg-pt3-r02
+    teacher_statement: >
+      "I use it as more of a confirmation rather than an entry." Do not enter when the
+      FVG is merely hit; entering on the raw tap "would have got stopped out."
+    source_timestamp: "15:56"
+    proposed_machine_rule: >
+      NEVER trigger entry solely on price tapping/filling an FVG. Treat FVG fill as a
+      necessary precondition only; require a subsequent LTF BOS (or order block /
+      sweep-then-BOS) inside/after the FVG as the actual entry trigger.
+    status: proposed
+    ambiguity: >
+      "Other reasoning" (order block, sweep-then-BOS) listed as alternative confirmations
+      but their precedence / minimum count is not specified.
+    counterexamples: []
+
+  - id: tjr-fvg-pt3-r03
+    teacher_statement: >
+      Short entered off a 5m break of structure after sweeping highs — "stop above
+      these highs."
+    source_timestamp: "07:14"
+    proposed_machine_rule: >
+      SET stop loss just beyond the swept extreme that preceded entry: above the swept
+      high for shorts, below the swept low for longs (add instrument-specific buffer TBD).
+    status: proposed
+    ambiguity: "Buffer size beyond the wick not quantified."
+    counterexamples: []
+
+  - id: tjr-fvg-pt3-r04
+    teacher_statement: >
+      "Target previous areas of liquidity... this accumulation... the start of the
+      imbalance, the 50 of the imbalance, the end of the imbalance." TPs scaled out.
+    source_timestamp: "07:18"
+    proposed_machine_rule: >
+      SET take profit(s) at the nearest opposing liquidity pool(s) in trade direction
+      (previous highs/lows, accumulation zones, or an opposing FVG at edge/50%/full).
+      Scale out across levels; move remainder to break-even after first TP.
+    status: proposed
+    ambiguity: >
+      Which liquidity pool is primary vs which is a scale-out, and R:R minimum, are
+      not stated numerically.
+    counterexamples: []
+
+  - id: tjr-fvg-pt3-r05
+    teacher_statement: >
+      "We're bullish because we got that daily break of structure to the upside." LTF
+      BOS against HTF is read as a retrace, not a reversal.
+    source_timestamp: "11:28"
+    proposed_machine_rule: >
+      Derive bias from HTF/daily BOS. Only take setups whose sweep + BOS align with
+      that bias. A counter-bias LTF BOS => flag as retracement/continuation setup, not
+      a reversal entry.
+    status: proposed
+    ambiguity: "Which HTF defines bias (daily vs 4h vs 1h) is context-dependent, not fixed."
+    counterexamples: []
+
+  - id: tjr-fvg-pt3-r06
+    teacher_statement: >
+      "The second we push past this, no longer considering it." A wick that fills an
+      FVG means "this isn't even an imbalance we're waiting for."
+    source_timestamp: "09:45"
+    proposed_machine_rule: >
+      Deactivate an FVG once price fully trades/wicks through it. Only unfilled FVGs
+      remain valid retracement targets or confirmation zones.
+    status: proposed
+    ambiguity: "Partial fill (e.g. 50%) handling not addressed here (see FVG pt2, lesson 16)."
+    counterexamples: []
+
+  - id: tjr-fvg-pt3-r07
+    teacher_statement: >
+      "We're not going to take any trades that aren't off of market open... or aren't
+      after market open."
+    source_timestamp: "03:15"
+    proposed_machine_rule: >
+      Restrict entries to at/after the market (RTH) open; exclude pre-market setups.
+    status: proposed
+    ambiguity: "Exact open time, session, and timezone not specified in this lesson."
+    counterexamples: []

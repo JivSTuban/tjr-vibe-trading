@@ -1,0 +1,12 @@
+{
+  "lesson_number": 7,
+  "video_id": "_6voYEdi5j4",
+  "slug": "individuality",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 92651,
+  "concepts_count": 11,
+  "rules_count": 5,
+  "examples_count": 0,
+  "notes": "Psychology lesson on individuality: build your own strategy, don't blindly copy a mentor, drop components that don't click, mix pieces into your own, don't compare to peers. Rules captured as behavioral guardrails (all status: proposed). examples.yaml SKIPPED (no chart/trade walk-through). Key threads: strategy is modular (concepts + execution order); valid subsets like {liquidity,BOS} and {order block,BOS,SMT}; TJR does NOT trade SMT divergence; origin edge = GBPJPY (GJ) 'London session fake-out' = his intro to liquidity sweeps (mechanics deferred to liquidity lessons 08/10/12). No numeric trading params (lot/RR/SL/TP/session times) stated anywhere. transcript_chars = raw SRT byte size."
+}

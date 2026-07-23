@@ -1,0 +1,39 @@
+- id: tjr-live-daily-bias-ppi-pt2-r01
+  teacher_statement: "Gold is bearish weekly but bullish daily — we use the daily bias because we're predicting daily moves, not weekly. We're doing intraday, not swing."
+  source_timestamp: "09:56"
+  proposed_machine_rule: "For intraday entries, treat the daily bias as authoritative; when weekly and daily conflict, follow the daily and use the weekly only to mark retrace/target zones."
+  status: proposed
+  ambiguity: "Applies to intraday timeframe only; swing/positional logic would differ (not covered here)."
+  counterexamples: []
+
+- id: tjr-live-daily-bias-ppi-pt2-r02
+  teacher_statement: "We never want to trade retraces unless it's on the weekly time frame. Ideally most trades are in line with the daily trend."
+  source_timestamp: "10:03"
+  proposed_machine_rule: "Only permit entries in the daily-trend direction; reject counter-daily entries that would be trading a 4H/1H retrace. Weekly-timeframe retraces are the sole sanctioned counter-trend context."
+  status: proposed
+  ambiguity: "Boundary of 'in line with the daily trend' (post-BOS vs. current swing direction) needs a precise structure definition."
+  counterexamples: []
+
+- id: tjr-live-daily-bias-ppi-pt2-r03
+  teacher_statement: "At bare equilibrium, one bullish candle that doesn't close back above the equilibrium line is not enough; wait for the equilibrium point to get closed above again along with a break of structure over the prior high. At an order block or fair value gap, a single reaction candle is enough."
+  source_timestamp: "04:32"
+  proposed_machine_rule: "Confirmation gate is building-block-type dependent: OB/FVG -> single reaction candle suffices; bare equilibrium -> require a candle closing back above EQ AND a BOS over the prior high before entry."
+  status: proposed
+  ambiguity: "'Reaction candle' at OB/FVG not fully defined (engulfing? close direction? wick rejection?)."
+  counterexamples: []
+
+- id: tjr-live-daily-bias-ppi-pt2-r04
+  teacher_statement: "Even though everything was in alignment, we wouldn't have taken a trade because our building blocks didn't get hit and we couldn't find execution points."
+  source_timestamp: "13:24"
+  proposed_machine_rule: "Require BOTH full timeframe alignment AND price reaching a pre-marked building block with a reaction; if no building block is hit, produce no entry even when fully aligned."
+  status: proposed
+  ambiguity: "'Hit' tolerance (touch vs. within-zone) and how long a pre-marked building block stays valid are unspecified."
+  counterexamples: []
+
+- id: tjr-live-daily-bias-ppi-pt2-r05
+  teacher_statement: "I want to wait for a liquidity sweep, a break of structure, then a retest into an order block, equilibrium, or fair value gap, and a reaction off that. Stop underneath the liquidity sweep."
+  source_timestamp: "03:56"
+  proposed_machine_rule: "Aligned-bias long template: liquidity sweep -> BOS up -> retest into OB/EQ/FVG -> reaction confirmation -> enter; place stop below the liquidity-sweep low; set targets at nearest left-side 4H structure (candle bodies/highs)."
+  status: proposed
+  ambiguity: "Target selection ('4H candle bodies and highs') is discretionary/loose per TJR ('not too specific with TPs on mocks'); RR sizing rule not fixed."
+  counterexamples: []

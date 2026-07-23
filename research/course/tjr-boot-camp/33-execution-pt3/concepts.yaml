@@ -1,0 +1,136 @@
+lesson: 33
+slug: execution-pt3
+concepts:
+  - id: core-entry-model
+    name: "Core entry model (LiqSweep -> BOS -> FVG/OB entry)"
+    definition: >
+      The repeating execution template: a liquidity sweep, then a break of structure in
+      the intended direction, then an entry off the resulting fair value gap (imbalance)
+      OR order block, with the target set at previous draws on liquidity.
+    first_timestamp: "01:49"
+    also_at: ["02:02", "06:31", "07:04", "11:01"]
+    canonical_jargon: [liquidity, sweep, BOS, FVG, order block]
+
+  - id: liquidity-sweep
+    name: "Liquidity sweep"
+    definition: >
+      Price takes out a prior low or high (a pool of liquidity) before reversing; the
+      first component of the model. TJR also labels a prior down-move itself as a
+      liquidity sweep [11:53].
+    first_timestamp: "01:51"
+    also_at: ["06:55", "08:09", "11:44", "11:53"]
+    canonical_jargon: [liquidity, sweep, BSL, SSL]
+
+  - id: break-of-structure
+    name: "Break of structure (BOS)"
+    definition: >
+      Price breaks the prior structural high/low in the intended direction, confirming the
+      move. Occurs both on the higher timeframe (setup) and again on a lower timeframe as
+      the entry confirmation/trigger.
+    first_timestamp: "01:55"
+    also_at: ["06:55", "09:52", "10:02", "12:12"]
+    canonical_jargon: [BOS]
+
+  - id: fair-value-gap
+    name: "Fair value gap / imbalance (entry)"
+    definition: >
+      The imbalance left after the break of structure; price returns to fill it and that
+      fill is the entry (FVG-entry variant of the model). TJR uses "fair value gap" and
+      "imbalance" interchangeably.
+    first_timestamp: "01:58"
+    also_at: ["07:04", "07:14", "08:18", "11:35", "20:13"]
+    canonical_jargon: [FVG, imbalance]
+
+  - id: order-block-entry
+    name: "Order block entry (variant)"
+    definition: >
+      Alternate entry: instead of an FVG, price returns into an order block and pushes
+      higher, often followed by another BOS and a fresh imbalance. Same model, different
+      entry object.
+    first_timestamp: "02:16"
+    also_at: ["07:14", "12:03", "12:12", "21:08", "22:25"]
+    canonical_jargon: [order block, OB]
+
+  - id: draws-on-liquidity-target
+    name: "Target = previous draws on liquidity"
+    definition: >
+      Take-profit objective is prior areas/pools of liquidity (previous highs/lows) that
+      price is drawn toward after the entry.
+    first_timestamp: "08:28"
+    also_at: ["10:02", "10:53"]
+    canonical_jargon: [liquidity, draw on liquidity]
+
+  - id: lower-tf-confirmation
+    name: "Lower-timeframe confirmation"
+    definition: >
+      Scale down to a lower timeframe to find confirmation for the entry; confirmation is
+      typically a break of structure on that lower timeframe (e.g. 15-minute), acted on at
+      the close ("close above / execute").
+    first_timestamp: "07:26"
+    also_at: ["09:44", "09:52", "10:02", "21:56"]
+    canonical_jargon: [HTF, BOS, kill zone]
+
+  - id: equilibrium-layer
+    name: "Equilibrium (50%) confluence"
+    definition: >
+      The 50% level of the measured leg, drawn on top of the base model as an added
+      confluence. Drawn when a retracement/down candle appears; a high-confluence signal
+      is when equilibrium matches the fair value gap.
+    first_timestamp: "13:53"
+    also_at: ["14:52", "15:00", "16:27", "17:01", "22:25"]
+    canonical_jargon: [equilibrium, 50%, premium, discount]
+
+  - id: equilibrium-measurement
+    name: "Equilibrium / FVG measurement"
+    definition: >
+      Measure the leg from swing low to swing high (TJR self-corrects to swing high to
+      swing low) to place equilibrium and the fair value gap. Example measured "from the
+      low up until here" on the daily.
+    first_timestamp: "16:27"
+    also_at: ["19:54", "20:13"]
+    canonical_jargon: [equilibrium, FVG]
+
+  - id: last-chance-entries
+    name: "Equilibrium & FVGs as last-chance entries"
+    definition: >
+      TJR frames equilibrium and fair value gaps as "our last chance entries" — the final
+      retracement zones to enter before price continues.
+    first_timestamp: "19:14"
+    canonical_jargon: [equilibrium, FVG]
+
+  - id: confluence-stacking
+    name: "Confluence stacking"
+    definition: >
+      Overlapping signals raise trade confidence: equilibrium + lower-TF order block +
+      lower-TF FVG + BOS, etc. TJR counts "seven confluences" on one example as an
+      illustration of a high-confidence setup.
+    first_timestamp: "22:25"
+    also_at: ["15:09", "22:56"]
+    canonical_jargon: [equilibrium, order block, FVG, BOS]
+
+  - id: daily-bias-alignment
+    name: "Daily-bias alignment (caveat)"
+    definition: >
+      Setups must align with daily bias / expected long-term direction; counter-bias
+      setups tend to be short-lived and may not reach the first take-profit. Daily bias
+      is the next lesson.
+    first_timestamp: "23:28"
+    also_at: ["23:36", "23:44"]
+    canonical_jargon: [daily bias, HTF, TP]
+
+  - id: repetition-confidence
+    name: "Repetition -> execution confidence (Aimbot eyes)"
+    definition: >
+      Charting many examples builds pattern-recognition speed ("Aimbot eyes") and the
+      confidence to execute without hesitation.
+    first_timestamp: "13:25"
+    also_at: ["21:30", "23:05"]
+    canonical_jargon: []
+
+  - id: news-avoidance
+    name: "Avoid trading around major news (Powell/FOMC)"
+    definition: >
+      TJR did not trade on recording day because Powell (Fed) was speaking, implying news
+      events are avoided.
+    first_timestamp: "06:48"
+    canonical_jargon: [CPI, PPI, NFP]

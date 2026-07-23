@@ -1,0 +1,16 @@
+# NOTE: This is a Day-1 concept lesson. TJR walks through NO order-block trade.
+# The only concrete chart shown is a news-illustration (why NOT to trade), not a
+# tradeable OB setup. Recorded here for completeness; not suitable for dataset.
+
+- timestamp: "11:58"
+  instrument: GBPJPY
+  timeframe: 15m
+  direction: none (illustration only — no trade taken)
+  setup_components:
+    - PPI news in play
+    - FOMC ~2 hours out
+    - price moved only 34 pips since U.S. market open on an "extremely volatile" pair
+  stated_outcome: >
+    Used as evidence NOT to trade on high-impact news days — compressed 34-pip
+    range demonstrates unreliable conditions. No entry, no OB drawn, no outcome.
+  suitable_for_dataset: false

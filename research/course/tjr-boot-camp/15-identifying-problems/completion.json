@@ -1,0 +1,12 @@
+{
+  "lesson_number": 15,
+  "video_id": "T4xVS7iV5d8",
+  "slug": "identifying-problems",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 86568,
+  "concepts_count": 8,
+  "rules_count": 6,
+  "examples_count": 0,
+  "notes": "Pure psychology/discipline lesson (self-diagnosis via 'pyramid' root-cause method); NO strategy content and NO chart/trade walk-through, so examples.yaml was intentionally SKIPPED. Wrote metadata.yaml, lesson-summary.md, concepts.yaml, proposed-rules.yaml, ambiguities.md, verification-questions.md, completion.json. All 6 rules are behavioral guardrails at status: proposed. Key thresholds (max trades/day, post-loss stop/cooldown, de-risk trigger, risk %) are stated only illustratively by TJR and left to Jiv in ambiguities.md / verification-questions.md. transcript_chars counts the raw ASR SRT which triplicates every line; unique spoken content is ~1/3 of that. Risk %s (10% bad vs 1% good) appear only as examples here and should be confirmed from a risk-specific lesson. Next lesson referenced: 'fair value gaps part two'."
+}

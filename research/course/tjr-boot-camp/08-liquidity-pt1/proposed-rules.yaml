@@ -1,0 +1,15 @@
+- id: tjr-liquidity-pt1-r01
+  teacher_statement: "After liquidity is taken out we wait for a confirmation — a break of structure / market structure shift — before doing anything. If we don't see a shift in direction, hands off."
+  source_timestamp: "07:05"
+  proposed_machine_rule: "Do NOT enter on a liquidity-level touch. Require, in sequence: (1) price sweeps a marked liquidity level, then (2) a break of structure / MSS in the opposite direction. Only after MSS is a trade permitted. No MSS within the observation window => no trade."
+  status: proposed
+  ambiguity: "Timeframe of the MSS, how far price must exceed the level to count as a sweep, and which highs/lows qualify as liquidity are all unspecified in this lesson (deferred to Pt 2/3)."
+  counterexamples: []
+
+- id: tjr-liquidity-pt1-r02
+  teacher_statement: "We're not executing right when they execute — we got to wait a little bit — but we can still get an incredibly good entry, catching the tops and bottoms of moves."
+  source_timestamp: "10:03"
+  proposed_machine_rule: "Bias entries toward trend extremes (post-sweep reversal) rather than mid-trend continuation; accept a short delay after the sweep for confirmation to form."
+  status: proposed
+  ambiguity: "'A little bit' of delay is undefined; no concrete entry trigger or offset given here."
+  counterexamples: []

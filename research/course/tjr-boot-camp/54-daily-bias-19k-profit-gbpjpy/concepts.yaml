@@ -1,0 +1,101 @@
+- name: TJR 4X strat (Forex A+ template)
+  teacher_definition: >-
+    "This was literally copy and paste TJR 4X strat, pinpoint." Structure: daily
+    bearish bias with a daily break of structure and tap into a daily order block;
+    then take out London session highs, then Asian session highs; chop down to the
+    5-minute for a break of structure; enter in the bias direction.
+  source_timestamp: "08:12"
+  codex_interpretation: >-
+    Canonical Forex entry stack: HTF bias -> daily BOS + order-block mitigation ->
+    sweep of named session liquidity (London then Asian) -> LTF BOS in bias
+    direction -> entry. This is the high-score template for the scorer.
+  confidence: high
+  requires_confirmation: true
+
+- name: Trade with the daily, ignore conflicting weekly
+  teacher_definition: >-
+    "Remember we have to stay bullish when the daily is telling us Bulls... yes
+    the weekly is telling us bears, that don't matter because the daily is telling
+    us Bulls. We're going off what the daily's going to say until we break
+    structure to the downside on the daily and show continuation on the weekly."
+  source_timestamp: "04:33"
+  codex_interpretation: >-
+    When weekly and daily conflict, the daily governs direction until a daily BOS
+    plus weekly continuation flips it. Consistent across lessons 50/51/53/55.
+  confidence: high
+  requires_confirmation: false
+
+- name: Named session liquidity as the sweep target (London -> Asian -> NY)
+  teacher_definition: >-
+    The trade took out London session highs then Asian session highs before the
+    move; targets below were New York lows and prior London session lows. Also
+    referenced pre-market/New York highs as sweep candidates.
+  source_timestamp: "09:09"
+  codex_interpretation: >-
+    Reference liquidity = session highs/lows (London, New York, Asian, pre-market).
+    Entry sequence sweeps one or more of these in order before the reaction. Exact
+    session clock times not given in this lesson.
+  confidence: high
+  requires_confirmation: true
+
+- name: TP1 at the next opposing building block (order block)
+  teacher_definition: >-
+    "First take profit was based off this order block right here... we hit it."
+    Price then took out New York highs during Asian session with a quick move down.
+  source_timestamp: "08:50"
+  codex_interpretation: >-
+    Set TP1 at the nearest opposing building block (order block / liquidity) in
+    the trade direction; subsequent TPs at further liquidity pools.
+  confidence: high
+  requires_confirmation: false
+
+- name: Partial close 50% at TP1 + move stop to break-even
+  teacher_definition: >-
+    "After take profit one got hit I took off 50% of the position, my stop's at
+    break even all the way up here, and I made like 19 bands off the position that
+    I closed. Right now I'm floating at like 13k."
+  source_timestamp: "09:35"
+  codex_interpretation: >-
+    Management policy: close 50% at TP1, move SL on the runner to entry
+    (break-even), let the remainder target the next liquidity pool. Directly
+    codeable as a partial-TP + BE-stop rule.
+  confidence: high
+  requires_confirmation: false
+
+- name: Entry-timeframe refinement (5m plan, 1m entry)
+  teacher_definition: >-
+    The plan/strat called for a 5-minute break of structure, "but we actually
+    entered off the one minute because I loved the movement that we've seen from
+    it" - entered off the candle that gave the break.
+  source_timestamp: "08:33"
+  codex_interpretation: >-
+    Discretionary refinement from 5m to 1m for a tighter entry. A machine should
+    fix the entry timeframe (5m per the strat) and flag the 1m refinement as human
+    discretion, not an approved rule.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Bias-flip condition on SPX (15m high + close above)
+  teacher_definition: >-
+    On SPX (4H up, hourly down): "I would be willing to flip my bias if we get a
+    15-minute high formed and then a close above that - that's when I'd look for a
+    trade." If price just continues down, no trade.
+  source_timestamp: "00:27"
+  codex_interpretation: >-
+    A conflicted HTF (4H up / 1H down) requires a 15m higher-high FORMED plus a
+    CLOSE above it to confirm a long bias; otherwise no trade. Codeable given
+    swing-high detection.
+  confidence: high
+  requires_confirmation: true
+
+- name: Don't trade a setup that won't resolve in your screen time
+  teacher_definition: >-
+    Won't trade SPX partly because the 4H candle won't close for ~3.5 hours and
+    "we won't be on the charts that long to see whether it closes underneath."
+  source_timestamp: "00:58"
+  codex_interpretation: >-
+    Practical availability constraint for a human; for a machine this maps to
+    requiring confirmation on a timeframe whose close occurs within the trading
+    window. Minor / human-facing.
+  confidence: low
+  requires_confirmation: true

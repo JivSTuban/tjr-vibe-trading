@@ -1,0 +1,97 @@
+- name: Equilibrium (50% of a swing range)
+  teacher_definition: >
+    "Equilibrium is essentially a retracement tool to show you where big money is likely to
+    buy again." Mechanically: measure from a swing high to a swing low (or swing low to swing
+    high) and find the 50% mark -- "measuring literally the high from the low and finding the
+    50 mark." He also calls it the "break-even price" of the range.
+  source_timestamp: "05:38"
+  codex_interpretation: >
+    Equilibrium = 50% (fib 0.5) of the reference swing: eq = (swing_high + swing_low)/2.
+    Used as a bias/zone divider, not a standalone entry.
+  confidence: high
+  requires_confirmation: false
+
+- name: Discount (below 50% = buy zone)
+  teacher_definition: >
+    "Anything below that 50 mark from the swing low to the swing high is going to be a
+    discount for these big banks / market movers to place more orders." "It's a discount for
+    banks to find re-entry because it's on sale -- a good price to enter." Buyers want a
+    cheaper price.
+  source_timestamp: "08:13"
+  codex_interpretation: >
+    price < equilibrium => DISCOUNT => long/buy bias zone. Only look for longs in discount.
+  confidence: high
+  requires_confirmation: false
+
+- name: Premium (above 50% = sell zone)
+  teacher_definition: >
+    "They wouldn't want to enter within a premium... because it's expensive. No one wants to
+    buy a $10 bag of Doritos, they'd rather buy the $3 bag." Sellers/shorts want a higher
+    price. (NOTE: at [07:00] TJR misspeaks and calls above-50 'a discount to go short' --
+    canonical meaning is PREMIUM = above 50 = sell zone; see ambiguities.)
+  source_timestamp: "11:18"
+  codex_interpretation: >
+    price > equilibrium => PREMIUM => short/sell bias zone. Only look for shorts in premium.
+  confidence: high
+  requires_confirmation: false
+
+- name: Doritos analogy (buy on sale / discount, avoid the marked-up price / premium)
+  teacher_definition: >
+    A bag of Doritos normally ~$5 -- you'd rather pay the regular/sale price than an extra $5.
+    "Banks are thinking the same thing... if they're looking long they want a cheaper price;
+    if they're looking to short they want a higher price."
+  source_timestamp: "05:53"
+  codex_interpretation: >
+    Intuition for the premium/discount gate: enter longs cheap (discount), enter shorts
+    expensive (premium).
+  confidence: high
+  requires_confirmation: false
+
+- name: Equilibrium is a gauge/filter, not a standalone entry
+  teacher_definition: >
+    "I'm not the type of person to enter purely off equilibrium." It tells you the price
+    range where people would want to buy; then find a reason to enter -- an order block, a
+    fair value gap, or even a break of structure while in a discount.
+  source_timestamp: "08:21"
+  codex_interpretation: >
+    Equilibrium is a bias/zone FILTER. A valid entry = correct zone (discount for long /
+    premium for short) AND a concrete trigger (OB tap / FVG fill+reaction / MSS).
+  confidence: high
+  requires_confirmation: false
+
+- name: Equilibrium + fair value gap (best pairing)
+  teacher_definition: >
+    "Equilibrium which we can pair together with a fair value gap -- honestly the perfect
+    tools to combine. If you can find a fair value gap that's within a discounted price and
+    then you get a reaction, boom, let's enter."
+  source_timestamp: "09:51"
+  codex_interpretation: >
+    Highest-conviction combo: an FVG located inside the discount (for longs) / premium (for
+    shorts) with a reaction = enter.
+  confidence: high
+  requires_confirmation: false
+
+- name: Entry-tool hierarchy (recap)
+  teacher_definition: >
+    Liquidity sweep = inducement; liquidity sweep + break of structure (MSS) = first primary
+    entry. If missed: first retracement entry = order block (the move that caused the sweep);
+    then fair value gap (fill + reaction); then equilibrium paired with those.
+  source_timestamp: "09:08"
+  codex_interpretation: >
+    Priority: (1) liquidity sweep + BOS/MSS -> (2) OB (first retracement) -> (3) FVG ->
+    (4) equilibrium-confirmed OB/FVG. Matches the deferred 'OB off first retracement in
+    equilibrium' from Order Blocks pt3.
+  confidence: high
+  requires_confirmation: false
+
+- name: Wait for the discounted re-entry (don't chase the BOS)
+  teacher_definition: >
+    On a recent trade TJR did NOT enter on the break of structure ("bad risk reward"); he
+    waited for price to retrace to the order block (instant entry when that price hits) or the
+    fair value gap (enter on reaction).
+  source_timestamp: "13:55"
+  codex_interpretation: >
+    Prefer a retracement entry into an OB/FVG at a discount/premium over entering directly on
+    the BOS, when the BOS entry gives poor R:R.
+  confidence: medium
+  requires_confirmation: true

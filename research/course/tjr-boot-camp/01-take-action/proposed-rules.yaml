@@ -1,0 +1,50 @@
+# Psychology lesson: rules here are BEHAVIORAL guardrails for the learner/process,
+# not chart-execution rules. Every rule stays status: proposed.
+
+- id: tjr-take-action-r01
+  teacher_statement: "There will be an upload every single day and you have to watch it every day. If you miss a day, go back and watch the one you missed and that day's."
+  source_timestamp: "03:20"
+  proposed_machine_rule: "Course-ingestion cadence: process exactly one lesson per calendar day in order; if a day is skipped, backfill the missed lesson before advancing. No lesson may be skipped — the course is a start-to-finish sequence."
+  status: proposed
+  ambiguity: "Applies to the learning/ingestion pipeline, not live trading. 'Every day' cadence is TJR's upload promise, not a trading-frequency rule."
+  counterexamples: []
+
+- id: tjr-take-action-r02
+  teacher_statement: "Journaling — let's make it a fucking rule. Journal, note this."
+  source_timestamp: "40:29"
+  proposed_machine_rule: "Mandatory journaling: every study session (and every live trade, once trading) must produce a journal entry capturing the thought process / market observations. Missing journal entry = incomplete session."
+  status: proposed
+  ambiguity: "Format, required fields, and cadence (per trade vs per day vs per lesson) are unspecified."
+  counterexamples: []
+
+- id: tjr-take-action-r03
+  teacher_statement: "This takes about an hour of your day. Check your screen time — if TikTok/Instagram/Snapchat adds up to an hour, delete it and change your life."
+  source_timestamp: "16:56"
+  proposed_machine_rule: "Time budget: reserve >= 1 hour/day for chart study; remove/limit at least one high-consumption social app to free that time. Guardrail: if daily study time < 1 hr, flag the day as non-compliant."
+  status: proposed
+  ambiguity: "'An hour' is a floor tied to this lesson's length, not a validated study-time requirement; personal to the learner."
+  counterexamples: []
+
+- id: tjr-take-action-r04
+  teacher_statement: "You will not get rich in a day, a week, a month, two months, or three months. You can likely get rich in one to two years."
+  source_timestamp: "05:23"
+  proposed_machine_rule: "Expectation guardrail: treat the profitability horizon as ~12-24 months. Do NOT scale risk or size to chase fast returns; short-term drawdown is expected and is not grounds to abandon the system."
+  status: proposed
+  ambiguity: "Timeline is motivational, not a tested statistic; no risk/size numbers attached."
+  counterexamples: []
+
+- id: tjr-take-action-r05
+  teacher_statement: "It was my fault and my fault only because I incorrectly read the market. Don't blame the strategy or switch strategies."
+  source_timestamp: "09:44"
+  proposed_machine_rule: "No strategy-hopping: after a loss, attribute to execution/read and review the trade rather than changing systems. Guardrail against abandoning the method on a losing streak."
+  status: proposed
+  ambiguity: "No defined threshold (e.g., how many losses before review); purely a mindset directive here."
+  counterexamples: []
+
+- id: tjr-take-action-r06
+  teacher_statement: "Forget every little thing you ever thought you knew about trading. Don't jump ahead asking about fair value or equilibrium — we'll get to it."
+  source_timestamp: "09:35"
+  proposed_machine_rule: "Blank-slate ingestion: do not import external/prior TA assumptions into this course's ruleset; only encode concepts as TJR defines them, in lesson order."
+  status: proposed
+  ambiguity: "Meta-instruction about learning, not a trade rule."
+  counterexamples: []

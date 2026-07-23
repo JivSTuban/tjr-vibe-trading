@@ -1,0 +1,12 @@
+{
+  "lesson_number": 27,
+  "video_id": "TwakmPZJGJA",
+  "slug": "fear",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 128000,
+  "concepts_count": 8,
+  "rules_count": 5,
+  "examples_count": 0,
+  "notes": "Psychology lesson (fear/doubt; opposite pole to Day 25 overconfidence). Yields the most CONCRETE risk numbers of the psychology set: risk 1% per trade, 1 trade a day, go-live gate = 3 months profitability with 10%+ gain, $100 starter live account, never risk money you can't afford, ~90% first-live blow-up estimate, funded route if capital <$10k (pass ~10%/month), then payouts->live -> ~9 months / ~4 proof sources to 'damn near profitable'. Trading should be BORING/robotic -> justifies deterministic automation; fear = under-trading valid setups (fix = mechanical rules). AMBIGUITIES flagged: 1-vs-2 trades/day (vs Day 25), '10% over 3 months' [03:36] vs '10% a month' [13:19], and all numbers are TJR-PERSONAL defaults (dedicated risk/SL/TP/trading-plan lessons still coming). Skipped examples.yaml (no trades walked -- pure psychology). Longest transcript in batch (~32 min) but heavy repetition/banter; substantive content in [01:56]-[20:06]. Wrote metadata, lesson-summary, concepts, proposed-rules, ambiguities, verification-questions, completion (7 files). transcript_chars is an estimate."
+}

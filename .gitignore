@@ -90,3 +90,6 @@ AGENTS.md
 # Alpha Zoo wiki artifacts (generated, not source)
 wiki/alpha-library/manifest.json
 wiki/alpha-library/content/
+
+# TJR course: raw copyrighted transcripts are working artifacts, NOT for redistribution (SAFETY_POLICY §9)
+research/course/**/_transcripts/

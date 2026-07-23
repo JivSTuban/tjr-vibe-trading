@@ -1,0 +1,118 @@
+lesson: 34
+slug: daily-bias
+concepts:
+  - id: daily-bias-definition
+    name: Daily bias
+    definition: >
+      The direction price wants to go for the day. Used to bias execution so you
+      trade with (not against) the expected daily move. If you trade opposite the
+      daily bias the trade is short-lived or a loss.
+    source_timestamps: ["00:20", "00:25", "00:34", "17:17", "08:17"]
+
+  - id: top-down-analysis
+    name: Top-down analysis
+    definition: >
+      Start on the highest timeframe (weekly) and scale down (daily -> 4H -> 1H ->
+      15m -> 5m) to derive bias then find execution.
+    source_timestamps: ["00:45", "00:47", "01:03", "13:40"]
+
+  - id: weekly-context
+    name: Weekly timeframe (long-term/context)
+    definition: >
+      Weekly gives long-term / weekly bias. Determined by eyeballing recent price
+      action or the line chart (up = bullish). TJR does not rely on it for day
+      trading; a swing trader should. Also used to spot weekly draws on liquidity
+      (equilibrium, FVG, order block) as targets.
+    source_timestamps: ["00:47", "00:51", "00:55", "01:43", "03:50", "11:41", "11:46", "18:12", "18:17"]
+
+  - id: daily-market-structure-bias
+    name: Daily market structure = the bias
+    definition: >
+      Daily bias is set by current daily market structure / trend. Uptrend or BOS
+      up -> bullish; downtrend or BOS down -> bearish. This is the primary bias
+      TJR trades from because he trades within the day.
+    source_timestamps: ["02:02", "02:11", "02:19", "05:25", "08:42", "11:30", "11:34", "11:54"]
+
+  - id: four-hour-confluence
+    name: 4-hour trend / confluence
+    definition: >
+      TJR also checks the 4H trend. Strongest confluence when 4H and daily agree.
+      If daily bearish but 4H bullish, still allowed to look for bearish bias on
+      the hourly but must be tentative with take-profits. A 4H BOS opposite a
+      bullish daily = a daily retracement = prime setup.
+    source_timestamps: ["03:01", "03:13", "04:44", "05:11", "09:01", "09:09", "13:50"]
+
+  - id: hourly-and-lower-execution
+    name: Hourly and lower-timeframe execution
+    definition: >
+      1H (and 15m/5m) is where confirmation/execution is found: bullish/bearish
+      confirmation via liquidity sweep, break of structure, order block, FVG,
+      equilibrium. Precise entries scale down to 5m.
+    source_timestamps: ["02:04", "03:18", "04:26", "10:53", "14:08", "16:28"]
+
+  - id: draw-on-liquidity
+    name: Draw on liquidity
+    definition: >
+      Prior swing highs/lows that price is likely to reach. Used both as
+      confirmation of direction (sweep before reversal) and as take-profit targets.
+    source_timestamps: ["02:50", "14:44", "18:35"]
+
+  - id: liquidity-sweep
+    name: Liquidity sweep
+    definition: >
+      Price taking out a prior high/low; a sweep of highs preceding a bearish move
+      (or lows before bullish). Part of the execution sequence (sweep -> BOS -> entry).
+    source_timestamps: ["02:55", "07:41", "14:14", "15:26"]
+
+  - id: break-of-structure
+    name: Break of structure / breaker structure (BOS)
+    definition: >
+      Directional structure break used to define trend/bias on each timeframe.
+      Down = bearish, up = bullish. Confirmation is sought on progressively lower
+      timeframes (15m, 5m).
+    source_timestamps: ["02:19", "08:42", "10:53", "16:42"]
+
+  - id: order-block
+    name: Order block
+    definition: >
+      "Where orders were filled" — an execution/entry building block. Used as an
+      entry (e.g., 15m order block = elite entry) and as a draw/target.
+    source_timestamps: ["06:59", "09:51", "13:56", "18:50"]
+
+  - id: fair-value-gap
+    name: Fair value gap / imbalance
+    definition: >
+      Price inefficiency used as an entry/target building block; price "comes into"
+      the FVG. Called imbalance on the 4H when used as a retracement target.
+    source_timestamps: ["09:30", "10:07", "16:06", "18:33"]
+
+  - id: equilibrium
+    name: Equilibrium
+    definition: >
+      A midpoint level of a swing/range used as an entry ("purely enter off of
+      equilibrium") and as a target ("weekly needs to draw toward equilibrium").
+    source_timestamps: ["09:19", "15:47", "16:04", "18:19"]
+
+  - id: ny-session-timing
+    name: New York session timing
+    definition: >
+      Majority of daily S&P moves happen during New York session (NYSE open);
+      everything else is chop. Big up/down moves are caused by NY session.
+      The S&P is not traded during London session.
+    source_timestamps: ["05:39", "05:46", "05:53", "08:33", "10:28", "15:12"]
+
+  - id: news-no-trade
+    name: High-impact news / no-trade day
+    definition: >
+      TJR did not trade "today" because Powell ("pal") was speaking — an example of
+      a day/condition where he would not trade the S&P. (Stated as an example, not a
+      formalized rule.)
+    source_timestamps: ["04:13", "04:17"]
+
+  - id: proved-wrong
+    name: Being proved wrong
+    definition: >
+      Losing when market breaks structure / shifts against you is acceptable if you
+      followed your plan and bias; a stop-out in the opposite direction means the
+      daily bias was wrong.
+    source_timestamps: ["06:06", "13:13", "14:12"]

@@ -1,0 +1,23 @@
+- id: tjr-how-to-backtest-r01
+  teacher_statement: "Bar replay shows you the full daily/4h/1h candle instead of the actual price point... that's the issue, it's not live data."
+  source_timestamp: "01:47"
+  proposed_machine_rule: "In the backtest harness, reconstruct each timeframe's AS-OF (partial, still-forming) candle at the simulated timestamp. Never feed a higher-timeframe candle whose close occurs after the simulated moment. Enforce no-look-ahead across all timeframes used for bias."
+  status: proposed
+  ambiguity: "None significant for the engine; this is a standard point-in-time reconstruction requirement."
+  counterexamples: []
+
+- id: tjr-how-to-backtest-r02
+  teacher_statement: "The best way to test your strategy is through live market... live test on demo using your strategy."
+  source_timestamp: "04:36"
+  proposed_machine_rule: "Gate strategy promotion on forward/demo testing over live (or point-in-time-correct simulated) data; treat naive backtest metrics as a detector sanity check, not the pass/fail authority."
+  status: proposed
+  ambiguity: "How many demo trades / what win-rate threshold constitutes validation is not stated."
+  counterexamples: []
+
+- id: tjr-how-to-backtest-r03
+  teacher_statement: "Repeat the building-block drills (order block, FVG, liquidity sweep, break of structure) over and over until it's robotic and you instantly target it every time."
+  source_timestamp: "05:17"
+  proposed_machine_rule: "Validate building-block detectors (OB, FVG, liquidity sweep, BOS) against labeled historical setups; measure detection precision/recall before trusting the execution layer."
+  status: proposed
+  ambiguity: "No target accuracy threshold given."
+  counterexamples: []

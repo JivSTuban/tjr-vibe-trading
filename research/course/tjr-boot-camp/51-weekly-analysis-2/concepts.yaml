@@ -1,0 +1,89 @@
+- name: Weekly news-schedule planning (trade-eligibility calendar)
+  teacher_definition: >-
+    Before doing bias, go through the week's economic calendar day by day and
+    decide which days are tradeable and which require waiting for news. Pre-market
+    releases (Empire Manufacturing, retail sales, building permits) are usually
+    minor - wait for the open then trade. CPI, unemployment claims can heavily
+    move the market. On CPI day avoid GBP/USD and GBP/JPY.
+  source_timestamp: "02:07"
+  codex_interpretation: >-
+    Build a per-day, per-currency trade-eligibility map from the calendar.
+    Blackout the affected currency's pairs on high-impact days (CPI -> GBP).
+    Impact tiers and exact windows are not numerically defined here.
+  confidence: high
+  requires_confirmation: true
+
+- name: Avoid the currency of a high-impact release
+  teacher_definition: >-
+    "I will definitely be avoiding GBP/USD and GBP/JPY" on CPI Wednesday; USD/SPX
+    pairs still clean. Tentative on GBP pairs all week because of CPI.
+  source_timestamp: "02:51"
+  codex_interpretation: >-
+    Rule: on a high-impact release day, exclude every pair containing the release's
+    currency. Codeable given a calendar feed mapping release -> currency -> impact.
+  confidence: high
+  requires_confirmation: true
+
+- name: Draw on liquidity as the weekly target
+  teacher_definition: >-
+    After a monthly BOS up with no building blocks in between, price is expected
+    to continue to the next draws on liquidity (the highs above). "That's what
+    trend is saying and that's what the market's telling us."
+  source_timestamp: "04:17"
+  codex_interpretation: >-
+    Weekly objective/TP = next liquidity pool (prior highs/lows, all-time highs)
+    when no opposing building block sits between price and that pool.
+  confidence: high
+  requires_confirmation: false
+
+- name: Price over fundamentals
+  teacher_definition: >-
+    "There's no reason for me to be like I want it to go down because of what the
+    fundamentals are saying. We can't give a f***. This is what price has given
+    us, so that's what we're doing."
+  source_timestamp: "04:38"
+  codex_interpretation: >-
+    Bias is derived from price/structure only; a macro/fundamental view must never
+    override the structural bias in the engine.
+  confidence: high
+  requires_confirmation: false
+
+- name: High-confluence retracement zone
+  teacher_definition: >-
+    A great spot for retracements is where multiple building blocks stack: FVG +
+    equilibrium + order block all lined up (shown on SPX 4H). "This looks like a
+    great spot for retracements to happen."
+  source_timestamp: "05:25"
+  codex_interpretation: >-
+    Weight zones by count/overlap of building blocks (FVG, equilibrium, OB,
+    liquidity). Higher overlap -> higher-priority reaction zone for entries. No
+    numeric confluence threshold given.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Trade the daily when weekly and daily disagree
+  teacher_definition: >-
+    Gold: weekly bearish but daily broke structure up -> "we can be taking bullish
+    trades even though the weekly's bearish, but we're going off the daily
+    timeframe." Trade weekly retraces in the daily direction; look for a 4H BOS to
+    confirm.
+  source_timestamp: "06:10"
+  codex_interpretation: >-
+    When weekly and daily conflict, the daily governs directional trades (treat as
+    a weekly retracement being traded), pending 4H BOS confirmation. Consistent
+    with lessons 50/53/55.
+  confidence: high
+  requires_confirmation: true
+
+- name: Shorter-term take-profits off building blocks
+  teacher_definition: >-
+    On GJ: after a 4H BOS, "find little shorts all the way down into weekly
+    equilibrium" with shorter-term take-profits off liquidity or other building
+    blocks along the way.
+  source_timestamp: "09:29"
+  codex_interpretation: >-
+    Scale-out / partial TP logic: set intermediate TPs at intervening liquidity
+    and building blocks, final TP at the HTF equilibrium/draw. Sizing/partial
+    fractions not specified.
+  confidence: medium
+  requires_confirmation: true

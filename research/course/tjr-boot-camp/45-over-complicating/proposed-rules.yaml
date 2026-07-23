@@ -1,0 +1,23 @@
+- id: tjr-over-complicating-r01
+  teacher_statement: "Use one strategy, find one bias, stop listening to all the traders and signal groups."
+  source_timestamp: "12:38"
+  proposed_machine_rule: "System exposes exactly one strategy and one bias per instrument; do not ingest external signals or run competing sub-strategies whose outputs must be reconciled."
+  status: proposed
+  ambiguity: "Architectural guidance rather than a per-trade condition; needs mapping to the concrete strategy definition."
+  counterexamples: []
+
+- id: tjr-over-complicating-r02
+  teacher_statement: "Whatever you add you have to become an expert at — be an expert at the four building blocks (fair value gaps, order blocks, liquidity sweeps, breaking structure)."
+  source_timestamp: "18:39"
+  proposed_machine_rule: "Restrict the detector/feature set to the four building blocks + daily bias; new indicators require explicit human approval, not automatic addition."
+  status: proposed
+  ambiguity: "Not a trade trigger; a scope constraint on the model."
+  counterexamples: []
+
+- id: tjr-over-complicating-r03
+  teacher_statement: "Write down why you did/didn't take a trade and what the market did, and study your journal every single day."
+  source_timestamp: "14:01"
+  proposed_machine_rule: "Persist per-decision journal entries (rationale, HTF context, outcome) and surface prior matching setups when a similar condition recurs."
+  status: proposed
+  ambiguity: "Similarity metric for 'same exact setup' is undefined; needs a setup-fingerprint definition."
+  counterexamples: []

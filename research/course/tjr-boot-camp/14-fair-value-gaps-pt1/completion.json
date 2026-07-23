@@ -1,0 +1,12 @@
+{
+  "lesson_number": 14,
+  "video_id": "d0AxLACYaqU",
+  "slug": "fair-value-gaps-pt1",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 32000,
+  "concepts_count": 6,
+  "rules_count": 3,
+  "examples_count": 0,
+  "notes": "Part 1 of FVG series (14/16/18). Conceptual only: FVG = imbalance = liquidity void (synonyms); it's the opposite of liquidity (range with no opposing orders, forms as a big impulsive candle). KEY role separation: FVG = retracement/draw-to target + SECONDARY entry; liquidity sweep+BOS = PRIMARY bias/entry. Combined chain: sweep -> BOS -> FVG fill -> LTF BOS -> enter. 'How to spot' deferred to lesson 16. No chart examples (examples.yaml skipped). ASR misstates day number; manifest confirms Day 14."
+}

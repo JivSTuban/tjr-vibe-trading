@@ -1,0 +1,54 @@
+- id: tjr-sunday-motivation-r01
+  teacher_statement: >-
+    When you lose in the market you have to be comfortable saying I'm done for
+    today; don't keep trading to win it back.
+  source_timestamp: "08:53"
+  proposed_machine_rule: >-
+    After the first losing trade of the session closes, stop generating new
+    entries for the remainder of the session (daily-loss / no-revenge stop).
+  status: proposed
+  ambiguity: >-
+    No numeric daily-loss $ limit or trade count; scope (session vs whole day) is
+    inferred. Overlaps lesson 50 r06.
+  counterexamples: []
+
+- id: tjr-sunday-motivation-r02
+  teacher_statement: >-
+    Sometimes when you win you try to take more trades to make even more - avoid
+    that.
+  source_timestamp: "01:02"
+  proposed_machine_rule: >-
+    Do not open additional trades solely because a winning trade closed; cap
+    trades per session per the low-frequency cadence.
+  status: proposed
+  ambiguity: >-
+    No explicit per-session trade cap number given in this lesson.
+  counterexamples: []
+
+- id: tjr-sunday-motivation-r03
+  teacher_statement: >-
+    After a loss do your journaling and recap, figure out what you could have
+    done better, then let it go.
+  source_timestamp: "08:35"
+  proposed_machine_rule: >-
+    On any losing trade, require a completed journal/recap record (including a
+    loss-cause classification) before the session is marked closed.
+  status: proposed
+  ambiguity: >-
+    Journal schema/fields not specified here; align with lesson 50 loss taxonomy
+    and lesson 46 journaling.
+  counterexamples: []
+
+- id: tjr-sunday-motivation-r04
+  teacher_statement: >-
+    View trading in a yearly perspective, not weekly or daily; judge over a
+    sample, not a single trade.
+  source_timestamp: "01:11"
+  proposed_machine_rule: >-
+    Report/evaluate performance on rolling weekly/monthly/yearly windows and
+    sample-based expectancy; suppress single-trade-outcome-driven changes to
+    confidence or sizing.
+  status: proposed
+  ambiguity: >-
+    Window lengths and the minimum sample size for evaluation are not specified.
+  counterexamples: []

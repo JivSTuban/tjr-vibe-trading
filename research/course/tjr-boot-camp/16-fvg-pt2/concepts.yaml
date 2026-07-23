@@ -1,0 +1,88 @@
+concepts:
+  - name: Fair Value Gap (FVG) / Liquidity Void / Imbalance
+    teacher_definition: >
+      An area where there is a lack of liquidity — no resting orders in the
+      opposite direction of wherever price wants to go. Price draws back into
+      that void/imbalance and reacts/moves because there was a lack of
+      liquidity there. FVG, liquidity void, and imbalance are used
+      interchangeably.
+    source_timestamp: "01:59"
+    codex_interpretation: >
+      A price range left un-traded by a fast (displacement) move, formalized as
+      a 3-candle pattern gap. Machine-detectable as the non-overlap between
+      candle 1 and candle 3 across candle 2's displacement.
+    confidence: high
+    requires_confirmation: false
+
+  - name: FVG as retracement / continuation tool (NOT a reversal tool)
+    teacher_definition: >
+      FVGs are a retracement tool — they help find trades off retracements. They
+      are NOT reversals and are not used for reversals. In an uptrend (higher
+      highs/higher lows) look for bullish FVGs for retracement + continuation;
+      in a downtrend look for bearish FVGs. FVGs and equilibrium are used for
+      continuations and retracements.
+    source_timestamp: "03:03"
+    codex_interpretation: >
+      Directional filter: only trade FVGs aligned with established HTF trend.
+      Never use an FVG as a counter-trend reversal signal.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Three-candle FVG pattern (candle roles)
+    teacher_definition: >
+      An FVG/imbalance is a three-candle pattern. Candle 1 has a wick; candle 2
+      is the candle that creates the imbalance (large / "super full"
+      displacement candle); candle 3 has a wick. You know there's no resistance
+      in the gap through the wicks — candle 1 and candle 3 wicks do not cover
+      candle 2's body.
+    source_timestamp: "04:12"
+    codex_interpretation: >
+      Candle 2 = displacement candle. Validity = candle-1 wick and candle-3 wick
+      do not overlap across candle 2's body. Displacement magnitude threshold is
+      unspecified.
+    confidence: high
+    requires_confirmation: true
+
+  - name: Measuring the FVG box
+    teacher_definition: >
+      Bullish FVG: measured from the TOP of the first candle's wick to the
+      BOTTOM of the third candle's wick. Bearish FVG: from the BOTTOM of the
+      first candle's wick to the TOP of the third candle's wick. Draw a
+      rectangle/box over that range, then wait for price to fill and react.
+    source_timestamp: "05:23"
+    codex_interpretation: >
+      Bullish gap box = [candle1.high, candle3.low] (valid only if
+      candle1.high < candle3.low). Bearish gap box = [candle3.high, candle1.low]
+      (valid only if candle1.low > candle3.high).
+    confidence: high
+    requires_confirmation: true
+
+  - name: Wicks represent resting orders (validity test)
+    teacher_definition: >
+      Wicks show resting orders. If candle 1's and candle 3's wicks already
+      overlap/fill candle 2's body, it is NOT a valid FVG because price already
+      came into that area and filled the liquidity void — there is no lack of
+      liquidity left.
+    source_timestamp: "10:19"
+    codex_interpretation: >
+      Rejection rule: if the proposed gap range has zero (or overlapping) span
+      between candle-1 and candle-3 wicks, discard — the imbalance is already
+      mitigated.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Do not execute off FVG-hit alone — wait for reaction/confirmation
+    teacher_definition: >
+      Do not execute purely off the FVG getting hit without a reaction. Wait for
+      a reaction, or scale down to a lower timeframe and look for a breaker
+      structure / change in market structure shift (MSS) / break of structure
+      (BOS), or a reaction candle in your intended direction — let that be your
+      confirmation to enter. FVGs are everywhere; be patient, not all of them
+      work.
+    source_timestamp: "07:57"
+    codex_interpretation: >
+      FVG fill = trigger, not entry. Gate entry on a lower-timeframe BOS/MSS or
+      reaction candle after price enters the gap. Confirmation timeframe and
+      required reaction magnitude are unspecified (see ambiguities).
+    confidence: high
+    requires_confirmation: true

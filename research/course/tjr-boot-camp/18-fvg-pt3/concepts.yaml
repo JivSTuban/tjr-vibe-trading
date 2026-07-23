@@ -1,0 +1,114 @@
+concepts:
+  - name: FVG-based entry model (building blocks combined)
+    teacher_definition: >
+      The trade is built from stacking simple pieces: "liquidity sweep, break of
+      structure, imbalance fill, break of structure." Establish HTF context/bias,
+      see a sweep of liquidity and a break of structure, mark the imbalance (FVG),
+      wait for price to retrace and fill it, scale down to a lower timeframe, and
+      enter off a lower-timeframe break of structure.
+    source_timestamp: "07:49"
+    codex_interpretation: >
+      Ordered state machine: HTF bias -> liquidity sweep aligned with bias -> mid-TF
+      BOS leaving FVG -> retrace fills FVG -> LTF BOS = entry trigger. Any missing
+      step voids the setup.
+    confidence: high
+    requires_confirmation: true
+
+  - name: FVG as retracement tool / confirmation (not a raw entry)
+    teacher_definition: >
+      "To me imbalances are mainly used for retracement tools to figure out where
+      market wants to retrace to, and then from there I find other reasoning on why
+      I want to get in... I use it as more of a confirmation rather than an entry."
+      Do NOT enter the moment price hits the FVG — that would get you stopped out.
+    source_timestamp: "15:56"
+    codex_interpretation: >
+      FVG is a draw-on-liquidity / retracement magnet AND a confirmation zone, never
+      a standalone entry. Entry requires a separate trigger (LTF BOS / order block /
+      sweep-then-BOS) after price enters the FVG.
+    confidence: high
+    requires_confirmation: true
+
+  - name: Multi-timeframe scale-down (HTF context -> LTF entry)
+    teacher_definition: >
+      Establish structure on a higher timeframe, wait for the HTF imbalance to get
+      filled, then scale down to a lower timeframe for a break of structure, then an
+      even lower timeframe for a "prime time entry." Demonstrated chains: 15m->5m->1m,
+      4h->15m, 1h->15m.
+    source_timestamp: "04:06"
+    codex_interpretation: >
+      Timeframe hierarchy: bias TF (daily/4h/1h) > structure TF (15m/5m) > entry TF
+      (5m/1m). Relationship is ratio-based, not fixed values; exact pairing per
+      instrument undefined.
+    confidence: medium
+    requires_confirmation: true
+
+  - name: Lower-timeframe break of structure = entry trigger
+    teacher_definition: >
+      After the imbalance fills, a break of structure on the lower timeframe off a
+      candle close is the entry: "we get a break of structure right here off of this
+      candle close, boom you can enter into short position off of that."
+    source_timestamp: "04:27"
+    codex_interpretation: >
+      Entry price = close/level of the LTF BOS candle after FVG fill, in the HTF-bias
+      direction. Not a fixed FVG level (edge/50/full).
+    confidence: high
+    requires_confirmation: true
+
+  - name: Stop loss beyond the swept high/low
+    teacher_definition: >
+      For a short entered off a 5m BOS after sweeping highs: "stop above these highs."
+      SL sits beyond the liquidity that was swept prior to entry.
+    source_timestamp: "07:14"
+    codex_interpretation: >
+      SL = just beyond the sweep wick / swept extreme that preceded the setup
+      (above swept highs for shorts, below swept lows for longs).
+    confidence: high
+    requires_confirmation: true
+
+  - name: Take profit at previous liquidity / opposing imbalance
+    teacher_definition: >
+      Target previous areas of liquidity in the trade direction — previous highs/lows,
+      accumulation zones, and opposing imbalances. TP can be the start, 50% (equilibrium),
+      or end of an opposing imbalance. Scale out across multiple liquidity pools.
+    source_timestamp: "07:18"
+    codex_interpretation: >
+      TP candidates ranked by nearness: nearest opposing liquidity pool / accumulation /
+      opposing FVG (edge, 50%, or full). Multiple partial TPs; remainder to break-even.
+    confidence: medium
+    requires_confirmation: true
+
+  - name: HTF bias / daily break of structure sets direction
+    teacher_definition: >
+      "We're bullish because we got that daily break of structure to the upside." Bias
+      is derived from HTF/daily structure and all lower-TF setups are taken in that
+      direction (or as retraces against a short-term counter-move within it).
+    source_timestamp: "11:28"
+    codex_interpretation: >
+      Directional filter: only take setups whose sweep+BOS align with the HTF/daily
+      BOS bias. A LTF BOS against HTF bias is interpreted as a retracement, not a
+      trend reversal.
+    confidence: high
+    requires_confirmation: true
+
+  - name: Discard FVGs price has fully traded through
+    teacher_definition: >
+      "The second we push past this, no longer considering it... it's not of interest
+      to me." An imbalance already filled by a later wick "isn't even an imbalance
+      we're waiting for."
+    source_timestamp: "09:45"
+    codex_interpretation: >
+      Invalidate/deactivate an FVG once price fully closes or wicks completely through
+      it; only unfilled FVGs remain valid retracement targets.
+    confidence: high
+    requires_confirmation: true
+
+  - name: Trade only off / after market open
+    teacher_definition: >
+      "We're not going to take any trades that aren't off of market open, okay, or
+      aren't after market open." Pre-market moves are watched but not traded.
+    source_timestamp: "03:15"
+    codex_interpretation: >
+      Session/time filter: entries only permitted at or after the (RTH) market open;
+      pre-market setups excluded. Exact session/timezone not specified in this lesson.
+    confidence: medium
+    requires_confirmation: true

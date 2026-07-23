@@ -1,0 +1,132 @@
+lesson: 34
+slug: daily-bias
+rules:
+  - id: tjr-daily-bias-r01
+    teacher_statement: >
+      "figure out what the daily time frame is saying ... on gold bearish cool
+      we're our ideal trades will be to the downside" / "what is the daily market
+      structure ... we get a breaker structure to the downside so I'm bearish on
+      the daily."
+    source_timestamp: "05:25"
+    proposed_machine_rule: >
+      daily_bias = bearish IF latest daily break_of_structure is DOWN;
+      daily_bias = bullish IF latest daily break_of_structure is UP.
+      Ideal trades are taken in the direction of daily_bias.
+    status: proposed
+    ambiguity: >
+      "Trend" vs "break of structure" used interchangeably; no formal definition of
+      which swing points define the daily BOS is given in this lesson.
+    counterexamples: []
+
+  - id: tjr-daily-bias-r02
+    teacher_statement: >
+      "start on the weekly time frame figure out where is price going ... scale
+      down to the daily ... then this is where we find our daily bias on the hourly
+      time frames."
+    source_timestamp: "00:45"
+    proposed_machine_rule: >
+      Perform top-down analysis in order: weekly (context) -> daily (bias via
+      market structure) -> 4H (trend/confluence) -> 1H (confirmation) -> 15m/5m
+      (execution).
+    status: proposed
+    ambiguity: >
+      Weekly is explicitly de-prioritized for day trading; exact role of each lower
+      TF in the decision is qualitative.
+    counterexamples: []
+
+  - id: tjr-daily-bias-r03
+    teacher_statement: >
+      "the weekly direction is up however we're not really playing completely off
+      the weekly direction ... for me I don't care about that too much ... I'm just
+      trying to figure out where are we going on the daily."
+    source_timestamp: "03:31"
+    proposed_machine_rule: >
+      For intraday trading, weekly bias is treated as context only and NOT used to
+      set the daily bias (swing traders excepted).
+    status: proposed
+    ambiguity: "Applies to day trading only; swing traders should weight weekly."
+    counterexamples: []
+
+  - id: tjr-daily-bias-r04
+    teacher_statement: >
+      "we are bullish on the four hour ... until we turn bearish on the four hour we
+      can't target ... these absurd long time frame take profits because we haven't
+      been proved to the downside on the four hour."
+    source_timestamp: "04:46"
+    proposed_machine_rule: >
+      IF daily_bias direction conflicts with current 4H structure, you may still
+      take trades in daily_bias direction BUT restrict take-profits (no
+      long-timeframe targets) until 4H structure breaks in the daily_bias direction.
+    status: proposed
+    ambiguity: >
+      "Absurd long time frame take profits" not quantified; full logic deferred to a
+      separate take-profit video.
+    counterexamples: []
+
+  - id: tjr-daily-bias-r05
+    teacher_statement: >
+      "because we already broke structure to the upside on the daily that means even
+      if we break structure to the downside on the four hour that means we're
+      retracing on the daily ... prime time getting ready for a setup."
+    source_timestamp: "09:01"
+    proposed_machine_rule: >
+      IF daily_bias is bullish AND 4H breaks structure DOWN, classify as a daily
+      retracement (a with-bias setup opportunity), not a bias flip.
+      (Symmetric for bearish daily + 4H up.)
+    status: proposed
+    ambiguity: "Symmetry for bearish case inferred; only bullish case stated."
+    counterexamples: []
+
+  - id: tjr-daily-bias-r06
+    teacher_statement: >
+      "the majority of the daily moves on the S P ... is going to be during New York
+      session everything else is just chop ... during New York Stock Exchange open."
+    source_timestamp: "05:39"
+    proposed_machine_rule: >
+      For the S&P, execute the daily-bias move during the New York session / NYSE
+      open; treat other sessions as chop. Do not trade the S&P during London session.
+    status: proposed
+    ambiguity: >
+      No explicit clock times or timezone given for "New York session" / "NYSE open"
+      in this lesson.
+    counterexamples: []
+
+  - id: tjr-daily-bias-r07
+    teacher_statement: >
+      "we're not waiting for just a down candle we're waiting for five minute break
+      of structure."
+    source_timestamp: "16:39"
+    proposed_machine_rule: >
+      For a precise entry, require a lower-timeframe (e.g. 5-minute) break of
+      structure in the bias direction into an FVG/order block/equilibrium — not
+      merely a single opposite-color candle.
+    status: proposed
+    ambiguity: "Entry TF (5m) is an example; also mentions 15m execution."
+    counterexamples: []
+
+  - id: tjr-daily-bias-r08
+    teacher_statement: >
+      "if you take a trade that's an opposite direction of where you think price is
+      going to go for the day odds are you'll probably end up being a very
+      short-lived trade or you'll just be losing that trade."
+    source_timestamp: "00:34"
+    proposed_machine_rule: >
+      Do NOT take trades against the established daily_bias direction.
+    status: proposed
+    ambiguity: "None material; direct."
+    counterexamples: []
+
+  - id: tjr-daily-bias-r09
+    teacher_statement: >
+      "I didn't trade today because we had pal speaking ... a perfect example of when
+      we probably wouldn't want to trade the S P 500 unless we can find some sort of
+      bearish confirmation."
+    source_timestamp: "04:13"
+    proposed_machine_rule: >
+      On high-impact-news days (e.g., Fed/Powell speaking), avoid trading the S&P
+      unless strong with-bias confirmation is present.
+    status: proposed
+    ambiguity: >
+      Stated as an example/preference, not a formalized always-off rule; "confirmation"
+      threshold unspecified.
+    counterexamples: []

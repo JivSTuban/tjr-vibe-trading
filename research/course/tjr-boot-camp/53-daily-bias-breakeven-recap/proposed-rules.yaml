@@ -1,0 +1,71 @@
+- id: tjr-daily-bias-breakeven-recap-r01
+  teacher_statement: >-
+    You don't want to be trading down when you have all those high timeframes
+    saying up (weekly+daily up, 4H+1H down = mix of biases, don't take).
+  source_timestamp: "05:40"
+  proposed_machine_rule: >-
+    Suppress short signals when weekly_bias AND daily_bias are both bullish
+    (mirror: suppress longs when both bearish), regardless of 4H/1H structure.
+  status: proposed
+  ambiguity: >-
+    Consistent with lessons 50/55; still needs per-timeframe bias computation.
+  counterexamples: []
+
+- id: tjr-daily-bias-breakeven-recap-r02
+  teacher_statement: >-
+    The GU trade wasn't great because the daily was overextended and price was
+    only at equilibrium - a "potential" trade I shouldn't have taken.
+  source_timestamp: "12:31"
+  proposed_machine_rule: >-
+    Down-rank / reject setups where the HTF trend is overextended and the only
+    confluence is price at equilibrium without full timeframe alignment; prefer
+    no-trade.
+  status: proposed
+  ambiguity: >-
+    "Overextended" is not quantified (no ATR/leg-count/distance-from-equilibrium
+    metric given).
+  counterexamples: []
+
+- id: tjr-daily-bias-breakeven-recap-r03
+  teacher_statement: >-
+    (A+ template, GJ) daily bearish -> tapped a daily order block -> drew to the
+    Asian session high -> reacted down with a break of structure.
+  source_timestamp: "16:24"
+  proposed_machine_rule: >-
+    Trigger a trend-aligned entry when: price mitigates an HTF order block in the
+    daily-bias direction, sweeps/draws to a named session-liquidity level, then
+    reacts with a BOS in the daily-bias direction. Entry on the reaction BOS.
+  status: proposed
+  ambiguity: >-
+    Which session-liquidity levels qualify and the required reaction strength are
+    not fully specified.
+  counterexamples:
+    - "TJR skipped this exact setup because price pushed PAST his level before reacting - a marginal-timing miss, not a pattern failure."
+
+- id: tjr-daily-bias-breakeven-recap-r04
+  teacher_statement: >-
+    Stops were above the Asian session highs, matched to a 15-pip stop on GU.
+  source_timestamp: "13:55"
+  proposed_machine_rule: >-
+    Place SL just beyond the swept session-liquidity high/low that defines the
+    setup; record the resulting pip distance (here ~15 pips on GU) per setup.
+  status: proposed
+  ambiguity: >-
+    Stop distance is instrument/setup dependent; 15 pips is an instance, not a
+    constant.
+  counterexamples: []
+
+- id: tjr-daily-bias-breakeven-recap-r05
+  teacher_statement: >-
+    After ~2.5h of consolidation, once price broke structure to the upside against
+    the short I was out; late in the day I'd rather scratch near break-even.
+  source_timestamp: "15:00"
+  proposed_machine_rule: >-
+    Exit a trade on a counter-direction BOS or after it stalls in a range beyond a
+    time threshold; near session end, prefer closing marginal trades at/near
+    break-even over holding for target.
+  status: proposed
+  ambiguity: >-
+    The consolidation time threshold (~2h) and the "late in day"/session-end cutoff
+    are examples, not stated constants.
+  counterexamples: []

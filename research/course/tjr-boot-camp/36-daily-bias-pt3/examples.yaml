@@ -1,0 +1,21 @@
+- timestamp: "00:33"
+  instrument: S&P 500 (SPX)
+  timeframe: weekly/daily/monthly (HTF analysis, no execution)
+  direction: bearish lean (expects lower)
+  setup_components:
+    - daily broke structure down while weekly in uptrend (weekly retrace expected)
+    - monthly broke structure up but did not close below monthly low
+    - liquidity resting above on monthly; "covid lows" targeted below
+    - quarterly order block identified (swept liquidity, moved higher, orders unfilled)
+  stated_outcome: "No trade taken; TJR states he did not trade S&P on Friday because there was not much clean confluence. Directional opinion only: 'I still think we're going lower.'"
+  suitable_for_dataset: false
+
+- timestamp: "10:46"
+  instrument: GBP/USD ("gu")
+  timeframe: daily vs weekly
+  direction: bullish continuation context
+  setup_components:
+    - daily downtrend but weekly uptrend (weekly retrace / daily is a retrace of weekly)
+    - top-down alignment example for buys
+  stated_outcome: "Presented as a teaching walkthrough of the daily-vs-weekly relationship, not a completed trade with entry/SL/TP."
+  suitable_for_dataset: false

@@ -1,0 +1,80 @@
+rules:
+  - id: tjr-fvg-pt2-r01
+    teacher_statement: >
+      For bullish fair value gaps it's from the top of the first candle's wick
+      to the bottom of the third candle's wick.
+    source_timestamp: "05:23"
+    proposed_machine_rule: >
+      Detect a bullish FVG on a 3-candle window (c1,c2,c3) where c2 is an
+      up/displacement candle and c1.high < c3.low. Gap box = [c1.high, c3.low].
+      If c1.high >= c3.low, no valid bullish FVG.
+    status: proposed
+    ambiguity: >
+      TJR says "top of first wick to bottom of third wick." Standard SMC uses
+      candle-1 high vs candle-3 low, which coincides for a bullish gap. Confirm
+      whether wick-tips (high/low) is exactly the intended reference vs
+      body extremes.
+    counterexamples: []
+
+  - id: tjr-fvg-pt2-r02
+    teacher_statement: >
+      In terms of a bearish fair value gap we take it from the bottom wick ...
+      down to the third candle's top wick.
+    source_timestamp: "06:45"
+    proposed_machine_rule: >
+      Detect a bearish FVG on a 3-candle window (c1,c2,c3) where c2 is a
+      down/displacement candle and c1.low > c3.high. Gap box = [c3.high, c1.low].
+      If c1.low <= c3.high, no valid bearish FVG.
+    status: proposed
+    ambiguity: Same wick-vs-body reference ambiguity as r01.
+    counterexamples: []
+
+  - id: tjr-fvg-pt2-r03
+    teacher_statement: >
+      This is not a fair value gap ... because price already came within here,
+      filled the liquidity void ... these wicks show resting orders.
+    source_timestamp: "10:19"
+    proposed_machine_rule: >
+      Reject any candidate FVG whose candle-1 and candle-3 wicks overlap across
+      candle-2's body (i.e. gap span <= 0). Also mark an existing FVG as
+      MITIGATED/INVALID once price has traded fully through its box.
+    status: proposed
+    ambiguity: >
+      "Filled" not quantified — full fill vs 50% fill vs single wick touch. TJR
+      elsewhere waits for full fill + react; threshold for "already filled →
+      discard" needs confirmation.
+    counterexamples: []
+
+  - id: tjr-fvg-pt2-r04
+    teacher_statement: >
+      FVGs are not reversals ... in an uptrend we're looking for bullish fair
+      value gaps for retracements and continuations.
+    source_timestamp: "03:22"
+    proposed_machine_rule: >
+      Only arm a bullish FVG when HTF bias is bullish (established higher
+      highs/higher lows or prior BOS up); only arm a bearish FVG when HTF bias is
+      bearish. Never trade an FVG counter to established trend.
+    status: proposed
+    ambiguity: >
+      "Uptrend"/"bias" not defined here (which timeframe, how bias is set).
+      Depends on prior lessons' market-structure definition.
+    counterexamples: []
+
+  - id: tjr-fvg-pt2-r05
+    teacher_statement: >
+      Do not execute purely off of just the fair value gap getting hit without a
+      reaction. Wait for a reaction or scale down to a lower timeframe, see a
+      breaker structure / market structure shift / break of structure, and let
+      that be your confirmation to enter.
+    source_timestamp: "07:57"
+    proposed_machine_rule: >
+      Treat price entering the HTF FVG box as a trigger only. Enter only after a
+      lower-timeframe (e.g. 1m/5m) break of structure or market structure shift
+      confirms a reaction inside/after the FVG fill, in the FVG's direction. No
+      entry on raw touch.
+    status: proposed
+    ambiguity: >
+      Confirmation timeframe unspecified (TJR only says "lower / smaller time
+      frame"). What magnitude of move counts as a valid "reaction" or BOS is
+      undefined. See ambiguities.md (confidence low/medium).
+    counterexamples: []

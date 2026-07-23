@@ -1,0 +1,12 @@
+{
+  "lesson_number": 24,
+  "video_id": "12_F-mIUfL0",
+  "slug": "order-blocks-pt3",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 96000,
+  "concepts_count": 10,
+  "rules_count": 6,
+  "examples_count": 4,
+  "notes": "Core technical lesson; FINAL part of the 3-part Order Blocks series. Central NEW content = how to LABEL/BOX an OB: (1) box the entire leg (beginner) OR (2) TJR's preferred: box the WICK only, wick-tip to body-start, because price often taps the wick or the BASE OF THE BODY (body-open) as the reaction point. Also: OB best when paired with liquidity sweep; retracement entry tools = FVG + OB; enter on confirming 15m BOS in HTF bias; OBs can be TP targets; nested multi-TF (daily->4h->1h->15m) aligned with daily+weekly bias; liquidity-sweep-then-leg => assume OB heuristic. FORWARD DEPENDENCY flagged: 'order block off the first retracement in equilibrium' is explicitly deferred to the equilibrium lesson (Day 26/28) -- retracement-entry rule left open. First ~6:30 is banter. All 8 files written; 4 examples all suitable_for_dataset:false (qualitative scans, no prices). transcript_chars is an estimate."
+}

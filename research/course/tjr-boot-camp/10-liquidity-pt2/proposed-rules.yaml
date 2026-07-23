@@ -1,0 +1,23 @@
+- id: tjr-liquidity-pt2-r01
+  teacher_statement: "Above highs there are buy stops and stop losses; below lows there are sell stops and stop losses. Mark highs and lows as liquidity."
+  source_timestamp: "02:47"
+  proposed_machine_rule: "Detect liquidity levels as prior swing highs (buy-side liquidity, BSL) and prior swing lows (sell-side liquidity, SSL), each with a small buffer above/below the exact extreme."
+  status: proposed
+  ambiguity: "Swing-detection lookback and the buffer size (pips/ticks) are unspecified. 'Prominence' filter introduced only in Pt 3."
+  counterexamples: []
+
+- id: tjr-liquidity-pt2-r02
+  teacher_statement: "When a high/low gets taken out (swept) and then price reverses — sweep then fall, sweep then rally — that is the liquidity event we play. It happens on every timeframe."
+  source_timestamp: "07:19"
+  proposed_machine_rule: "Flag a liquidity sweep when price trades beyond a marked BSL/SSL level and then closes back through it (reversal). Applicable on any timeframe. Sweep alone is a signal candidate, not an entry (entry still requires MSS per Pt1/Pt3)."
+  status: proposed
+  ambiguity: "Minimum penetration to qualify as a sweep vs a genuine breakout is undefined ('a couple of pips' suggests shallow). Distinguishing a sweep-reversal from a real continuation break is the open risk."
+  counterexamples: []
+
+- id: tjr-liquidity-pt2-r03
+  teacher_statement: "Homework: on 3 different timeframes, find 5 liquidity sweeps each."
+  source_timestamp: "12:01"
+  proposed_machine_rule: "Backtest/validation harness: sample >=3 timeframes and require the detector to surface swing-extreme sweeps consistently (sanity check that detection fires broadly)."
+  status: proposed
+  ambiguity: "This is a study instruction, not a trade rule; encoded only as a detector-coverage sanity check."
+  counterexamples: []

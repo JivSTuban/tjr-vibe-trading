@@ -1,0 +1,55 @@
+- id: tjr-how-to-take-a-win-life-lessons-r01
+  teacher_statement: "Take one trade and just go home. Whether it's a win or a loss you're done, you're just done for the day."
+  source_timestamp: "04:59"
+  proposed_machine_rule: "Enforce max 1 entry per trading day. After the first trade of the day closes (win OR loss), block all new entries until the next session."
+  status: proposed
+  ambiguity: "TJR says 'one trade a day' here but at [20:07] describes scaling out / managing 'positions' (plural) and setting 'extended take profits' on a single idea — likely one setup with multiple TP levels, not multiple independent trades. 'Day' vs 'session' boundary undefined."
+  counterexamples: []
+
+- id: tjr-how-to-take-a-win-life-lessons-r02
+  teacher_statement: "It didn't hit your take profit, it didn't hit your stop loss, why are you acting on emotion? You cannot act based off money."
+  source_timestamp: "03:34"
+  proposed_machine_rule: "Disallow discretionary manual closes before the predefined TP. Only permitted exits: TP hit, SL hit, or break-even SL trail after a TP is reached."
+  status: proposed
+  ambiguity: "Conflicts partially with scaling-out/partial-TP language at [20:07]; need to define whether partials at pre-set liquidity levels count as 'the take profit' (allowed) vs ad-hoc emotional closes (forbidden)."
+  counterexamples: []
+
+- id: tjr-how-to-take-a-win-life-lessons-r03
+  teacher_statement: "Let me do it again, let me take another trade and actually risk more so I can make more — you tend to get overconfident."
+  source_timestamp: "04:41"
+  proposed_machine_rule: "Do not increase risk % or position size on any trade following a winning trade. Risk per trade stays constant regardless of prior outcome (win streak = no size increase)."
+  status: proposed
+  ambiguity: "No explicit fixed risk % stated in THIS lesson (the 1% figure is from an illustrative $10M example, not a prescription). Base risk % must come from the risk-management lesson (Day 13/39)."
+  counterexamples: []
+
+- id: tjr-how-to-take-a-win-life-lessons-r04
+  teacher_statement: "When take profits were hit I moved my stop loss to break even."
+  source_timestamp: "20:07"
+  proposed_machine_rule: "After the first take-profit level is reached, move the stop loss on the remaining position to break-even (entry price)."
+  status: proposed
+  ambiguity: "Which TP triggers the move, and how many TP levels exist, is undefined here. 'Extended take profits' set off 'previous areas of liquidity' — levels not quantified."
+  counterexamples: []
+
+- id: tjr-how-to-take-a-win-life-lessons-r05
+  teacher_statement: "Stop watching your money go up and down in your trading account. Take the trade and forget about it, don't even look at that account balance. Check what your metatrader says at the end of the month, at the end of the year."
+  source_timestamp: "11:39"
+  proposed_machine_rule: "Suppress intraday P&L / floating-balance monitoring after entry. Performance review cadence = monthly and yearly aggregates (win rate, % return), not per-trade or per-day dollar totals."
+  status: proposed
+  ambiguity: "Behavioral/UX guardrail rather than an execution rule; how strictly to enforce 'don't look' is a product decision."
+  counterexamples: []
+
+- id: tjr-how-to-take-a-win-life-lessons-r06
+  teacher_statement: "Don't be happy about a win, it's a learning opportunity. Why did I win? Let me analyze it... understand why you won and figure out how to repeat it. When you take a win, journal it."
+  source_timestamp: "13:39"
+  proposed_machine_rule: "Require a post-trade journal/attribution entry for every closed trade INCLUDING wins (not only losses) before the next session unlocks. A win with no documented causal reasoning is flagged as 'luck'."
+  status: proposed
+  ambiguity: "TJR mandates journaling both wins and losses but gives no required fields/schema for the win attribution."
+  counterexamples: []
+
+- id: tjr-how-to-take-a-win-life-lessons-r07
+  teacher_statement: "Should you be happy about a win? No, you've got to be emotionless. If a trade is running and you screenshot it you should probably close that trade. Act like you've been there before."
+  source_timestamp: "05:32"
+  proposed_machine_rule: "Behavioral flag: screenshotting/broadcasting a still-open trade is a discipline violation (emotional attachment). No action on a running trade should be taken in response to it being 'up'."
+  status: proposed
+  ambiguity: "This is a soft behavioral norm, not directly executable by an automated engine; belongs to a discipline-scorer, not the execution path."
+  counterexamples: []

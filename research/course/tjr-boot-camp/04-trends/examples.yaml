@@ -1,0 +1,36 @@
+# Chart walkthroughs shown in the lesson. These are illustrative/teaching walk-throughs on
+# live charts (gold, on daily/30m), NOT clean backtestable trade setups with entry/SL/TP.
+# Timestamps are approximate to the on-chart narration.
+
+- timestamp: "04:34"
+  instrument: gold (XAUUSD)
+  timeframe: daily
+  direction: long-then-flip
+  setup_components:
+    - "high -> low -> higher high -> higher low (repeated) = uptrend"
+    - "higher high, then lower low ('surpassed this') = break of structure"
+    - "after break, direction flipped and continued in new direction"
+  stated_outcome: "Illustrates trend identification (HH/HL) and that a break of structure flips direction; price 'continued that for a while' after the flip."
+  suitable_for_dataset: false
+
+- timestamp: "10:28"
+  instrument: gold (XAUUSD) (implied / general)
+  timeframe: multi (4H+daily bias, 30m sweep, 5m BOS)
+  direction: short
+  setup_components:
+    - "4-hour and daily trend = bearish (HTF bias down)"
+    - "liquidity sweep on the 30-minute"
+    - "break of structure to the downside on the 5-minute"
+  stated_outcome: "'We just caught the top of the next leg down' — high-probability short catching the HTF continuation with an optimized LTF entry. Described as the ideal stacked read, not a logged trade."
+  suitable_for_dataset: false
+
+- timestamp: "12:39"
+  instrument: gold (XAUUSD)
+  timeframe: "~30-minute"
+  direction: short
+  setup_components:
+    - "consolidation (HH/HL that stayed static/stagnant, not a trend)"
+    - "break of the floor/low = market structure shift into downtrend"
+    - "then high -> low -> lower high -> lower low -> lower high; expecting a lower low targeting liquidity below"
+  stated_outcome: "Shows consolidation resolving into a downtrend and projects continuation to a lower low into 'this area of liquidity.' Teaching projection, no entry/stop/target given."
+  suitable_for_dataset: false

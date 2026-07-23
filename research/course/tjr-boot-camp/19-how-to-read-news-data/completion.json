@@ -1,0 +1,12 @@
+{
+  "lesson_number": 19,
+  "video_id": "w5sUCqFH3Lg",
+  "slug": "how-to-read-news-data",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 40190,
+  "concepts_count": 9,
+  "rules_count": 8,
+  "examples_count": 3,
+  "notes": "CORE news-avoidance lesson. TJR names exactly four always-avoid releases: CPI, PPI, FOMC, NFP (non-farm payroll). Calendar tool = Forex Factory (forexfactory.com). Impact color coding: red folder = high impact, orange folder = medium, yellow folder = low/ignore, gray folder = bank holidays/non-trading days. Key stated time buffers: on non-forbidden red/orange days he waits 15-20-30 min after the release before considering a trade; concrete example he cites market open 9:30, news at 10:00, he will not trade until 10:00 then really 10:30. Exact universal 'N minutes before' buffer is NOT explicitly stated as a number for the before-side (recorded in ambiguities.md, confidence low). Timezone: Forex Factory auto-localizes to the user's timezone; his examples use 8:30/8:45/8:50 and 9:30/10:00/10:30 (US Eastern implied, not explicitly named). All four artifacts written plus proposed-rules.yaml, examples.yaml, ambiguities.md, verification-questions.md."
+}

@@ -1,0 +1,101 @@
+- name: Don't trade down when all higher timeframes say up
+  teacher_definition: >-
+    "You don't want to be trading down when you have all those high timeframes
+    saying up." GU had weekly+daily up but 4H+1H down - a mix of biases, "stuff
+    you don't want to be taking."
+  source_timestamp: "05:40"
+  codex_interpretation: >-
+    Directional gate: suppress short signals when weekly AND daily are both
+    bullish (and vice versa), even if lower timeframes have broken down. Mixed
+    biases -> no trade.
+  confidence: high
+  requires_confirmation: false
+
+- name: Overextended-at-equilibrium is a low-quality trade
+  teacher_definition: >-
+    TJR calls the GU trade "not necessarily a great trade" because the daily was
+    "real overextended" and price was at daily equilibrium - a "potential" trade
+    at best, one he says he shouldn't have taken.
+  source_timestamp: "12:31"
+  codex_interpretation: >-
+    Penalize setups where the HTF is overextended and price is merely at
+    equilibrium without full alignment; prefer no-trade. "Overextended" is not
+    quantified.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Conviction-scaled de-risking (15 vs 100 lots)
+  teacher_definition: >-
+    Because the GU trade was low-conviction, TJR "severely de-risked" - ~15 lots
+    versus his usual ~100 lots (about a tenth) - and used a slightly larger stop
+    than normal for GU.
+  source_timestamp: "13:02"
+  codex_interpretation: >-
+    Supports conviction-scaled sizing, BUT TJR's own conclusion is he should have
+    taken NO trade; a machine should prefer no-trade over a de-risked marginal
+    trade. Treat de-risking as a human discretionary act, not an approved rule.
+  confidence: medium
+  requires_confirmation: true
+
+- name: The A+ setup he skipped (GJ)
+  teacher_definition: >-
+    The best trade of the day was GJ: daily bearish, price tapped a daily order
+    block, drew to the Asian session high, reacted down with a break of structure
+    - all in the daily-bias direction. "This is probably the best trade we could
+    have taken today."
+  source_timestamp: "16:24"
+  codex_interpretation: >-
+    A+ template = HTF order-block mitigation + draw to named session liquidity +
+    reaction + trend-aligned BOS. Reward this pattern in the scorer.
+  confidence: high
+  requires_confirmation: true
+
+- name: 15-pip stop above Asian session highs
+  teacher_definition: >-
+    On the GU entry, stops were placed above the Asian session highs; TJR
+    "matched it up so it was a 15-pip stop."
+  source_timestamp: "13:55"
+  codex_interpretation: >-
+    Concrete SL placement: just beyond the swept session-liquidity high; resulting
+    stop distance ~15 pips on GU. Stop distance is instrument/setup dependent, not
+    a fixed constant.
+  confidence: high
+  requires_confirmation: false
+
+- name: Exit on consolidation stall / structure break against you
+  teacher_definition: >-
+    After price consolidated in profit for ~2-2.5 hours, once it broke structure
+    to the upside (against the short) TJR exited: "price has been consolidating
+    for literally 2.5 hours now, I'm done with this."
+  source_timestamp: "15:00"
+  codex_interpretation: >-
+    Time-in-trade / range-stall exit: close a trade that has stalled in a range
+    beyond a threshold, or on a counter-direction BOS. Threshold (~2h) is a
+    discretionary example, not a stated constant.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Don't short into bullish daily + LTF bullish confirmation
+  teacher_definition: >-
+    "No reason to be going short on a pair when the daily is in bullish conditions
+    and we start to see bullish confirmation on lower timeframes - that's never a
+    good thing to do."
+  source_timestamp: "17:16"
+  codex_interpretation: >-
+    Reinforces the directional gate: exit/deny shorts once the daily is bullish
+    and LTF confirmation turns bullish. Mirror for longs.
+  confidence: high
+  requires_confirmation: false
+
+- name: Break-even is a good outcome for a bad-conviction trade
+  teacher_definition: >-
+    Closing GU at +$199 (essentially break-even) is "good enough" because it
+    wasn't a trade he'd have wanted in the first place and it took too long; late
+    in the day (2pm) he'd rather keep himself safe than risk hitting TPs.
+  source_timestamp: "17:37"
+  codex_interpretation: >-
+    Supports scratching/closing marginal trades near break-even rather than
+    holding for target, especially late in session. "Late in the day" cutoff not
+    numerically defined.
+  confidence: medium
+  requires_confirmation: true

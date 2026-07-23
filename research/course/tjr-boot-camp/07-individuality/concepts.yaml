@@ -1,0 +1,76 @@
+- name: Individuality (don't copy-paste another trader)
+  teacher_definition: "You should not aspire to be somebody else other than you… everyone's brain is different, everyone is their own person and you shouldn't try and copy and paste yourself to make you something you are not. This is a very individualistic thing."
+  source_timestamp: "01:21"
+  codex_interpretation: "Core thesis: a trader must build a personalized strategy rather than blindly mirroring a mentor. Meta-principle, not a chart rule; it gates which components a trader adopts."
+  confidence: high
+  requires_confirmation: false
+
+- name: Don't force a strategy that doesn't click
+  teacher_definition: "If my strategy doesn't click in your head but another mentor's strategy you understand completely and it works for you — stop trying to force something that doesn't work just because you have some sort of attachment to it. Being able to admit 'I'm bad at this' and make a change."
+  source_timestamp: "03:11"
+  codex_interpretation: "Behavioral guardrail: drop setups/strategies you don't genuinely understand; comprehension is a prerequisite to trading a method. Emotional attachment to a strategy is a documented anti-pattern."
+  confidence: high
+  requires_confirmation: false
+
+- name: Keep discipline/psychology even if you drop the strategy
+  teacher_definition: "If you've done your time trying to learn my strategy and just can't understand it, that's completely fine, don't listen to me anymore [for strategy] — but listen to my discipline stuff, listen to my psychology stuff, it'll help you, and use a completely different strategy."
+  source_timestamp: "04:14"
+  codex_interpretation: "Separates the transferable layer (discipline/psychology) from the strategy layer. A trader can adopt TJR's process/mindset while running a different entry model."
+  confidence: high
+  requires_confirmation: false
+
+- name: Modular strategy / mix-and-match components
+  teacher_definition: "Grab pieces of strategies that you know and understand. My strategies are all just based off of simple concepts, plugging them into an execution order, and then taking the trade. If you understand only liquidity + break of structure, those two in itself you can take a trade off of; or order blocks + break of structure + SMT divergence."
+  source_timestamp: "04:33"
+  codex_interpretation: "The strategy is decomposable: concepts (liquidity sweep, BOS, FVG, order block, SMT) are combined in an execution order. A valid setup can use a SUBSET of components, not all. Named valid combos: {liquidity, BOS} and {order block, BOS, SMT}."
+  confidence: medium
+  requires_confirmation: true
+
+- name: TJR does not trade SMT divergence
+  teacher_definition: "…also like SMT divergence, which I won't talk about in here because I don't trade it and I don't even know what the [expletive] it is. Everyone loves talking about it, I don't even know what that is."
+  source_timestamp: "05:33"
+  codex_interpretation: "TJR explicitly excludes SMT (Smart Money Technique / correlated-pairs) divergence from his own strategy. Flag for any downstream rule set that assumes SMT is part of the TJR method — it is not."
+  confidence: high
+  requires_confirmation: false
+
+- name: There are a million ways to trade
+  teacher_definition: "There's a million ways to trade and a bunch of them are profitable. Don't think this course or this strategy is so locked down that you must follow every single one of these things or else you will suck — that's not how this works. I'm just teaching you what I know."
+  source_timestamp: "06:13"
+  codex_interpretation: "Anti-dogma framing: the taught strategy is not a rigid all-or-nothing checklist. Context, not a machine rule. Tempers strictness of any 'must follow all rules' interpretation."
+  confidence: medium
+  requires_confirmation: false
+
+- name: London session fake-out (origin of his edge)
+  teacher_definition: "My Forex strategy I made up on my own — noticed through repetition sitting every London session on GJ [GBPJPY] a fake out I called the London session fake out: right when London session opens it goes super strong in one direction but then immediately flips direction, every single London session. That was pretty much my introduction to liquidity sweeps."
+  source_timestamp: "06:52"
+  codex_interpretation: "A session-scoped liquidity-sweep reversal: at London open on GBPJPY, an initial strong directional push reverses. Instrument (GJ=GBPJPY) and session (London open) are concrete; the mechanic maps to a liquidity sweep + reversal. Mechanics/entry NOT specified here — this is anecdote, not a spec."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Be adaptable, not dogmatic ("TJR said it so it's law")
+  teacher_definition: "Adapt to yourself and your own needs, not what I'm saying — not 'oh TJR said this so this is law.' You have to be adaptable within your own strategy. Do what works for you."
+  source_timestamp: "07:33"
+  codex_interpretation: "Guardrail against treating a mentor's statements as absolute law. Encourages self-adaptation of the ruleset. Behavioral, not mechanical."
+  confidence: high
+  requires_confirmation: false
+
+- name: Don't compare to peers / everyone's learning curve differs
+  teacher_definition: "This is a race between yourself. Don't do this together with your buddies, don't compete with your friends because everyone's learning curve is different. A friend hitting a second profitable month while you haven't had a profitable week will mess up your psychology."
+  source_timestamp: "08:57"
+  codex_interpretation: "Guardrail against social comparison, which he says damages trading psychology. Benchmark yourself against yourself, not peers. Behavioral."
+  confidence: high
+  requires_confirmation: false
+
+- name: Confidence in life is directly correlated to confidence in trading
+  teacher_definition: "You need a great mindset in life to benefit in trading. If you're the type person that needs everybody to love them, you're not fit for this. It is directly correlated: if you're not confident with yourself in life, you won't be able to confidently place your own trade — millions go long while millions go short at the same time."
+  source_timestamp: "13:24"
+  codex_interpretation: "TJR asserts a causal link between general self-confidence and the ability to execute trades against the crowd. Motivational thesis behind the homework; unfalsifiable as stated."
+  confidence: medium
+  requires_confirmation: false
+
+- name: Homework — be yourself for one day and journal it
+  teacher_definition: "Homework: be super open about what you love, do what you want, not listening to anybody else for one single day. Wear an outfit you love, voice your honest opinion, take a risk today, be productive — and document it: write down how it made you feel when you were being confident."
+  source_timestamp: "10:50"
+  codex_interpretation: "A confidence-building + journaling exercise. Maps to a 'log how a decision felt' habit. Not a market rule."
+  confidence: high
+  requires_confirmation: false

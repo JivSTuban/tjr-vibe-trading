@@ -1,0 +1,12 @@
+{
+  "lesson_number": 22,
+  "video_id": "RQSVIKddFHI",
+  "slug": "order-blocks-pt2",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 97768,
+  "concepts_count": 12,
+  "rules_count": 6,
+  "examples_count": 10,
+  "notes": "Core technical lesson: applying the Order Block definition to live charts across multiple timeframes. Central takeaway = the timeframe-coherence rule (stop-loss must match the timeframe of the BOS/OB, else you get stopped out). All 8 artifact types written (metadata, lesson-summary, concepts, completion, proposed-rules, examples, ambiguities, verification-questions) — none skipped. Part 2 of a 3-part Order Blocks thread: pt1 (~Day 20/21, verbal-only description) and pt3 (Day 24, 'in two days'). Examples are mostly illustrative 'spot-the-OB' scan-throughs; only 1 (GBPUSD daily play, ~10:50, stated ~1:12 R:R, 'we literally took this trade') is marked suitable_for_dataset=true. Heavy ASR corruption normalized: braking/breaker/rank structure -> BOS; 'rally down' -> down-leg; GJ -> GBPJPY; MSS used interchangeably with BOS. NY session open cited as 9:30 (timezone unstated); London open time not given. Numerous undefined thresholds recorded in ambiguities.md (OB leg boundary, SL offset, min R:R, TP splits)."
+}

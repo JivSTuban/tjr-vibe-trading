@@ -1,0 +1,12 @@
+{
+  "lesson_number": 8,
+  "video_id": "Lxnu7InGhGE",
+  "slug": "liquidity-pt1",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 30000,
+  "concepts_count": 5,
+  "rules_count": 2,
+  "examples_count": 0,
+  "notes": "Part 1 of 3-part Liquidity thread (08/10/12). Conceptual only: what liquidity is + why banks sweep it + MSS/BOS confirmation. No chart examples walked (examples.yaml skipped). 'How to spot' and 'how to trade' explicitly deferred to Pt 2/10 and Pt 3/12."
+}

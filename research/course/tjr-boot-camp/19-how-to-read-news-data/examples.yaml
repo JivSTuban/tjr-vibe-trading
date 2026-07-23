@@ -1,0 +1,33 @@
+# Illustrative news walk-throughs TJR narrates (not full entry/exit trades — used to teach reading/avoidance)
+- timestamp: "04:39"
+  instrument: "GBP/JPY and gold (XAU/USD)"
+  timeframe: "lower time frames (intraday)"
+  direction: "n/a — avoidance illustration"
+  setup_components:
+    - "CPI red-folder release day"
+    - "Massive wicks printed exactly when CPI came out"
+    - "Labeled 'unprobable price action — not price action you are able to trade'"
+  stated_outcome: "Do not trade; CPI causes havoc/large wicks. Illustrates the always-avoid CPI rule."
+  suitable_for_dataset: false
+
+- timestamp: "15:07"
+  instrument: "DXY / S&P 500 (SPX)"
+  timeframe: "intraday (candle when news dropped)"
+  direction: "n/a — bias-vs-price-action illustration"
+  setup_components:
+    - "CPI actual came out LESS than forecast (news bias = bad for USD)"
+    - "Bias would predict DXY down / S&P up"
+    - "Actual result: DXY rallied and 'ate up' the news drop; S&P faded"
+  stated_outcome: "Demonstrates news bias can be wrong — price action is superior; must wait for news and watch price."
+  suitable_for_dataset: false
+
+- timestamp: "08:47"
+  instrument: "GBP/JPY (his non-USD pair on a USD-heavy day)"
+  timeframe: "intraday"
+  direction: "n/a — timing/patience illustration"
+  setup_components:
+    - "Market opens 9:30; news scheduled 10:00"
+    - "Sit on hands until 10:00, then still wait to ~10:30 for price to develop"
+    - "Week flooded with news => de-risk, not actively trying to make money"
+  stated_outcome: "Even on a tradeable day, wait ~30 min past the release before considering entries; prefer no-trade during heavy-news weeks."
+  suitable_for_dataset: false

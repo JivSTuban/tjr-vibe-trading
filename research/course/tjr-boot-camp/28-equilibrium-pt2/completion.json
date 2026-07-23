@@ -1,0 +1,12 @@
+{
+  "lesson_number": 28,
+  "video_id": "-E7plUbSJUk",
+  "slug": "equilibrium-pt2",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 68000,
+  "concepts_count": 9,
+  "rules_count": 5,
+  "examples_count": 4,
+  "notes": "CORE technical; part 2 of 2 (Equilibrium on charts). Captured precisely: equilibrium = 0.5 of the current-trend swing (drawn low->high in uptrend, high->low in downtrend, re-anchored on new swings) -- this PINS DOWN the reference-swing gap left open in Day 26. Premium = above 0.5 = SELL zone; discount = 0.5 down to 0 = BUY zone; 'smart money buys discount / sells premium' (corrects Day 26 [07:00] slip, though pt2 wording is itself slightly tangled -- flagged). Settings: Gann box / fib exposing 0/0.5/1; ties 50% & ~61.8% ('64 mark') fib retrace to equilibrium. Equilibrium is a FILTER: combine with FVG/OB AT equilibrium + confirming BOS, stop beyond swing extreme, TP = laddered prior liquidity. Works every TF (monthly Gold, daily, 4h, 1h, 15m); scale HTF measure -> LTF entry; align weekly/daily bias. Includes 1 real Discord swing short (daily BOS down -> equilibrium -> 4h imbalance -> 1h BOS -> short, 4 TPs hit 3) but NO price levels -> not dataset-usable. All 8 files written; 4 examples all suitable_for_dataset:false. TJR states NO equilibrium pt3; next = 'putting everything together' series + later SL/TP/session-opens lessons. transcript_chars is an estimate."
+}

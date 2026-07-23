@@ -1,0 +1,12 @@
+{
+  "lesson_number": 41,
+  "video_id": "PyCPHiO2nj0",
+  "slug": "learn-from-losses",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 43000,
+  "concepts_count": 6,
+  "rules_count": 4,
+  "examples_count": 2,
+  "notes": "Psychology/adaptation lesson yielding process guardrails. KEY EXECUTION TIGHTENING: bare sweep+BOS entries are insufficient - require an additional building-block entry (OB, FVG, or equilibrium). Also: never overhaul strategy (tweak confluences/instrument only); no revenge trading; journal every trade; adaptive bias (HTF BOS against bias = flip/suspend). Losing streak = 2-3 losing weeks, not 2 days. NOTE cross-lesson tension with L36 (bias flip vs retrace) flagged in ambiguities. All 8 files written."
+}

@@ -1,0 +1,12 @@
+{
+  "lesson_number": 38,
+  "video_id": "1FunNCUw_jM",
+  "slug": "stop-losses",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 41000,
+  "concepts_count": 8,
+  "rules_count": 4,
+  "examples_count": 2,
+  "notes": "CORE RISK LESSON. SL = invalidation point, anchored just beyond the liquidity sweep (above for shorts / below for longs), NOT at the entry candle. Spread buffer: >=0.5 points minimum OR broker spread; live S&P example used 4 points. SL from structure+risk-tolerance, never fixed pips. Exceptions: inner-OB substitution for bad R:R, HTF scale-down for tighter stop. Guardrail: no trading on U.S. bank holidays. All 8 files written. Pairs with L37 (TP) and L39 (lot size) for the risk engine."
+}

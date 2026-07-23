@@ -1,0 +1,55 @@
+- name: Stop loss = invalidation area
+  teacher_definition: "Our stop loss always has a purpose, our stop loss is essentially our invalidation area."
+  source_timestamp: "02:31"
+  codex_interpretation: "SL is the price at which the trade thesis is proven wrong, not a fixed distance. Everything else derives from it."
+  confidence: high
+  requires_confirmation: false
+
+- name: SL above/below the liquidity sweep
+  teacher_definition: "They will typically almost always put their stop loss above the liquidity sweep, me myself included... if liquidity was actually taken out then price has no reason to come back above this high."
+  source_timestamp: "01:24"
+  codex_interpretation: "For shorts SL goes above the sweep high; for longs below the sweep low. If price returns past the sweep, the sweep was invalid and the trade is dead."
+  confidence: high
+  requires_confirmation: false
+
+- name: SL at the sweep, not at the entry high
+  teacher_definition: "It should not be right above this high... price could easily come back a little bit higher and then come back down. You want price to be above the liquidity sweep because that's where price would be invalidated."
+  source_timestamp: "03:39"
+  codex_interpretation: "Anchor SL to the sweep extreme, never to the entry candle's high/low. Prevents premature stop-out on a shallow poke."
+  confidence: high
+  requires_confirmation: false
+
+- name: Spread buffer on stop loss
+  teacher_definition: "At least put it like point five points, 0.5 points below the actual price point, or figure out what your spread is on your broker for the specific pair... if you put your stop loss directly on this exact price you will get stopped out by spread."
+  source_timestamp: "06:08"
+  codex_interpretation: "Add a spread buffer offset beyond the level: default >= 0.5 points, or the pair's broker spread. Live S&P example used 4 points. Configurable per instrument."
+  confidence: high
+  requires_confirmation: true
+
+- name: SL from risk tolerance + invalidation, not fixed points
+  teacher_definition: "Your stop loss should never be based purely off of points or Pips, it should be based off of where price is then invalidated, where your bias is invalidated at that point."
+  source_timestamp: "11:11"
+  codex_interpretation: "SL distance is an output of structure (sweep + buffer). Fixed-pip stops are wrong. Position sizing absorbs the variance (see L39 set-lot method)."
+  confidence: high
+  requires_confirmation: false
+
+- name: Elongated-stop exception (inner OB for R:R)
+  teacher_definition: "If the liquidity sweep is so high up that it would give you a terrible risk reward, then I try and find other confluences within here... I would put my stop above the order block and I wouldn't put it above the liquidity sweep."
+  source_timestamp: "04:24"
+  codex_interpretation: "When sweep-anchored SL gives bad R:R, substitute an inner OB/FVG as SL anchor. Higher risk because true invalidation is still the sweep; flag accordingly."
+  confidence: medium
+  requires_confirmation: true
+
+- name: HTF trade scale-down for tighter SL
+  teacher_definition: "You could scale into a relatively higher time frame and find a low, like one scale lower, that's underneath the liquidity sweep if you want to be extra safe."
+  source_timestamp: "09:10"
+  codex_interpretation: "On HTF trades with far sweeps, use a lower structure one timeframe scale below (but still under the sweep) as the SL anchor to tighten risk."
+  confidence: medium
+  requires_confirmation: true
+
+- name: No trading on bank holidays
+  teacher_definition: "Don't trade tomorrow, it's a bank holiday, U.S. bank holidays typically slow all the markets."
+  source_timestamp: "12:39"
+  codex_interpretation: "Behavioral guardrail: block/skip trading on U.S. bank holidays due to low volume/liquidity."
+  confidence: high
+  requires_confirmation: false

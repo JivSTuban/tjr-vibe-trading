@@ -1,0 +1,12 @@
+{
+  "lesson_number": 26,
+  "video_id": "j1pVK897oZQ",
+  "slug": "equilibrium",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 62000,
+  "concepts_count": 8,
+  "rules_count": 5,
+  "examples_count": 0,
+  "notes": "CORE technical lesson; part 1 of 2 (Equilibrium; pt2 = Day 28 does it on charts). VERBAL EXPLANATION video. Captured precisely: equilibrium = 50% of a swing high<->swing low range (fib 0.5, 'break-even price'); DISCOUNT = below 50% = cheap = BUY/long zone; PREMIUM = above 50% = expensive = SELL/short zone (Doritos analogy). Equilibrium is a GAUGE/FILTER, not a standalone entry -- pair with OB, FVG, or BOS; best combo = FVG inside a discount + reaction. IMPORTANT VERBAL SLIP flagged in ambiguities/verification: at [07:00] TJR mislabels above-50 as 'discount to go short' -- canonical is premium=short. BIGGEST GAP: the reference swing (which TF/leg) is NOT defined here -- deferred to Day 28. Skipped examples.yaml (no walked chart trades with prices; only a recent trade referenced verbally). Wrote metadata, lesson-summary, concepts, proposed-rules, ambiguities, verification-questions, completion (7 files). transcript_chars is an estimate."
+}

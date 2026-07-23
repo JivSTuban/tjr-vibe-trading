@@ -1,0 +1,21 @@
+- timestamp: "05:26"
+  instrument: S&P 500 (implied; traded on Zoom with Discord)
+  timeframe: 5m sweep + 1m break of structure (execution); overall daily bias bullish
+  direction: long
+  setup_components:
+    - overall daily bias bullish
+    - 5m liquidity sweep + 1m break of structure to the upside taken as the sweep
+    - entry off break of structure / candle close
+    - SL placed ~4 points below the sweep (buffer)
+  stated_outcome: "Got 'soft/wicked out' by a small move (stopped out), then price moved higher — daily bias ultimately correct but this specific execution invalidated. A real losing trade."
+  suitable_for_dataset: true
+
+- timestamp: "08:12"
+  instrument: unspecified (higher-timeframe example)
+  timeframe: 15m liquidity sweep + 15m break of structure to upside
+  direction: long
+  setup_components:
+    - 15m liquidity sweep + 15m BOS up (could have been a long-term 15m trade)
+    - illustrates scaling down to tighten SL vs putting stop far below the 15m sweep
+  stated_outcome: "Teaching example of the HTF-scale-down SL exception; no P/L stated."
+  suitable_for_dataset: false

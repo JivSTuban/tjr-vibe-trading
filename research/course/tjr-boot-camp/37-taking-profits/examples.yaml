@@ -1,0 +1,40 @@
+- timestamp: "06:16"
+  instrument: S&P 500
+  timeframe: 4h execution
+  direction: long
+  setup_components:
+    - 4h break of structure to the upside after liquidity sweep
+    - entry off FVG fill; stop underneath
+    - TP1 = high draw-on-liquidity at ~1:1
+    - TP2 = next draw on liquidity (skipped OB that envelops the high)
+    - TP3 = another draw on liquidity higher up
+  stated_outcome: "Illustrative multi-TP setup; no P/L stated (teaching example)."
+  suitable_for_dataset: false
+
+- timestamp: "07:21"
+  instrument: Forex (unspecified pair, generic)
+  timeframe: mixed (entry TF unspecified; targets 4h/1h)
+  direction: long
+  setup_components:
+    - liquidity sweep -> breaker structure to the upside -> enter
+    - want 1:1 minimum
+    - TP1 = top of imbalance within
+    - TP2 = base of a 4h order block
+    - TP3 = 1h order block
+    - TP4 = liquidity all the way up
+  stated_outcome: "Illustrative 4-TP scale-out; no P/L (teaching example)."
+  suitable_for_dataset: false
+
+- timestamp: "08:35"
+  instrument: unspecified (real trade from Friday)
+  timeframe: 5m break of structure + 1m entry
+  direction: short
+  setup_components:
+    - came into 1h order block, broke structure to downside
+    - entered off 5m break of structure + 1m order block entry
+    - stop slightly above entry high
+    - TP1 = 5m order block (targeted 5m not 1m, since HTF holds higher power)
+    - TP2 = under the second draw of liquidity
+    - additional TP = 15m FVG after scaling up
+  stated_outcome: "Closed for break-even because 'price was taking forever.' Real trade but exited flat."
+  suitable_for_dataset: true

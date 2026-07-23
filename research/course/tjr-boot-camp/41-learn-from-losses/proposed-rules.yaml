@@ -1,0 +1,31 @@
+- id: tjr-learn-from-losses-r01
+  teacher_statement: "Now I'm only going to take liquidity sweep + break of structure + order block entry / fair value gap entry / equilibrium entry. I wasn't using any extra confluence to enter."
+  source_timestamp: "02:52"
+  proposed_machine_rule: "Reject entries that consist of only liquidity_sweep + BOS. Require at least one additional building-block entry confluence: order block entry, FVG entry, or equilibrium entry, in the bias direction."
+  status: proposed
+  ambiguity: "Whether exactly one extra confluence suffices or more are preferred; how 'equilibrium entry' is defined precisely (50% of which leg)."
+  counterexamples: []
+
+- id: tjr-learn-from-losses-r02
+  teacher_statement: "If we get a break of structure to the downside on a high time frame and your bias was bullish, adapt and switch, because you'll continuously get stopped out."
+  source_timestamp: "09:26"
+  proposed_machine_rule: "On a confirmed HTF break of structure opposing the current daily/HTF bias, flip or suspend the bias; stop taking trades in the old direction until re-confirmed."
+  status: proposed
+  ambiguity: "Which timeframe counts as 'high' for the override, and how it reconciles with L36's retrace ladder (a LTF BOS is just a retrace, not a flip)."
+  counterexamples: []
+
+- id: tjr-learn-from-losses-r03
+  teacher_statement: "The worst thing you can do on a losing streak is continuously try and make back your money."
+  source_timestamp: "04:25"
+  proposed_machine_rule: "Disable revenge-trading: do not increase position size or trade frequency after a loss; enforce a daily loss/stop-out cap after which trading halts for the day."
+  status: proposed
+  ambiguity: "Daily loss cap number not stated in this lesson."
+  counterexamples: []
+
+- id: tjr-learn-from-losses-r04
+  teacher_statement: "Journal your trades, understand why you're losing... even on your wins, why did I win, how could I have gotten a better risk reward."
+  source_timestamp: "02:43"
+  proposed_machine_rule: "Log every trade (win and loss) with entry reason, confluences used, outcome, and improvement note; use aggregated patterns to auto-flag recurring mistake types."
+  status: proposed
+  ambiguity: "Taxonomy of mistake types to track is not enumerated."
+  counterexamples: []

@@ -1,0 +1,53 @@
+# NOTE: This lesson is a rapid chart-drill with MANY (~20+) unnamed example charts.
+# TJR narrates "liquidity sweep -> break of structure -> order block -> execute -> rallies/capitulates"
+# without stating instrument, timeframe, dates, entry/SL/TP prices for most. Only a few are identifiable.
+# None are suitable_for_dataset: they lack instrument/timeframe/price specificity and TJR deliberately
+# omits SL/TP. They are recognition drills, not trade case studies.
+
+- timestamp: "10:45"
+  instrument: "unspecified (generic chart drill)"
+  timeframe: "unspecified"
+  direction: short
+  setup_components:
+    - "liquidity sweep (close below the low / high taken out)"
+    - "break of structure"
+    - "order block = candle that caused the sweep"
+    - "execute on return into the order block (not on BOS)"
+  stated_outcome: "price capitulates (falls) after the OB entry"
+  suitable_for_dataset: false
+
+- timestamp: "11:41"
+  instrument: "unspecified (generic chart drill)"
+  timeframe: "unspecified"
+  direction: long
+  setup_components:
+    - "lows swept / taken out"
+    - "structure broken to the upside"
+    - "order block = leg down that filled the orders"
+    - "execute when price comes into the order block"
+  stated_outcome: "price rallies following"
+  suitable_for_dataset: false
+
+- timestamp: "16:27"
+  instrument: "S&P (ES / SPX) -- stated as 'the s p'"
+  timeframe: "low time frame; scaled down 'to the five minute' [07:15/15:47]"
+  direction: long
+  setup_components:
+    - "liquidity sweep + break of structure"
+    - "order block (described as a 'pretty shitty order block' but valid)"
+    - "price comes back into the price range where orders were filled"
+    - "execute"
+  stated_outcome: "price rallies following"
+  suitable_for_dataset: false
+
+- timestamp: "16:38"
+  instrument: "GU (GBP/USD) -- mentioned 'we can do this on gu' [12:49]"
+  timeframe: "unspecified (asset-class switch demo)"
+  direction: unspecified
+  setup_components:
+    - "liquidity sweep"
+    - "structure break"
+    - "order block / leg that filled orders"
+    - "execute on return into OB"
+  stated_outcome: "not clearly stated for this specific chart (rapid drill)"
+  suitable_for_dataset: false

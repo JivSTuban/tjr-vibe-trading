@@ -1,0 +1,42 @@
+# Chart walkthroughs. TJR narrates each as sweep -> BOS -> confluence -> target.
+# Illustrative flip-throughs; most lack precise entry/SL/TP levels so suitable_for_dataset is conservative.
+
+- timestamp: "10:29"
+  instrument: S&P 500
+  timeframe: daily
+  direction: short (reversal)
+  setup_components: [prominent high swept (BSL), break of structure to downside at most-recent low, FVG/imbalance fill (4h) or order block reaction]
+  stated_outcome: "price falls; targets previous prominent lows (draw-on-liquidity magnet)"
+  suitable_for_dataset: false  # illustrative; no exact entry/SL/TP prices
+
+- timestamp: "13:03"
+  instrument: GBPUSD
+  timeframe: 4h / 1h
+  direction: short (reversal)
+  setup_components: [4h highs swept on the 1h (BSL), break of structure at named candle, retrace up into an order block, capitulation down]
+  stated_outcome: "takes out prominent low and fills imbalances; multiple TP zones available"
+  suitable_for_dataset: false  # illustrative; entry described qualitatively
+
+- timestamp: "14:11"
+  instrument: GBPUSD
+  timeframe: 1h / 5m
+  direction: short (reversal)
+  setup_components: [highs barely wicked (sweep), break of structure at a low (down-candle/up-candle), scale to 5m, imbalance fill, confirmation]
+  stated_outcome: "go short toward lows / imbalance below"
+  suitable_for_dataset: false  # illustrative
+
+- timestamp: "15:08"
+  instrument: Gold (XAUUSD)
+  timeframe: unspecified (intraday)
+  direction: long (reversal)
+  setup_components: [lows swept (SSL), quick regain / closure above, dip into imbalance = entry zone]
+  stated_outcome: "price draws back up to previous highs; orders liquidated/filled, then chops"
+  suitable_for_dataset: false  # illustrative; no exact levels
+
+- timestamp: "15:45"
+  instrument: various (1m/15m flip-throughs)
+  timeframe: 1m / 15m
+  direction: both
+  setup_components: [liquidity sweep, immediate reversal]
+  stated_outcome: "sweep rally / sweep drop repeated to show pattern frequency"
+  suitable_for_dataset: false  # rapid illustrative examples, no setups detailed

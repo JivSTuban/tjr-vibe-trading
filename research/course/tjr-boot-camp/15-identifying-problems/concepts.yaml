@@ -1,0 +1,97 @@
+concepts:
+  - name: Three biggest problems (non-strategy self-audit)
+    teacher_definition: >
+      Write down the three biggest issues you have with trading, and it has
+      nothing to do with strategy — it must be about risk management, emotions,
+      or psychology, not a "bitch-ass strategy."
+    source_timestamp: "01:52"
+    codex_interpretation: >
+      Onboarding/journal prompt: force the trader to enumerate 3 behavioral
+      (non-strategy) failure modes. These become the seed list of guardrails to
+      monitor. Not a market rule.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Pyramid root-cause method (ask "why" down to root emotion)
+    teacher_definition: >
+      For each problem, ask "why am I doing it / what is my reasoning," then find
+      the emotion driving it, then keep going "down that pyramid" to the base
+      cause. Identify the problem, why it's a problem, why you do it, and what
+      emotion leads you to act.
+    source_timestamp: "04:31"
+    codex_interpretation: >
+      Structured root-cause taxonomy for the trade journal: every logged mistake
+      gets tagged problem -> why -> root emotion. Enables detecting recurring
+      root causes rather than surface symptoms.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Solve the root, not the symptom (leaves vs base / fungus network)
+    teacher_definition: >
+      Don't snip leaves at the top; take the base out and throw it out. Like a
+      fungus network under a lawn — cut the underground connections (bad habits)
+      and the problem stops spreading. Fixing the root eliminates the symptom and
+      prevents it affecting other trades and other areas of life.
+    source_timestamp: "13:05"
+    codex_interpretation: >
+      Prioritize remediation at the root-emotion level over patching individual
+      symptomatic behaviors. Metaphor only; no machine threshold.
+    confidence: high
+    requires_confirmation: true
+
+  - name: Root emotions catalog (greed, fear, revenge, FOMO, overconfidence, confusion)
+    teacher_definition: >
+      Emotions driving bad habits include greed (wanting more money),
+      revenge trading (upset after a loss), fear of missing out (thinking a trade
+      is a one-of-one 1:10 RR), overconfidence (thinking every trade hits TP and
+      blaming the market when it doesn't), fear / under-confidence, confusion,
+      lack of bias, lack of knowledge.
+    source_timestamp: "03:31"
+    codex_interpretation: >
+      Enumerated tag set for the loss-attribution field in the journal:
+      {greed, fear, revenge, fomo, overconfidence, confusion, lack_of_bias,
+      lack_of_knowledge}. Under-confidence is treated as a subtype of fear.
+    confidence: high
+    requires_confirmation: true
+
+  - name: Accountability — every loss is your fault only
+    teacher_definition: >
+      The market doesn't care about you. Every mistake, every loss, every problem
+      in these markets is your fault and your fault only; the sooner you identify
+      and understand that, the better off you'll be.
+    source_timestamp: "05:24"
+    codex_interpretation: >
+      Journal constraint: a loss may never be attributed to "the market"; every
+      loss must carry a trader-side root cause.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Million-dollar-job mindset (never repeat a known mistake)
+    teacher_definition: >
+      Treat trading like the best (million-dollar) job of your life. If your boss
+      said "I won't fire you but you must never make that mistake again," you'd
+      make sure you never repeat it. If he had $10M and lost one trade with a
+      known cause, he'd fix it because it's real money left on the table.
+    source_timestamp: "10:35"
+    codex_interpretation: >
+      Motivational framing for a "never-repeat" rule: once a mistake's root is
+      identified, it should be added to a hard do-not-repeat checklist. Attribution
+      of the quote (Alex Hormozi) is uncertain per TJR.
+    confidence: medium
+    requires_confirmation: true
+
+  - name: Feel the emotion, don't act on it (self-control)
+    teacher_definition: >
+      TJR gets greedy every single time he trades — sitting in $20k profit he
+      thinks "I could close and buy my dad a Rolex" — but he does not act on it.
+      The difference between good and bad outcomes is self-control: identify the
+      emotion when it comes up and say "nope, not today." He can resist because he
+      has money and knows his skill (he'll make it back tomorrow).
+    source_timestamp: "16:34"
+    codex_interpretation: >
+      Reinforces that guardrails must gate ACTIONS (order placement / early exit)
+      rather than try to suppress the emotion. The "I have money + know my skill"
+      basis explains why security (outside income) is the recommended fix for
+      greed/fear roots.
+    confidence: high
+    requires_confirmation: true

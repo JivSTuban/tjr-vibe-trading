@@ -1,0 +1,48 @@
+- name: Encourage / accept losses (no 100% win rate)
+  teacher_definition: "You WILL lose — it's part of the game, encourage it because you learn from it. No profitable trader has a 100% win rate. The market is built to beat you. Getting upset means you're doing something wrong (over-risked or over-traded)."
+  source_timestamp: "00:49"
+  codex_interpretation: "Losses are expected; a losing trade is not evidence the system failed. Emotional reaction to a loss is itself the failure mode to guard against."
+  confidence: high
+  requires_confirmation: false
+
+- name: Learn from loss, take ownership (no blame)
+  teacher_definition: "Ask 'why didn't it go my direction / how can I learn' not 'why did I take it.' It's your fault, not the market's — even if news stopped you out, the lesson is 'maybe I shouldn't trade before news.' It's all probability; the same setup could win tomorrow."
+  source_timestamp: "04:09"
+  codex_interpretation: "Post-loss review is a structured learning step, not blame. Outcomes are probabilistic; a single loss does not invalidate a setup."
+  confidence: high
+  requires_confirmation: false
+
+- name: No revenge trading / no reaction
+  teacher_definition: "When I lose I don't revenge trade, don't over trade, don't react — there should be no reaction besides happiness. I lost 9k on GU and 10k and still smiled because I stuck to my rules and the money comes back."
+  source_timestamp: "12:28"
+  codex_interpretation: "Behavioral guardrail: after a loss, enforce a cooldown and block re-entry motivated by recovery. Loss must not change subsequent sizing or trade selection."
+  confidence: high
+  requires_confirmation: true
+
+- name: Demo-gate before live
+  teacher_definition: "Encourage losing on demo — you'll trade demo anyway, so lose there and save money + emotional trauma. Get profitable on demo, then go live; expect ~a week of emotional losses, then trust your proven edge. ~one-month turnaround."
+  source_timestamp: "10:00"
+  codex_interpretation: "Require a demonstrated profitable demo record before enabling live risk. Expect an initial live-adjustment drawdown period."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Be robotic / you are the algo
+  teacher_definition: "Be robotic with this. You are the algo, you're the EA, you're the trading bot — treat yourself like that. Follow the trading plan step by step."
+  source_timestamp: "11:59"
+  codex_interpretation: "Deterministic, rule-following execution is the explicit goal — directly supports full automation of the discretionary strategy."
+  confidence: high
+  requires_confirmation: false
+
+- name: Take days off when edge is degraded
+  teacher_definition: "Take days off for news, when you've been up late, or when you're emotionally compromised (e.g. a breakup) — times you're least probable to win and most likely to react."
+  source_timestamp: "13:43"
+  codex_interpretation: "No-trade filters: block trading around high-impact news and during degraded-state conditions (fatigue/emotion). News-day avoidance recurs across the course."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Evaluate on a yearly percentage basis
+  teacher_definition: "Stop thinking day-to-day, week-to-week, month-to-month. What's coming home in the year? What percentage gain am I getting?"
+  source_timestamp: "15:52"
+  codex_interpretation: "Primary performance metric = annual % return, not per-session P/L. Reinforces long-horizon evaluation (lessons 09, 13)."
+  confidence: medium
+  requires_confirmation: true

@@ -1,0 +1,20 @@
+- timestamp: "01:23"
+  instrument: S&P 500 -> Forex switch
+  timeframe: n/a (regime/instrument switch)
+  direction: n/a
+  setup_components:
+    - S&P was choppy / no bias / stopping him out ~2 months prior
+    - tweak = switch instrument from S&P to Forex
+  stated_outcome: "Had a 100K week on Forex after switching. Illustrates 'small tweak' recovery."
+  suitable_for_dataset: false
+
+- timestamp: "06:38"
+  instrument: gold ("gu"/GU is GBP-USD; gold referenced separately) and GBP/USD
+  timeframe: mixed (recap of prior day's trades)
+  direction: short then long context
+  setup_components:
+    - took a short, got stopped out, then price fell (bias correct)
+    - GU long setup would have hit TP1, TP2, maybe TP3
+    - every bias correct; only executions off (bare sweep+BOS entries)
+  stated_outcome: "Losing executions despite correct bias; used to justify adding entry confluence. Trades were stop-outs, not clean wins/losses suitable for a labeled dataset."
+  suitable_for_dataset: false

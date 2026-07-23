@@ -1,0 +1,48 @@
+- name: Take profit at building blocks
+  teacher_definition: "Where are we looking to take profit at? It's at our building blocks... our areas where price is likely going to react off of or where price could fill orders."
+  source_timestamp: "01:49"
+  codex_interpretation: "TP target set = {order block edges, FVG/imbalance top+bottom, liquidity pools, liquidity voids}. Price is expected to draw to these ('price magnets')."
+  confidence: high
+  requires_confirmation: false
+
+- name: TP timeframe = execution TF or one higher
+  teacher_definition: "I set it off of the one higher time frame draw on liquidity on whatever execution time frame I'm on... I like to set take profits based on the execution time frame that we're on."
+  source_timestamp: "03:39"
+  codex_interpretation: "TP1 = nearest draw-on-liquidity on execution_TF+1 in trade direction; remaining TPs = building blocks on execution_TF. Never use a TF lower than execution."
+  confidence: high
+  requires_confirmation: true
+
+- name: First take profit minimum 1:1
+  teacher_definition: "Most of the time my first take profit is going to be minimum one to one okay that's kind of the goal."
+  source_timestamp: "06:39"
+  codex_interpretation: "Floor R:R for TP1 = 1.0. Reject/flag setups where nearest valid target < 1:1."
+  confidence: high
+  requires_confirmation: false
+
+- name: Beginner-realistic first-TP R:R range
+  teacher_definition: "Most of you guys aren't going to have a one to ten risk reward for your first take profit, most of you is going to be like one to one, one to one point five, one to two, one to three, one to four, one to five."
+  source_timestamp: "05:52"
+  codex_interpretation: "Expected first-TP R:R band ~ 1:1 to 1:5. 1:10 first-TP is unrealistic for most. Use as sanity bounds for the scorer."
+  confidence: high
+  requires_confirmation: false
+
+- name: Number of take profits (3-4)
+  teacher_definition: "I usually set like three or four take profits, okay that's not really necessary... you guys can put that into your trading plan however many take profits you want."
+  source_timestamp: "04:21"
+  codex_interpretation: "Default TP count 3-4, configurable. Scale-out across multiple targets rather than single exit."
+  confidence: medium
+  requires_confirmation: true
+
+- name: TP not from one-minute confluences
+  teacher_definition: "Ideally I'd like to set take profits not based off of one minute confluences, because higher time frame holds higher power."
+  source_timestamp: "09:26"
+  codex_interpretation: "Even if entry used a 1m building block, target the execution-TF (e.g. 5m) building block, not the 1m one. Enforces the TF guard."
+  confidence: high
+  requires_confirmation: false
+
+- name: TP priority is lowest in skill hierarchy
+  teacher_definition: "The largest thing would be daily bias and then execution and then stop loss and then taking profits, this is the least of your worries."
+  source_timestamp: "05:33"
+  codex_interpretation: "Skill/importance ordering: daily bias > execution > stop loss > take profit. Good execution makes TP nearly automatic."
+  confidence: medium
+  requires_confirmation: false

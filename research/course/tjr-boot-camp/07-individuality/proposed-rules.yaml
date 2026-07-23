@@ -1,0 +1,41 @@
+# Psychology lesson — rules are BEHAVIORAL GUARDRAILS, not chart signals. All status: proposed.
+
+- id: tjr-individuality-r01
+  teacher_statement: "Grab pieces of strategies that you know and understand… if you understand only liquidity + break of structure, those two in itself you can take a trade off of. Do what works for you; if liquidity sweeps never clicked, don't use them."
+  source_timestamp: "04:33"
+  proposed_machine_rule: "Only enable a strategy component (liquidity sweep, BOS, FVG, order block, SMT) if the operator has explicitly marked it as understood/validated. Do NOT require the full component set; a configured subset (minimum documented: {liquidity_sweep, BOS}) is a permitted valid setup. Never auto-trade a component the operator has not opted into."
+  status: proposed
+  ambiguity: "Which subsets are 'valid enough' is not exhaustively defined; only two example combos are named ({liquidity,BOS}, {order block,BOS,SMT}). No minimum-confluence count given. 'Understand' is not operationalized (no backtest threshold stated)."
+  counterexamples: []
+
+- id: tjr-individuality-r02
+  teacher_statement: "Don't force something that doesn't work just because you have some attachment to it… be able to admit 'I'm bad at this' and make a change."
+  source_timestamp: "03:11"
+  proposed_machine_rule: "Guardrail: if a setup/component shows the operator cannot execute or evaluate it (e.g. repeated flagged misreads or a self-marked 'don't understand'), disable that component rather than continuing to trade it. Attachment to a losing/unclear method is not a reason to keep it enabled."
+  status: proposed
+  ambiguity: "No quantitative trigger given (how many failures, what performance threshold) for when to drop a component. Purely qualitative in the lesson."
+  counterexamples: []
+
+- id: tjr-individuality-r03
+  teacher_statement: "This is a race between yourself… don't compete with your friends because everyone's learning curve is different — that's going to mess up your psychology."
+  source_timestamp: "08:57"
+  proposed_machine_rule: "Behavioral guardrail: benchmark performance only against the trader's own historical baseline, never against other traders/peers. Do not surface peer-comparison leaderboards in a way that could drive tilt."
+  status: proposed
+  ambiguity: "Advice about human psychology; not directly mechanizable for an auto-trader. Applies to UI/journaling layer, not order logic."
+  counterexamples: []
+
+- id: tjr-individuality-r04
+  teacher_statement: "Don't think this strategy is so locked down that you must follow every single one of these things or else you will suck — that's not how this works. There's a million ways to trade and a bunch are profitable."
+  source_timestamp: "06:13"
+  proposed_machine_rule: "Do NOT treat the taught ruleset as an all-or-nothing mandatory checklist. Allow the strategy config to run with a subset of rules the operator has enabled. (Tension: a safety-critical auto-system may still require ALL enabled rules of a chosen setup to pass — see ambiguity.)"
+  status: proposed
+  ambiguity: "TJR's 'you don't have to follow every rule' is about CHOOSING which components to run, not about skipping conditions within a chosen setup. For a safety-critical system, all conditions of an ENABLED setup should still be mandatory. Needs owner confirmation to avoid loosening execution gates."
+  counterexamples: []
+
+- id: tjr-individuality-r05
+  teacher_statement: "For your homework, document it — write down how you felt on that day, write down how it made you feel when you were being confident."
+  source_timestamp: "17:41"
+  proposed_machine_rule: "Journaling guardrail: prompt the trader to log the emotional/confidence state associated with each session or decision, so confidence can be tracked over time. Non-blocking; does not gate orders."
+  status: proposed
+  ambiguity: "Homework framing (life/confidence), not trade-specific. No structure for the log specified."
+  counterexamples: []

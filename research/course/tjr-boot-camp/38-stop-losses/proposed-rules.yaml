@@ -1,0 +1,31 @@
+- id: tjr-stop-losses-r01
+  teacher_statement: "I almost always put my stop loss above the liquidity sweep... that's where price would be invalidated for us."
+  source_timestamp: "01:24"
+  proposed_machine_rule: "Set SL just beyond the liquidity-sweep extreme in the invalidation direction: for shorts SL = sweep_high + buffer; for longs SL = sweep_low - buffer. Do NOT anchor to the entry candle extreme."
+  status: proposed
+  ambiguity: "Which sweep is 'the' sweep when multiple exist across timeframes (he used a 5m/1m sweep in the recap while daily bias differed)."
+  counterexamples: []
+
+- id: tjr-stop-losses-r02
+  teacher_statement: "At least put it like 0.5 points below the actual price point, or figure out what your spread is on your broker... you will get stopped out by spread."
+  source_timestamp: "06:08"
+  proposed_machine_rule: "Apply a spread buffer to the SL: buffer = max(0.5 points, broker_spread(instrument)). Live S&P example used 4 points. Store as a configurable per-instrument parameter."
+  status: proposed
+  ambiguity: "Whether the default is 0.5 pts universally or instrument-specific; the 4-pt example vs 0.5-pt minimum are not reconciled into one formula."
+  counterexamples: []
+
+- id: tjr-stop-losses-r03
+  teacher_statement: "If the liquidity sweep is so high up that it would give you a terrible risk reward, then I put my stop above the order block instead."
+  source_timestamp: "04:24"
+  proposed_machine_rule: "If R:R with sweep-anchored SL falls below the minimum threshold (see L37: 1:1), substitute the nearest inner OB/FVG boundary as the SL anchor (+buffer). Mark the trade as reduced-safety because invalidation is still the sweep."
+  status: proposed
+  ambiguity: "The R:R threshold that triggers the substitution is not numerically stated in L38 (borrowed from L37's 1:1)."
+  counterexamples: []
+
+- id: tjr-stop-losses-r04
+  teacher_statement: "Don't trade tomorrow, it's a bank holiday. U.S. bank holidays typically slow all the markets."
+  source_timestamp: "12:39"
+  proposed_machine_rule: "Disable trade execution on U.S. bank holidays (and flag low-liquidity sessions) via a market-calendar gate."
+  status: proposed
+  ambiguity: "Only U.S. bank holidays named; other exchange holidays / half-days not enumerated."
+  counterexamples: []

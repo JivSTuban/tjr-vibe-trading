@@ -1,0 +1,12 @@
+{
+  "lesson_number": 56,
+  "video_id": "IFgysr8gDjc",
+  "slug": "the-end",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 95728,
+  "concepts_count": 3,
+  "rules_count": 0,
+  "examples_count": 0,
+  "notes": "Course-closing psychology/meta episode. NO consolidated strategy synthesis is delivered - TJR's explicit method summary is a pointer ('re-watch the first boot camp video'); the mechanics live in lessons 1-55, lesson 01 is the thesis. One trade mentioned (~$27k SPX win) with zero setup detail - not dataset-usable. Reinforces existing behavioral guardrails (protect mental health, take breaks, low frequency, don't trade for validation) and reframes purpose (freedom, giving back). proposed-rules.yaml SKIPPED (no new rules). examples.yaml SKIPPED (no usable worked trade). Wrote metadata, lesson-summary, concepts, ambiguities, verification-questions, completion (6 files)."
+}

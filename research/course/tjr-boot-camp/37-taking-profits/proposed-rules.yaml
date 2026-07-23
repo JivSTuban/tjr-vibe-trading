@@ -1,0 +1,31 @@
+- id: tjr-taking-profits-r01
+  teacher_statement: "Most of the time my first take profit is going to be minimum one to one, that's kind of the goal."
+  source_timestamp: "06:39"
+  proposed_machine_rule: "Require TP1 to give at least 1:1 R:R measured from entry to stop. If the nearest valid building-block target in trade direction yields < 1.0 R:R, flag the setup as low-quality / skip."
+  status: proposed
+  ambiguity: "Whether 1:1 is a hard reject or a soft flag; whether it's measured to first target or blended across scale-out."
+  counterexamples: []
+
+- id: tjr-taking-profits-r02
+  teacher_statement: "I set it off of the one higher time frame draw on liquidity on whatever execution time frame I'm on, and then use building blocks for the rest of it."
+  source_timestamp: "03:39"
+  proposed_machine_rule: "TP ladder generator: TP1 = nearest draw-on-liquidity on (execution_TF + 1) in trade direction; TP2..TPn = successive building blocks (imbalance top/bottom, order block edges, next liquidity pool) on execution_TF, ordered by distance. Cap n at 3-4."
+  status: proposed
+  ambiguity: "Exact ordering/priority among competing building blocks at similar distance; how 'draw on liquidity' is programmatically identified."
+  counterexamples: []
+
+- id: tjr-taking-profits-r03
+  teacher_statement: "Ideally I'd like to set take profits not based off of one minute confluences because higher time frame holds higher power."
+  source_timestamp: "09:26"
+  proposed_machine_rule: "Reject any TP candidate whose source building block is on a timeframe lower than the execution timeframe. All TP targets must be sourced from execution_TF or higher."
+  status: proposed
+  ambiguity: "None significant; direct restatement."
+  counterexamples: []
+
+- id: tjr-taking-profits-r04
+  teacher_statement: "Take profit at building blocks... those are price magnets... liquidity void, price is probably going to draw towards there."
+  source_timestamp: "08:09"
+  proposed_machine_rule: "Valid TP price set = {order block top/bottom, FVG/imbalance top/bottom, liquidity pool highs/lows, liquidity void mid} in the trade direction on the allowed timeframe(s). Do not use arbitrary point/pip targets for TP."
+  status: proposed
+  ambiguity: "Whether to target the near edge, far edge, or midpoint of an OB/FVG (he uses top, bottom, and 'within' inconsistently)."
+  counterexamples: []

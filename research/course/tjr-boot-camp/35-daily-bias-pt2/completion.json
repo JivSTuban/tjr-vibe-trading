@@ -1,0 +1,38 @@
+{
+  "lesson_number": 35,
+  "lesson_slug": "daily-bias-pt2",
+  "video_id": "UPA9LQW7phk",
+  "title": "Boot Camp Day 35: Daily Bias pt. 2",
+  "primary_topic": "concept",
+  "processed_at": "2026-07-23",
+  "transcript_source": "en-orig-asr",
+  "duration_s": 900,
+  "counts": {
+    "concepts": 13,
+    "proposed_rules": 11,
+    "examples": 6,
+    "ambiguities": 15,
+    "verification_questions": 10
+  },
+  "files_written": [
+    "metadata.yaml",
+    "lesson-summary.md",
+    "concepts.yaml",
+    "proposed-rules.yaml",
+    "examples.yaml",
+    "ambiguities.md",
+    "verification-questions.md",
+    "completion.json"
+  ],
+  "special_emphasis_captured": {
+    "htf_bias_determination": true,
+    "timeframes_used": ["monthly", "weekly", "daily", "4h", "1h", "15m", "5m", "1m"],
+    "bias_signals": ["draw on liquidity", "market structure / BOS", "premium/discount (equilibrium 50%)", "fair value gap / imbalance", "prior session swept liquidity", "multi-timeframe trend alignment"],
+    "decision_logic": "weekly overall direction -> daily bias/trend -> HTF high-confluence building block within bias -> scale down (15m sweep+BOS+OB, then 5m/1m BOS) -> require LTF confirmation -> enter toward next draw on liquidity"
+  },
+  "cross_lesson_links": {
+    "builds_on": [34],
+    "defers_to_later": ["take profits", "stop losses"]
+  },
+  "status": "complete"
+}

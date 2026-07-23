@@ -1,0 +1,12 @@
+{
+  "lesson_number": 23,
+  "video_id": "ERbhCL9KW_g",
+  "slug": "check-in-be-my-boy",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 62000,
+  "concepts_count": 3,
+  "rules_count": 2,
+  "examples_count": 0,
+  "notes": "Community check-in / meta video, not a technical lesson. Skipped examples.yaml (no trades walked through). Only durable trading nuggets: 'don't trade directly after news, wait for price to develop' [04:27] (undefined - low confidence) and the loss->learn iterative-profitability framing [04:12]. Also captured course roadmap: order blocks -> equilibrium -> full strategy [14:37]. Wrote metadata, lesson-summary, concepts, proposed-rules, ambiguities, verification-questions, completion. transcript_chars is an estimate."
+}

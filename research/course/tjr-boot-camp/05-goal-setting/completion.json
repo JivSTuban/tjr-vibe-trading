@@ -1,0 +1,12 @@
+{
+  "lesson_number": 5,
+  "video_id": "N7so8LEHmLA",
+  "slug": "goal-setting",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 110087,
+  "concepts_count": 11,
+  "rules_count": 6,
+  "examples_count": 0,
+  "notes": "Pure psychology/goal-setting lesson; NO chart/trade examples walked (examples.yaml skipped). Core framework: 3 long-term end goals + 10 short-term goals each (30 total); >=1 goal trading-related; daily process goals (plan/risk/journal); weekly->monthly profitable consistency ladder; 1% better/day ethos; read+vocalize goals >=5x/day out loud; 'I am/I will' framing (never 'I want'); daily rewrite ritual; deadlines on goals. Rules are behavioral guardrails, all status:proposed. Personal examples ($10M house, 7-fig account, 100k YouTube subs, 30k followers) are illustrative, NOT tradeable. transcript_chars = raw en-orig SRT char count (110087); de-duplicated spoken text is ~28000."
+}

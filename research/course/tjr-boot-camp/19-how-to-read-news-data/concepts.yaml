@@ -1,0 +1,62 @@
+- name: Forex Factory economic calendar
+  teacher_definition: "Where he gets his news — forexfactory.com. Shows all economic events; he filters it to remove noise, then reads forecast vs actual."
+  source_timestamp: "01:59"
+  codex_interpretation: "Primary news data source for the risk engine's news-avoidance feed. Provides per-event currency, impact color, localized time, forecast, actual, previous, and 'usual effect' direction."
+  confidence: high
+  requires_confirmation: false
+
+- name: Folder color impact coding
+  teacher_definition: "Yellow folders = random low-impact events he ignores. Gray folders = bank holidays / non-trading days. Orange folders = medium impact. Red folders = high impact that cause 'havoc in the market'."
+  source_timestamp: "02:26"
+  codex_interpretation: "Impact tiers: red=high, orange=medium, yellow=low, gray=holiday. Red (and orange) are the ones that gate trading."
+  confidence: high
+  requires_confirmation: false
+
+- name: Currency filtering
+  teacher_definition: "He removes every currency he doesn't trade (AUD, CAD, CHF, CNY, EUR, NZD), keeping only what he trades: GBP/USD, GBP/JPY, gold, S&P 500. S&P 500 news is covered by USD. Then clicks 'apply filter'."
+  source_timestamp: "02:43"
+  codex_interpretation: "Only news on a currency that appears in a traded pair is relevant. Map SPX and gold news to USD."
+  confidence: high
+  requires_confirmation: false
+
+- name: The four always-avoid releases
+  teacher_definition: "'A couple news events that I always avoid, write these down: CPI, PPI, FOMC, and NFP (non-farm payroll). Those four I do not trade whatsoever.'"
+  source_timestamp: "06:57"
+  codex_interpretation: "Hard-block set. On any day containing CPI, PPI, FOMC (interest-rate/Fed), or NFP on a traded currency, block all new entries for the session/day."
+  confidence: high
+  requires_confirmation: false
+
+- name: Wait-for-news rule (red/orange folders)
+  teacher_definition: "If there's a red folder, no matter what, always wait until the news comes out. For red and orange folders: wait for news, let price develop, see if it drastically affected the market (large wicks/moves). If it did, do not trade; if not, you can look for a trade but stay defensive and reduce risk."
+  source_timestamp: "03:56"
+  codex_interpretation: "Time-window block around red/orange releases; extend block if post-release displacement (large wicks) is observed."
+  confidence: high
+  requires_confirmation: false
+
+- name: Post-release wait buffer
+  teacher_definition: "Wait ~15, 20, or 30 minutes after a release, let price develop, then look to take a trade. Example: news 8:30, ok to trade ~8:45-8:50 if no impact. Friday: news 10:00, won't trade until 10:00 then really 10:30."
+  source_timestamp: "10:17"
+  codex_interpretation: "T_after buffer ~15-30 min (use 30 as conservative default). No explicit T_before number given."
+  confidence: medium
+  requires_confirmation: true
+
+- name: News bias (usual effect) — actual vs forecast
+  teacher_definition: "Expand the folder to see the 'usual effect'. If Actual > Forecast, it is good for the currency; if Actual < Forecast, bad for the currency. 'Good for the currency' means good for the USD/DXY, NOT the S&P 500."
+  source_timestamp: "12:07"
+  codex_interpretation: "bias = good if actual>forecast else bad. Good-for-USD => bearish for SPX, gold, and any XXX/USD pair (incl. crypto)."
+  confidence: high
+  requires_confirmation: false
+
+- name: Pair fraction / side-of-slash mechanics
+  teacher_definition: "A pair is a fraction: top currency is positive correlation, bottom is inverse. Good news for TOP => pair up; bad news for TOP => down; good news for BOTTOM => pair down; bad news for BOTTOM => up."
+  source_timestamp: "19:35"
+  codex_interpretation: "direction(pair) = +bias(numerator) and -bias(denominator). E.g., good USD news: GBP/USD down, USD/JPY up."
+  confidence: high
+  requires_confirmation: false
+
+- name: Price action overrides news bias
+  teacher_definition: "News bias is not the be-all; it just helps understand the data. Shown case: CPI < forecast (bias bad for USD) yet DXY rallied and S&P fell. 'Price action is superior, that's why we have to wait for news to come out.'"
+  source_timestamp: "22:37"
+  codex_interpretation: "Treat news bias as advisory only; never use it as an entry trigger. Actual post-release price action wins."
+  confidence: high
+  requires_confirmation: false

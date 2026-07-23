@@ -1,0 +1,12 @@
+{
+  "lesson_number": 21,
+  "video_id": "z9p7OThLkr4",
+  "slug": "how-to-take-a-win-life-lessons",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 220999,
+  "concepts_count": 15,
+  "rules_count": 7,
+  "examples_count": 2,
+  "notes": "Longest lesson (~1h). Runtime split: ~[00:00]-[22:00] = 'how to take a win' trading psychology (all rules/numbers here); ~[22:00]-[1:00:00] = life-lessons/motivational monologue (giving back, personal mental-health struggle incl. multiple suicide attempts, gratitude) with NO additional trading rules or numbers. All 8 spec files written; none skipped. examples.yaml included: one narrated model-win checklist ([19:41], suitable_for_dataset=true, but instrument/direction generic) plus one anecdotal '60 bands' walk-through (suitable_for_dataset=false). Concrete numbers captured (all in ambiguities.md): win $20k / loss $14k [02:08/10:40] (ASR mis-rendered as $144k at [02:20]); illustrative $10M acct, 1% risk=$100k, 1:1 RR [03:03]; panic-close at 50k [03:34]; $330k floating profit held to plan [04:03]; one-trade-a-day [04:59]; 'two losing days could wipe it out' [10:58]; '1% better every day' [18:49]; break-even SL after TP hit [20:07]; 60 bands/day, potential 100k [20:43]; gave friend $10k [30:49]. No prescribed risk %/RR/lot size in THIS lesson — the 1%/1:1 figures are illustrative only."
+}

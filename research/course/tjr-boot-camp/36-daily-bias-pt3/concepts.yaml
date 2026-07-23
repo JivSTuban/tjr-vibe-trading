@@ -1,0 +1,48 @@
+- name: Higher timeframe holds higher power
+  teacher_definition: "Whatever the higher higher time frames hold higher power and are going to cause the market to move in that direction."
+  source_timestamp: "00:53"
+  codex_interpretation: "HTF bias overrides LTF signals; direction filter for all executions."
+  confidence: high
+  requires_confirmation: false
+
+- name: Retrace/expansion timeframe ladder
+  teacher_definition: "15 minute break of structure one hour retrace, one hour break of structure four hour retrace, four hour break of structure daily retrace, daily break of structure weekly retrace."
+  source_timestamp: "07:44"
+  codex_interpretation: "A BOS on timeframe N that opposes bias on N+1 is a retrace of N+1, not a reversal. Encode as nested-timeframe classification rule."
+  confidence: high
+  requires_confirmation: true
+
+- name: Weekly retrace to equilibrium / FVG fill
+  teacher_definition: "If we break structure to the downside on the daily but we're in an uptrend on the weekly, odds are it's going to be a weekly retrace... ideally weekly comes into equilibrium at least or fills this fair value gap."
+  source_timestamp: "00:33"
+  codex_interpretation: "In a retrace, expect draw toward 50% equilibrium or unfilled FVG before continuation. Equilibrium defined as 50%."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Top-down execution workflow
+  teacher_definition: "High time frame figure out your confluences... daily bias, then 4h, 1h same direction, then use building blocks to find high-confluence areas, then 15m/5m map more confluence and execute."
+  source_timestamp: "05:30"
+  codex_interpretation: "Pipeline: weekly macro -> daily bias -> 4h/1h alignment -> mark OB/FVG/liquidity high-confluence zones -> 15m/5m execution on sweep+MSS at a zone."
+  confidence: high
+  requires_confirmation: true
+
+- name: Take the extension not the retracement
+  teacher_definition: "Would you rather take the retracement or the extension... personally I'm taking the extension every single day."
+  source_timestamp: "09:02"
+  codex_interpretation: "Only trade in the direction of aligned HTF bias (the large expansion leg); do not counter-trend on LTF noise."
+  confidence: high
+  requires_confirmation: false
+
+- name: No-reaction discard rule
+  teacher_definition: "If it comes into these areas and doesn't give us a reaction... like it was never there... we don't care about it anymore."
+  source_timestamp: "09:43"
+  codex_interpretation: "A confluence zone only arms an entry if price reacts (sweep + LTF MSS) on arrival; otherwise the zone is invalidated for that visit. 'Reaction' not numerically defined."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Order block validation (sweep + rally + fill)
+  teacher_definition: "This candle to the downside in order block, why? Because it swept these lows caused a rally higher, orders were filled."
+  source_timestamp: "06:52"
+  codex_interpretation: "OB validity requires: candle swept liquidity, produced displacement/rally in opposite direction, implying institutional order fill."
+  confidence: medium
+  requires_confirmation: true

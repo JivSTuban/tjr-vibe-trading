@@ -1,0 +1,75 @@
+- id: tjr-equilibrium-pt2-r01
+  teacher_statement: >
+    "Whenever you see a new high in an uptrend, drag it from the low up to the high; whenever
+    a new low is made in a downtrend, drag from the high down to the low." Find the 50 mark.
+    [18:23]
+  source_timestamp: "18:23"
+  proposed_machine_rule: >
+    Anchor equilibrium at 0.5 of the most recent impulse swing in the bias direction: uptrend =
+    low->high of the latest higher-high leg; downtrend = high->low of the latest lower-low leg.
+    Re-anchor whenever a new swing extreme prints. equilibrium = (swing_high + swing_low)/2.
+  status: proposed
+  ambiguity: >
+    "The" swing is now clearer (current-trend impulse leg) but which pivot defines the leg
+    (fractal size / structure-break leg) still needs an explicit swing-detection spec.
+  counterexamples: []
+
+- id: tjr-equilibrium-pt2-r02
+  teacher_statement: >
+    "Everything from the 50 mark up is a premium... the discount is from that 0.5 down to the
+    zero." "Smart money always buys / shorts in a discount, never in a premium." [01:39],
+    [02:16], [02:54]
+  source_timestamp: "02:16"
+  proposed_machine_rule: >
+    Zone gate: price above 0.5 = PREMIUM -> allow shorts only; price at/below 0.5 = DISCOUNT ->
+    allow longs only. Banks buy discount / sell premium. Reject counter-zone entries.
+  status: proposed
+  ambiguity: >
+    TJR's spoken wording tangles "short in a premium/discount"; resolve to: longs FROM discount,
+    shorts FROM premium. Confirm the canonical mapping (see verification).
+  counterexamples: []
+
+- id: tjr-equilibrium-pt2-r03
+  teacher_statement: >
+    "These are the settings I have... price levels 0, 1 and 0.5... it's essentially a fib." The
+    50 and ~61.8 fib marks are popular because they ARE equilibrium. [03:51], [07:47]
+  source_timestamp: "03:51"
+  proposed_machine_rule: >
+    Draw a fib/Gann across the reference swing exposing 0 / 0.5 / 1. Treat the 0.5-0.618 band as
+    the equilibrium/OTE zone to watch for OB/FVG confluence.
+  status: proposed
+  ambiguity: >
+    Whether 0.618 (the "64 mark") is an actionable second level or just illustrative is not
+    explicit; TJR's shown settings only expose 0/0.5/1.
+  counterexamples: []
+
+- id: tjr-equilibrium-pt2-r04
+  teacher_statement: >
+    Don't enter purely off equilibrium; combine it with a fair value gap or order block AT
+    equilibrium plus a break-of-structure confirmation, then target previous liquidity. [03:10],
+    [06:22]
+  source_timestamp: "06:22"
+  proposed_machine_rule: >
+    Valid entry = (a) price retraces to equilibrium zone (discount for long / premium for short),
+    (b) an FVG or OB sits at equilibrium, (c) a confirming BOS/MSS on the entry timeframe. Then
+    enter; stop beyond the reference swing extreme; take-profits at successive prior liquidity
+    pools (scale out).
+  status: proposed
+  ambiguity: >
+    "At equilibrium" tolerance (how close the OB/FVG must be to 0.5) is undefined. Entry-TF for
+    the BOS not fixed (4h/1h/15m all shown).
+  counterexamples: []
+
+- id: tjr-equilibrium-pt2-r05
+  teacher_statement: >
+    Equilibrium works on every timeframe; measure on HTF (monthly/daily), scale down (4h->1h
+    ->15m) for the precise FVG/OB + BOS entry; align with weekly/daily bias. [07:41], [15:23]
+  source_timestamp: "07:41"
+  proposed_machine_rule: >
+    Compute equilibrium on the HTF swing; on a tap, refine the entry on progressively lower TFs
+    (4h -> 1h -> 15m) using OB/FVG + BOS. Only take longs in uptrend bias / shorts in downtrend
+    bias.
+  status: proposed
+  ambiguity: >
+    Which HTF pairs with which entry TF is illustrative, not a fixed mapping.
+  counterexamples: []

@@ -1,0 +1,41 @@
+- name: Prominent highs and lows (as liquidity)
+  teacher_definition: "We label highs and lows as liquidity, most importantly PROMINENT highs and lows. What is prominent varies from timeframe to timeframe — just look at the chart and mark what's prominent. Examples: the start of a big trend, a double top, a high that broke structure on the daily."
+  source_timestamp: "03:35"
+  codex_interpretation: "Filter raw swings to significant/prominent ones (structurally meaningful pivots) before treating them as liquidity. No numeric prominence formula given — key automation gap."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Liquidity as a magnet (draw on liquidity)
+  teacher_definition: "Think of liquidity essentially as a magnet for price — that is where price is drawing to, because that's where the market makers want to push price to fill their orders. Any form of liquidity = a magnet, not a buy/sell signal on touch."
+  source_timestamp: "05:52"
+  codex_interpretation: "Draw-on-liquidity: nearest opposite-side prominent level predicts price direction. Used to set both bias and targets. A touch is NOT an entry."
+  confidence: high
+  requires_confirmation: false
+
+- name: Confirmed entry sequence (sweep -> BOS -> confluence)
+  teacher_definition: "Wait for liquidity to get hit, then watch the reaction. No reaction = no trade; reaction (a break of structure) = take a trade. For shorts: take out a high -> BOS to the downside -> any other confluence -> go short."
+  source_timestamp: "06:52"
+  codex_interpretation: "Entry gate: sweep of prominent liquidity, then BOS in the reversal direction, then a confluence (FVG fill / order block reaction). Multi-signal, never a level-touch fade."
+  confidence: high
+  requires_confirmation: true
+
+- name: Liquidity for take-profit targeting
+  teacher_definition: "Liquidity is also the exit magnet. If bearish, target previous prominent lows — that's where market makers exit shorts, because they also need people entering/exiting to close their size without price running away. Mirror for longs (target previous highs)."
+  source_timestamp: "07:42"
+  codex_interpretation: "TP for a short = nearest untapped previous prominent low; TP for a long = nearest untapped previous prominent high. Targets = opposite-side liquidity draw."
+  confidence: high
+  requires_confirmation: true
+
+- name: Multi-timeframe entry refinement
+  teacher_definition: "Shown repeatedly: identify liquidity/BOS on a higher timeframe, then scale down (e.g. 4h -> 1h -> 5m) to enter on a fair value gap / imbalance fill or a hidden order block reaction."
+  source_timestamp: "13:03"
+  codex_interpretation: "HTF sets liquidity + bias; LTF provides the refined entry trigger (FVG/OB). Specific TF combos are illustrative, not fixed."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Liquidity is a plug-in, not a standalone strategy
+  teacher_definition: "I don't want you to think this is a strategy — it's a piece that we can plug in to a strategy. It's not end-all be-all."
+  source_timestamp: "01:45"
+  codex_interpretation: "Liquidity is one required module; full setup needs additional confluences (FVG, order block, equilibrium — upcoming series)."
+  confidence: high
+  requires_confirmation: false

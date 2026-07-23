@@ -1,0 +1,31 @@
+- id: tjr-weekly-analysis-r01
+  teacher_statement: "We have CPI on Wednesday so I likely will not be trading that day; PPI and unemployment claims on Thursday. These news events happen an hour before market opens."
+  source_timestamp: "01:13"
+  proposed_machine_rule: "Flag days containing high-impact US releases (CPI, PPI, unemployment claims) as no-trade / observe-only. Block execution in the window from ~1 hour before session/market open through the release."
+  status: proposed
+  ambiguity: "Exact release timing and which timezone 'an hour before market opens' refers to (equity NYSE open vs. futures) not specified."
+  counterexamples: []
+
+- id: tjr-weekly-analysis-r02
+  teacher_statement: "Be careful about GBP pairs at around 11 AM US time during London session; stay away from GBP pairs or wait for this news to come out."
+  source_timestamp: "00:39"
+  proposed_machine_rule: "On London-session GBP-news days, block GBP-pair entries during the ~11 AM US-time release window."
+  status: proposed
+  ambiguity: "'Around 11 AM US time' — which US timezone; which specific GBP release; whether this is a fixed weekly event."
+  counterexamples: []
+
+- id: tjr-weekly-analysis-r03
+  teacher_statement: "We're following the weekly trend until we get a weekly break of structure. We haven't even had a daily break of structure, so we continue with our bearish bias."
+  source_timestamp: "08:07"
+  proposed_machine_rule: "Persist the current higher-timeframe trend bias until a break of structure occurs on that same timeframe; treat opposite-direction lower-TF breaks as retraces, not bias flips."
+  status: proposed
+  ambiguity: "Precise definition of 'break of structure' per timeframe (body close vs. wick) not given in this lesson."
+  counterexamples: []
+
+- id: tjr-weekly-analysis-r04
+  teacher_statement: "On Monday and on Tuesday I'll be looking for buys as long as the hourly and the four hour are still following that sentiment."
+  source_timestamp: "03:53"
+  proposed_machine_rule: "Only take entries in the weekly-bias direction while the 1H and 4H structures agree with that bias; suppress counter-bias entries."
+  status: proposed
+  ambiguity: "'Following that sentiment' not formally defined (trend direction vs. last structure event)."
+  counterexamples: []

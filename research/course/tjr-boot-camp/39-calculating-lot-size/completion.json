@@ -1,0 +1,12 @@
+{
+  "lesson_number": 39,
+  "video_id": "KSiWKfPOlh4",
+  "slug": "calculating-lot-size",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 49000,
+  "concepts_count": 8,
+  "rules_count": 5,
+  "examples_count": 3,
+  "notes": "CORE POSITION-SIZING LESSON. Formula: lot = (account*risk%)/(SL_pips*pip_value_per_lot), 2-decimal granularity. Worked examples: $1000/1%/30pips=0.03 lots ($10); $100k/1%/400pips=25 lots. Contract size (units/lot) MANDATORY per broker: Hankotrade=10, generic offshore=100. Risk tiers: normal=1%, de-risk=0.5% (half lot, used on news/holidays), confident=2% (double, FORBIDDEN for students). Set-lot lets realized risk float 1%->3% with stop width. Full-port forbidden. One-pair rule for beginners. All 8 files written. Completes the L37/L38/L39 risk-engine input triad."
+}

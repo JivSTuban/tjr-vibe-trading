@@ -1,0 +1,34 @@
+- name: Liquidity (resting orders)
+  teacher_definition: "Liquidity is what I would like to call resting orders. It can be stop orders (getting people out of a trade) or limit orders (buy limit / sell limit). When these price targets get hit it's activating something — taking you out of the market or entering you into the market. It's a pool of money."
+  source_timestamp: "02:30"
+  codex_interpretation: "Clusters of pending/resting orders (stops + limits) at a price level. A liquidity pool = a price where many entries/exits will trigger. Not directional by itself."
+  confidence: high
+  requires_confirmation: false
+
+- name: Why liquidity moves the market (institutional order fill)
+  teacher_definition: "Banks / institutions / Market Movers have massive orders. To fill them they seek out liquidity so that many people are exiting and entering the opposite direction of them, letting their orders fill so they can push the market whichever direction they want — through liquidity sweeps / taking out liquidity."
+  source_timestamp: "05:52"
+  codex_interpretation: "Large players require counterparty volume; they engineer sweeps of liquidity pools to fill size, then drive price the opposite way. Explains the reversal-after-sweep behavior."
+  confidence: high
+  requires_confirmation: false
+
+- name: Confirmation via Break of Structure / Market Structure Shift
+  teacher_definition: "After liquidity is taken out, we wait for a confirmation — a break of structure / market structure shift (trend shift, change in direction). That is confirmation that liquidity has been swept and orders have been filled, causing the market to change direction. If we don't see a shift, hands off — we do nothing."
+  source_timestamp: "07:05"
+  codex_interpretation: "BOS/MSS in the opposite direction of the sweep is the required trigger gate. No MSS => no trade. This is the entry confirmation, not the entry level itself."
+  confidence: high
+  requires_confirmation: true
+
+- name: Do-not-fade-the-level rule
+  teacher_definition: "When price gets to liquidity you're not immediately pressing buy, you're not immediately pressing sell — we need more confirmation. We wait a little bit after the banks execute because we don't know exactly when they press the button, but we still get an incredibly good entry, catching the tops and bottoms of moves."
+  source_timestamp: "08:47"
+  codex_interpretation: "Entries are delayed until post-sweep confirmation forms; never a touch-of-level market order. Targets the extreme of the move (top/bottom), implying reversal entries at range extremes."
+  confidence: high
+  requires_confirmation: true
+
+- name: Rejection of support/resistance reasoning
+  teacher_definition: "We don't trade because 'it bounced off a floor' or 'hit its head on the ceiling' — that's guessing, that's little-kid stuff. We want to know actually WHY price is reacting: liquidity swept + orders filled."
+  source_timestamp: "01:25"
+  codex_interpretation: "Philosophical framing: prefer order-flow/liquidity logic over classical S/R. Context, not a machine rule."
+  confidence: medium
+  requires_confirmation: false

@@ -1,0 +1,12 @@
+{
+  "lesson_number": 16,
+  "video_id": "S1kY3Fw6JUQ",
+  "slug": "fvg-pt2",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 3238,
+  "concepts_count": 6,
+  "rules_count": 5,
+  "examples_count": 4,
+  "notes": "Core FVG concept lesson (Part 2 of 3). All 4 examples are narrated hand-drawn chart illustrations with no named instrument/timeframe/prices -> suitable_for_dataset false for all. examples.yaml, proposed-rules.yaml, ambiguities.md, verification-questions.md all written (lesson contains them). Part of a 3-part FVG thread: pt1 (prior) = concept intro; pt2 (this) = identification + trade preview; pt3 = lesson 18 (day 3) = taking trades combining FVG + liquidity sweep + breaker structure. Key unresolved thresholds (displacement magnitude, fill %, confirmation timeframe, reaction strictness) routed to ambiguities.md at low/medium confidence."
+}

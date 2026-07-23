@@ -1,0 +1,12 @@
+{
+  "lesson_number": 11,
+  "video_id": "_jLR3XcB5eQ",
+  "slug": "how-to-take-a-loss",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 44000,
+  "concepts_count": 7,
+  "rules_count": 3,
+  "examples_count": 0,
+  "notes": "Discipline/psychology lesson (no charts, no examples). Yields strong behavioral guardrails: no revenge/over-trading, demo-gate before live, deterministic ('be the algo') execution, no-trade filters for news/fatigue/emotion, annual-% evaluation metric. Examples.yaml skipped (no trade walkthroughs). Dollar anecdotes are motivational, not parameters."
+}

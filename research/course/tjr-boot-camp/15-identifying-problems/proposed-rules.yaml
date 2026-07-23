@@ -1,0 +1,91 @@
+rules:
+  - id: tjr-identifying-problems-r01
+    teacher_statement: >
+      "I take five trades a day and I say I should only take one." (given as his
+      self-diagnostic example of over-trading driven by greed)
+    source_timestamp: "06:04"
+    proposed_machine_rule: >
+      Cap trades per day at a configured max (TJR's illustrative target = 1).
+      Block or flag any order placement beyond the cap in a single session.
+    status: proposed
+    ambiguity: >
+      "Should only take one" is TJR's personal example inside a diagnosis, not
+      stated as a universal system rule or a number every trader must use. The
+      actual cap must be set by Jiv. Contrast: he *takes* 5 (the bad habit).
+    counterexamples: []
+
+  - id: tjr-identifying-problems-r02
+    teacher_statement: >
+      "Especially if it's a revenge trade, especially if it's your second trade
+      of the day and you lost your first one, you won't hit take profit."
+    source_timestamp: "03:54"
+    proposed_machine_rule: >
+      After a realized loss, block/flag any further trade for the rest of the
+      session (no revenge trading). At minimum, apply a cooldown after any loss.
+    status: proposed
+    ambiguity: >
+      TJR strongly implies "stop after a loss / no revenge trade" but never states
+      an explicit numeric daily-loss limit or cooldown duration here. Whether it's
+      a hard stop after 1 loss or a cooldown is unspecified.
+    counterexamples: []
+
+  - id: tjr-identifying-problems-r03
+    teacher_statement: >
+      "Why are you cutting a trade before it hits take profit / before it hits
+      stop loss... maybe solution two you shouldn't even be putting any money at
+      risk, maybe you should go to demo... risk less or go to demo."
+    source_timestamp: "04:39"
+    proposed_machine_rule: >
+      If a trader exhibits fear-driven behavior (exiting before SL/TP, cutting
+      early), trigger a recommendation to reduce lot size / risk %, or drop to a
+      demo account until confidence and risk understanding are restored.
+    status: proposed
+    ambiguity: >
+      "Reduce risk" and "go to demo" are qualitative; no target risk % or size
+      reduction amount, and no objective trigger threshold for what counts as
+      "fear-driven" is given.
+    counterexamples: []
+
+  - id: tjr-identifying-problems-r04
+    teacher_statement: >
+      "Every single mistake, every single loss in these markets, it's your fault
+      and your fault only... it's not the market's problem."
+    source_timestamp: "05:24"
+    proposed_machine_rule: >
+      Journal enforcement: every logged loss must be attributed to a trader-side
+      root cause (from the emotion catalog); "market" / external attribution is
+      disallowed as a root cause.
+    status: proposed
+    ambiguity: >
+      Behavioral/journaling guardrail, not a market-execution rule; enforcement
+      depends on a manual or model-tagged journal field existing.
+    counterexamples: []
+
+  - id: tjr-identifying-problems-r05
+    teacher_statement: >
+      "Understand your risk. If you actually know your risk you wouldn't be
+      cutting a trade before it hits stop loss."
+    source_timestamp: "04:44"
+    proposed_machine_rule: >
+      Require a defined, pre-computed risk (SL distance + risk %) on every order
+      before entry; if risk is undefined, block the entry.
+    status: proposed
+    ambiguity: >
+      TJR ties early exits to "not knowing your risk" but gives no numeric risk %
+      in this lesson (over-leverage example cites 10% as bad vs 1% as correct at
+      02:19-02:23, but that is illustrative, not a stated rule here).
+    counterexamples: []
+
+  - id: tjr-identifying-problems-r06
+    teacher_statement: >
+      "Once you fix these problems never do again... make sure that damn well you
+      are never going to make that mistake again." (million-dollar-job framing)
+    source_timestamp: "10:32"
+    proposed_machine_rule: >
+      Maintain a per-trader "never-repeat" list of identified root-cause mistakes;
+      flag any trade whose journal tags match a previously-resolved mistake.
+    status: proposed
+    ambiguity: >
+      Aspirational discipline principle; requires a persistent per-trader mistake
+      registry that TJR does not specify the mechanics of.
+    counterexamples: []

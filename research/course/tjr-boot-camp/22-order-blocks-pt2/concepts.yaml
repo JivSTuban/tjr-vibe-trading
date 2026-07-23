@@ -1,0 +1,158 @@
+- name: Order Block (OB)
+  teacher_definition: >-
+    "Order blocks are the move prior to the liquidity sweep, or the move that
+    causes the liquidity sweep... and then prior to the break of structure."
+    Restated: the whole up-move or down-move (leg) prior to the break of
+    structure / market structure shift that changes direction — because that
+    move is "where orders were able to get filled." It is a PRICE RANGE / the
+    whole move, not a single candle.
+  source_timestamp: "01:33"
+  codex_interpretation: >-
+    Contiguous impulsive leg immediately preceding the BOS/MSS that flips local
+    trend. Bearish OB = last up-leg before a down-BOS (in an uptrend); bullish
+    OB = last down-leg before an up-BOS (in a downtrend). Represent as a zone
+    [leg_low, leg_high]. Ambiguity: TJR oscillates between "this candle" and
+    "the entire move" for the exact boundary.
+  confidence: high
+  requires_confirmation: true
+
+- name: OB as a zone where orders get filled (why it works)
+  teacher_definition: >-
+    The OB is "where orders were able to get filled for price to be able to make
+    that break of structure." When price retraces back into the OB range, "they"
+    want to fill MORE orders there (because orders were filled there previously)
+    and push price in the intended direction.
+  source_timestamp: "02:03"
+  codex_interpretation: >-
+    Mechanistic rationale for expecting a reaction on re-entry into the OB range;
+    the OB range is the anticipated retracement/entry zone. Not directly
+    machine-testable except as "expect reaction on first tap of OB range."
+  confidence: high
+  requires_confirmation: true
+
+- name: Bullish vs Bearish Order Block
+  teacher_definition: >-
+    In an UPTREND: price rallies, sweeps liquidity, breaks structure to the
+    downside — the up-move (leg) prior to the down-BOS is the (bearish) OB;
+    retrace up into it fills orders and sends price lower. In a DOWNTREND: the
+    down-move that swept liquidity prior to the up-BOS is the (bullish) OB;
+    retrace down into it fills orders and sends price higher.
+  source_timestamp: "01:52"
+  codex_interpretation: >-
+    Directional labeling: bullish OB = demand zone below current price at last
+    down-leg before up-BOS; bearish OB = supply zone above at last up-leg before
+    down-BOS. Note ASR calls both directions "rally" — normalize by BOS
+    direction, not the word.
+  confidence: high
+  requires_confirmation: false
+
+- name: OBs represented across multiple timeframes
+  teacher_definition: >-
+    "Order blocks can be represented on several timeframes, but you have to
+    understand it's the whole move." The same OB can be a single 4h candle
+    ("relatively precise") yet span the entire larger move; a HTF OB "gives you
+    a big price range to deal with," which is why "we can scale down."
+  source_timestamp: "07:03"
+  codex_interpretation: >-
+    OBs are fractal. A HTF OB range contains lower-TF OBs/structure. Detection
+    should record the timeframe of detection; the HTF OB defines the macro
+    retracement zone, the LTF OB refines the entry.
+  confidence: high
+  requires_confirmation: true
+
+- name: Understand what timeframe you're playing off of (timeframe-coherence rule)
+  teacher_definition: >-
+    "Understand what timeframe you're playing off of." A 4h break of structure
+    means the OB spans several hourly candles, so the stop must go "all the way
+    up here" (wide). If you only see an hourly BOS off a 4h OB and "keep your
+    stop loss super tight — you're gonna get stopped out." Trade-off: wide stop
+    but you can target previous liquidity on higher timeframes.
+  source_timestamp: "08:12"
+  codex_interpretation: >-
+    SAFETY-CRITICAL invariant: SL distance/reference must match the timeframe on
+    which the OB/BOS was identified (SL_reference_TF == OB_detection_TF), NOT the
+    smaller entry-confirmation timeframe. Mismatch = premature stop-out. This is
+    the central risk-engine rule of the lesson.
+  confidence: high
+  requires_confirmation: true
+
+- name: Scaling down / top-down entry
+  teacher_definition: >-
+    Identify OB + BOS on HTF (Daily/4h) to set direction and the retracement
+    range, then "scale down" (4h to 1h to 15m, even 5m/1m) to "get very very
+    precise" with the entry. Enter on a break of structure in the trade
+    direction on the lower timeframe; monitor highs (longs) / lows (shorts):
+    "this high nothing... this high something — break structure — entry."
+  source_timestamp: "08:29"
+  codex_interpretation: >-
+    Multi-TF nested confirmation: (HTF direction) -> (retrace into OB) ->
+    (LTF confirming BOS) -> entry. Entry trigger = first LTF swing break in HTF
+    direction after price enters the OB range.
+  confidence: high
+  requires_confirmation: true
+
+- name: Entry = Break of Structure in trade direction
+  teacher_definition: >-
+    "When are we looking to enter on this — either on a break of structure to
+    the downside" (for shorts) or a break of structure to the upside (for
+    longs). Enter off the candle close that breaks structure.
+  source_timestamp: "09:08"
+  codex_interpretation: >-
+    Entry signal is a confirmed LTF BOS (close beyond the relevant swing) in the
+    HTF-defined direction, occurring after price taps the OB range.
+  confidence: high
+  requires_confirmation: true
+
+- name: Targets = previous areas of liquidity (HTF) + imbalance/FVG
+  teacher_definition: >-
+    "Target previous areas of liquidity on higher timeframes." TP ladder from a
+    daily example: TP1 nearer liquidity/high; TP2 "within this imbalance, fifty
+    percent of it"; TP3 higher highs. Also targets FVGs/imbalances. Price
+    "draws to where orders were filled previously."
+  source_timestamp: "09:57"
+  codex_interpretation: >-
+    TP set = ordered list of HTF liquidity pools (prior swing highs/lows) plus
+    FVG/imbalance levels. TP2 rule is concrete: 50% (equilibrium) of the target
+    imbalance. Ladder scales out toward progressively higher-TF liquidity.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Session gating (London / New York open)
+  teacher_definition: >-
+    Do not act pre-open. "When is New York session open — 9:30 — cool, mark that
+    off." And: "this is right during London session so we're gonna wait for
+    London session to open first." Entries were taken after the session opened.
+  source_timestamp: "12:53"
+  codex_interpretation: >-
+    Entry gate: only trigger entries after the relevant session open. NY open
+    stated as 9:30 (timezone not stated, ET implied). London open time not
+    given numerically. Session as a hard precondition on the entry trigger.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Stop-loss placement options
+  teacher_definition: >-
+    Stop "either under here or underneath here, it doesn't really matter" — or
+    for shorts, "either above here or above the order block itself if you want
+    to play safe." For HTF plays the stop must sit beyond the HTF OB.
+  source_timestamp: "23:23"
+  codex_interpretation: >-
+    SL beyond the OB range (safer) or beyond the LTF entry-structure swing
+    (tighter). For HTF OBs, safe SL = beyond the HTF OB boundary. Ties directly
+    to the timeframe-coherence rule.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Patience (behavioral guardrail)
+  teacher_definition: >-
+    "The hard part is patience." Must wait for HTF BOS, then wait for price to
+    return into the OB, then wait on the lower TF for the confirming BOS. If a
+    plain sweep+BOS entry gives poor R:R, "why wouldn't I wait for a potentially
+    way better risk-reward ratio... and make a lot more money and be patient."
+  source_timestamp: "14:33"
+  codex_interpretation: >-
+    Behavioral guardrail: do not force entries on the first sweep/BOS; require
+    the full nested confirmation before entering. Prefer higher-R:R OB-retrace
+    entries over immediate breakout entries. Enforce via a minimum-R:R gate.
+  confidence: medium
+  requires_confirmation: true

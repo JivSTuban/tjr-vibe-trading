@@ -1,0 +1,12 @@
+{
+  "lesson_number": 2,
+  "video_id": "bEkbNGUzQME",
+  "slug": "candlesticks",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 88416,
+  "concepts_count": 13,
+  "rules_count": 4,
+  "examples_count": 0,
+  "notes": "Foundational CONCEPT lesson: full candle anatomy (body, open/close, wick, high/low), timeframe = time-to-close, bullish/bearish convention, single-candle patterns only (doji family + hammer; multi-candle patterns rejected), doji=indecision (one confluence, never standalone), strong vs weak close (qualitative only), only-formed-candles rule, confirmation candle. examples.yaml SKIPPED: the chart walk-throughs (SPX 5m, Gold daily/weekly) are illustrative anatomy/reading exercises, not executable setups with direction+entry+SL+TP+outcome, so none qualify as dataset examples. All 'strong/weak/long/big/small' wick language is qualitative — NO numeric thresholds given (flagged in ambiguities + verification-questions). transcript_chars = raw .srt byte count. Homework: find 10 doji/rejection examples on your own pair and study how price reacted. Tickers: SPX=S&P500, GU=GBP/USD, GJ=GBP/JPY."
+}

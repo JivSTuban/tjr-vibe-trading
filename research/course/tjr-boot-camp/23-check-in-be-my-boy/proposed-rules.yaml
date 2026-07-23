@@ -1,0 +1,30 @@
+- id: tjr-check-in-be-my-boy-r01
+  teacher_statement: >
+    "I shouldn't trade directly after news comes out — I should wait for price to
+    develop a little bit." [04:27]
+  source_timestamp: "04:27"
+  proposed_machine_rule: >
+    After a high-impact news release, suppress new entries until a cooldown/confirmation
+    window has elapsed AND price has formed structure (e.g. a post-news MSS/BOS) rather
+    than entering into the initial reactive spike. Cooldown duration and the news set
+    (CPI/PPI/NFP/etc.) are NOT specified in this lesson — leave as tunable/unknown.
+  status: proposed
+  ambiguity: >
+    "Directly after" and "develop a little bit" are undefined — no minutes, no candle
+    count, no list of which news events qualify. Depends on a dedicated news lesson.
+  counterexamples: []
+
+- id: tjr-check-in-be-my-boy-r02
+  teacher_statement: >
+    "You lose, you learn from it, you lose, you learn from it... continuously learning
+    these small little lessons." [04:12]
+  source_timestamp: "04:12"
+  proposed_machine_rule: >
+    Behavioral/process guardrail (not order-flow): log every closed trade with its
+    setup components and outcome so the system/trader can review and refine rules over
+    time. Not an entry/exit condition.
+  status: proposed
+  ambiguity: >
+    Purely a mindset framing; no measurable threshold. Implemented only as a journaling
+    requirement, if at all.
+  counterexamples: []

@@ -1,0 +1,19 @@
+course: "TJR Boot Camp"
+lesson_number: 29
+# Note: This is a process lesson with no fully walked-through historical trade.
+# The single concrete market illustration is a live-bias example, not a completed trade.
+examples:
+  - timestamp: "[18:29]"
+    instrument: "S&P 500"
+    timeframe: "daily (bias) / execution intraday within first 90 min of NYSE open"
+    direction: "long (buys only)"
+    setup_components:
+      - "Daily bias: bullish"
+      - "Look for buys only (aligned with daily bias)"
+      - "Require liquidity sweep + break of structure"
+      - "Optional FVG or Order Block entry for better risk-reward"
+      - "Must be during NYSE open first 1.5 hours"
+      - "Must be on the traded pair (S&P 500)"
+      - "Pre-designated risk must be known first"
+    stated_outcome: "No outcome stated — used to illustrate the daily-bias-aligned entry criteria and the 'leave' filter, not a completed trade."
+    suitable_for_dataset: false

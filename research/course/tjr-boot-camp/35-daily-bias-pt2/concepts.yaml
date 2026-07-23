@@ -1,0 +1,109 @@
+concepts:
+  - id: daily-bias-topdown-workflow
+    name: "Top-down daily bias workflow"
+    definition: >
+      Weekly = overall direction; scale to Daily = daily bias / daily trend
+      (trades are based off daily candles); then scale into lower time frames
+      for high-confluence building-block entries in line with the bias.
+    source_timestamps: ["01:04", "02:53", "02:57", "03:03", "03:09", "05:41"]
+    layer: teacher
+
+  - id: weekly-overall-direction
+    name: "Weekly = overall direction"
+    definition: >
+      Start on the weekly (a line chart is acceptable) to read overall
+      direction via structure. Weekly gives an overview only, then you scale
+      down. Monthly can confirm (break of monthly structure).
+    source_timestamps: ["01:04", "01:07", "01:13", "01:23", "05:41", "05:43"]
+    layer: teacher
+
+  - id: daily-bias-definition
+    name: "Daily bias / daily trend"
+    definition: >
+      Understanding daily market structure/trend tells you your daily bias and
+      where you would ideally take a trade. Bullish daily = look for longs;
+      bearish daily = look for shorts. Bias stays put until structure flips
+      (still bearish until we flip bullish on the daily).
+    source_timestamps: ["03:03", "03:06", "03:09", "05:34", "05:36", "12:58"]
+    layer: teacher
+
+  - id: extension-over-retracement
+    name: "Trade the extension, not the retracement"
+    definition: >
+      In an uptrend, extensions (higher highs / higher lows) are always larger
+      than retracements, so ideally catch longs in the trend (extension), not
+      shorts on the retracement.
+    source_timestamps: ["03:19", "03:27", "03:29", "03:36"]
+    layer: teacher
+
+  - id: draw-on-liquidity
+    name: "Draw on liquidity"
+    definition: >
+      The market's likely target that biases direction: resting liquidity above
+      highs / below lows, and unfilled imbalances price is drawn to fill. Used
+      as a bias input ("next draw on liquidity is up here"). Swept daily
+      liquidity was TJR's reason to short.
+    source_timestamps: ["01:47", "01:51", "03:48", "03:50", "09:24", "09:28", "09:31"]
+    layer: teacher
+
+  - id: retracement-tools-fvg-equilibrium
+    name: "Retracement tools: fair value gap + equilibrium (premium/discount)"
+    definition: >
+      When the daily is retracing, use fair value gap and equilibrium. Find
+      equilibrium (50% mark); above 50 = premium, below = discount. A FVG within
+      a discount adds confluence. "Not yet in a discount" means retracement not
+      deep enough.
+    source_timestamps: ["09:01", "09:03", "09:07", "09:10", "09:12", "14:37", "14:40"]
+    layer: teacher
+
+  - id: building-blocks-confluence
+    name: "Building blocks / high-confluence area"
+    definition: >
+      Order block, fair value gap (imbalance), swept liquidity, and
+      premium/discount stacked in one zone = high-confluence building-block area
+      to trade within the bias. Mark all building blocks that are in line with
+      the daily bias.
+    source_timestamps: ["06:02", "07:31", "07:37", "09:49", "11:34", "12:46", "13:01"]
+    layer: teacher
+
+  - id: scale-down-execution-model
+    name: "Scale-down execution model (15m -> 5m -> 1m)"
+    definition: >
+      After the higher-TF confluence zone, scale down: liquidity sweep + break
+      of structure + order-block/FVG entry on 15m, then break of structure on
+      5m/1m = 'sniper entry'. Preferred frames: Forex 15m & 5m; S&P 5m & 1m.
+    source_timestamps: ["07:09", "07:14", "07:16", "07:19", "11:45", "11:50", "12:31", "12:35", "12:38"]
+    layer: teacher
+
+  - id: multi-timeframe-alignment
+    name: "Multi-timeframe trend alignment (confluence filter)"
+    definition: >
+      Highest confidence when 15m, 1h, 4h, daily, and weekly are all in the same
+      trend. Wait for building-block price points to fill and a lower-TF break of
+      structure in-direction for confirmation, then enter.
+    source_timestamps: ["13:10", "13:13", "13:16", "13:18", "13:22", "13:24", "13:28"]
+    layer: teacher
+
+  - id: dont-force-bias
+    name: "Do not force your bias; trade what market gives"
+    definition: >
+      Do not impose your bias/fundamental view on the market. Take trades based
+      on what the daily bias / market structure gives, not what you want.
+    source_timestamps: ["04:17", "04:32", "04:36", "04:39"]
+    layer: teacher
+
+  - id: lower-tf-confirmation-required
+    name: "Lower-timeframe confirmation required before entry"
+    definition: >
+      A higher-TF liquidity sweep is not enough; you need lower-TF confirmation
+      (e.g., a 15m break of structure). Skipping it was TJR's stated mistake.
+    source_timestamps: ["03:52", "03:56", "04:00", "14:02", "14:04", "14:10"]
+    layer: teacher
+
+  - id: news-timing-caution
+    name: "Avoid trading before news"
+    definition: >
+      High-impact news at market open (~30 min out); do not trade before it
+      releases. No S&P candle moves ~3% in a day without major high-impact news.
+    source_timestamps: ["02:04", "02:32", "02:35", "14:53", "14:57"]
+    layer: teacher

@@ -1,0 +1,12 @@
+{
+  "lesson_number": 32,
+  "video_id": "SLhIA7vW9x8",
+  "slug": "execution-pt2",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 78144,
+  "concepts_count": 12,
+  "rules_count": 6,
+  "examples_count": 4,
+  "notes": "'Putting It All Together part 2' -- chart-drill lesson teaching ENTRY TRIGGER ONLY for two models: (A) liquidity sweep + break of structure, (B) sweep + BOS + order-block return entry. TJR explicitly and repeatedly defers stop-loss, take-profit, R:R, risk %, session times, and daily bias to later videos -- none appear here. Announces series is now 3 parts (pt.3 = FVG + equilibrium entries) and a 2-part Daily Bias series. Only hard number: '10 examples of each' backtest-drill homework (a familiarization count, NOT a valid validation sample). examples.yaml captured 4 identifiable chart references (S&P, GU) but ~20+ examples are unnamed generic drills; all marked suitable_for_dataset:false (no instrument/timeframe/price/SL/TP). Heavy ASR corruption: 'breaker/breakup/regular/fragrance structure'->break of structure; 'liquidity sleep/Suite/sweet'->liquidity sweep; 'molested/water block'->order block; 'daily buys'->daily bias; 'for Value Gap'->FVG; 'gu'->GBP/USD; 's p'->S&P. Models A/B are entry-trigger stages that MUST be combined with SL/TP/bias from Days 33-35+ before use."
+}

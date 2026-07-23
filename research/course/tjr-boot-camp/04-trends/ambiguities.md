@@ -1,0 +1,10 @@
+# Ambiguities — Lesson 04 (Trends)
+
+- **Swing-point definition is undefined.** TJR reads highs/lows visually ("this is a high, this is a low") but never specifies how a swing high/low is identified — no fractal size, lookback bars, or close-vs-wick rule. Cannot code trend classification precisely from this lesson alone.
+- **Break-of-structure threshold is undefined.** He says a trend continues "until it breaks its trend" and previews BOS ("surpassed this high/low → broke structure → flip"), but the exact break condition (wick vs body close, how far past the level, which swing is the protected one) is explicitly deferred to Lesson 06 ("the next trading video will jump into break of structure").
+- **Number of confirming swings for a valid trend** is not stated (2? 3? HH+HL once = trend?).
+- **Timeframe pairings are examples, not constants.** HTF is variously "4-hour / daily / weekly"; LTF is "30-minute / 15-minute / 5-minute / 1-minute." The stacked-entry example (30m sweep + 5m BOS + 4H/daily bias) uses "like the 30 minute" phrasing — illustrative, not fixed. No rule for how many timeframes must agree.
+- **"The moves higher are always smaller than the moves lower"** (impulse > retracement) is stated as always-true "if you measure it in every single trend," but no measurement method or ratio threshold is given. Treat as heuristic, not a coded filter. confidence: low.
+- **Session times not defined.** Asian / London / New York sessions are named as context (it's a consolidating Sunday), but no clock times or kill-zone windows are given here.
+- **Consolidation boundaries** (what counts as the floor/ceiling, how many touches, how much stagnation) are not quantified.
+- ASR / jargon notes: "GJ" = GBPJPY, "GU" = GBPUSD (both named as example homework pairs). "S P 500" = S&P 500. "jizz"/"jits" elsewhere in the series = TJR's greeting, not a term (not present as a term here). Bracketed "[__]" tokens are censored profanity. "forecast tool" = TradingView projection/forecast drawing tool.

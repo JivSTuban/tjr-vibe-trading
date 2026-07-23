@@ -1,0 +1,86 @@
+- id: tjr-order-blocks-pt3-r01
+  teacher_statement: >
+    "It's the leg up or the leg down prior to the break of structure." Best when it also
+    swept liquidity. [07:20], [09:52]
+  source_timestamp: "07:20"
+  proposed_machine_rule: >
+    Detect an order block as the contiguous displacement leg immediately preceding a
+    confirmed BOS/MSS. Bullish OB = last down-leg before an up-BOS; bearish OB = last up-leg
+    before a down-BOS. Flag OB quality HIGH when the leg swept a prior swing high/low
+    (liquidity sweep) before the BOS.
+  status: proposed
+  ambiguity: >
+    "The leg" boundaries are visually chosen; needs an algorithmic leg-detection definition
+    (swing-to-swing). "Whole move" vs single-candle wick vary by method.
+  counterexamples: []
+
+- id: tjr-order-blocks-pt3-r02
+  teacher_statement: >
+    "I do it off the wick -- from the wick down to the start of the body... price often taps
+    just the wick, or taps the base of the body (where the body starts) -- usually the
+    reaction point." [10:38], [11:27]
+  source_timestamp: "10:38"
+  proposed_machine_rule: >
+    For each OB candle, compute two zones: full-leg zone [leg extreme, leg origin] and wick
+    zone [wick tip, body-open]. Use the body-open price as the primary reaction/entry level
+    and the wick zone as the entry band. (Beginner/first pass may use full-leg zone.)
+  status: proposed
+  ambiguity: >
+    "Often" is unquantified -- no hit-rate given for wick vs body-base reactions. Whether to
+    use wick zone or full-leg zone is a preference, not a fixed rule.
+  counterexamples: []
+
+- id: tjr-order-blocks-pt3-r03
+  teacher_statement: >
+    Wait for price to retrace into the OB, then wait for a break of structure (MSS) in the
+    trade direction as confirmation -- demonstrated on the 15-minute -- then enter. [17:29]
+  source_timestamp: "17:29"
+  proposed_machine_rule: >
+    Enter on a confirming lower-timeframe BOS/MSS (e.g. 15m) in the HTF-bias direction after
+    price fills the OB or an FVG inside it. Optionally enter off a nested LTF OB/FVG for a
+    tighter stop.
+  status: proposed
+  ambiguity: >
+    Which LTF to require for confirmation (15m shown, but "you can scale down further") is
+    not fixed; depends on the HTF being played.
+  counterexamples: []
+
+- id: tjr-order-blocks-pt3-r04
+  teacher_statement: >
+    Only take entries in line with daily and weekly bias; daily bias shifts on a BOS with a
+    big move. [20:26]
+  source_timestamp: "20:26"
+  proposed_machine_rule: >
+    Gate entries so LTF setups must align with HTF (daily/4h) and weekly directional bias
+    (bias set by the most recent HTF BOS/MSS). Reject counter-bias setups.
+  status: proposed
+  ambiguity: >
+    "Big move" for a daily bias shift is not quantified (no displacement %/ATR threshold).
+  counterexamples: []
+
+- id: tjr-order-blocks-pt3-r05
+  teacher_statement: >
+    Target previous areas of liquidity on higher timeframes; "I sometimes use order blocks as
+    take profit." [13:39], [17:12]
+  source_timestamp: "13:39"
+  proposed_machine_rule: >
+    Set take-profits at prior liquidity pools (swing highs/lows) on higher timeframes;
+    opposing OBs and FVGs are also valid TP levels.
+  status: proposed
+  ambiguity: >
+    No rule for choosing among multiple liquidity targets / partials; "wherever you want"
+    for stops is not a concrete SL rule (defer to timeframe-coherence rule from Day 22).
+  counterexamples: []
+
+- id: tjr-order-blocks-pt3-r06
+  teacher_statement: >
+    "If you see a liquidity sweep and then a leg higher, you should assume there's going to
+    be an order block there." [23:48]
+  source_timestamp: "23:48"
+  proposed_machine_rule: >
+    Detection heuristic: when a liquidity sweep is immediately followed by a displacement
+    leg, mark the leg as a candidate OB and confirm with the subsequent BOS.
+  status: proposed
+  ambiguity: >
+    "Leg higher" size threshold undefined; risk of over-detecting OBs on noise.
+  counterexamples: []

@@ -1,0 +1,86 @@
+- id: tjr-daily-bias-no-trades-r01
+  teacher_statement: >-
+    Even with everything bullish on SPX, I want a high-timeframe building block to
+    get tapped before I take a trade; I won't take the small FVG play.
+  source_timestamp: "03:47"
+  proposed_machine_rule: >-
+    Require price to mitigate a pre-marked HTF building block (e.g. 1H/4H order
+    block) before generating an entry, even under full timeframe alignment. Reject
+    LTF-only FVG entries.
+  status: proposed
+  ambiguity: >-
+    Which timeframes count as HTF for the required building block is not defined
+    here (see lesson 50).
+  counterexamples: []
+
+- id: tjr-daily-bias-no-trades-r02
+  teacher_statement: >-
+    Don't look for a GU trade until at least 1-hour bullish confirmation; plus it
+    has CPI news so avoid it entirely.
+  source_timestamp: "07:29"
+  proposed_machine_rule: >-
+    When 4H conflicts with daily/weekly, require a 1H BOS in the HTF-bias direction
+    before enabling signals; independently, exclude the pair if a high-impact
+    release in its currency is scheduled that session.
+  status: proposed
+  ambiguity: >-
+    News window/impact tier undefined (see lessons 19/47/48/51).
+  counterexamples: []
+
+- id: tjr-daily-bias-no-trades-r03
+  teacher_statement: >-
+    The GJ trade never came up into the 30-minute high like our Forex strategy
+    says, so I didn't take it (even with a 5m BOS).
+  source_timestamp: "14:39"
+  proposed_machine_rule: >-
+    Add to the 4X-strat preconditions: require a sweep of the relevant 30-minute
+    high (for shorts) / low (for longs) before validating the LTF BOS entry. No
+    30m sweep -> no trade.
+  status: proposed
+  ambiguity: >-
+    Which 30m swing (session-specific? most recent?) must be swept is not fully
+    specified.
+  counterexamples: []
+
+- id: tjr-daily-bias-no-trades-r04
+  teacher_statement: >-
+    No reason to take a trade purely based off hourly price action when the daily
+    and 4H say otherwise; wait for something better.
+  source_timestamp: "11:49"
+  proposed_machine_rule: >-
+    Reject entries whose only justification is lower-timeframe (1H) structure that
+    contradicts the daily/4H bias.
+  status: proposed
+  ambiguity: >-
+    Consistent with lessons 50/53; needs per-timeframe bias computation.
+  counterexamples: []
+
+- id: tjr-daily-bias-no-trades-r05
+  teacher_statement: >-
+    Declined a solid SPX long because it's super late into New York session;
+    recommended waiting for the Asian session instead.
+  source_timestamp: "11:39"
+  proposed_machine_rule: >-
+    Do not open new entries after a defined session-end cutoff; when a session is
+    exhausted or low-volume post-news, defer to the next session.
+  status: proposed
+  ambiguity: >-
+    No numeric session-cutoff time or timezone stated.
+  counterexamples: []
+
+- id: tjr-daily-bias-no-trades-r06
+  teacher_statement: >-
+    Anything against the dollar reacts opposite to a USD release; a GBP-vs-other
+    pair is correlated to GBP (bearish CPI -> bearish GBP/USD and GBP/JPY).
+  source_timestamp: "01:44"
+  proposed_machine_rule: >-
+    Compute a release's directional bias impact per symbol from its base/quote:
+    if the release currency is the QUOTE (X/USD, indices/commodities vs USD),
+    apply the opposite sign; if it's the BASE (GBP/JPY for a GBP release), apply
+    the same sign.
+  status: proposed
+  ambiguity: >-
+    This informs bias, but TJR still usually AVOIDS trading the affected pairs
+    rather than trading the correlation; clarify whether correlation is used to
+    trade or only to avoid.
+  counterexamples: []
