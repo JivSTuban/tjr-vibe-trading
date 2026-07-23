@@ -29,6 +29,7 @@ import os
 from dataclasses import replace
 from typing import List
 
+import numpy as np
 import pandas as pd
 
 from .config import Config
@@ -104,6 +105,48 @@ def walk_forward(closed: List[ClosedTrade], k: int = 6) -> List[dict]:
             "win_rate": res.win_rate,
             "gross_expR": _gross_expR(fold, base) if fold else 0.0,
             "net_expR": res.avg_R,
+        })
+    return out
+
+
+def equal_trade_walk_forward(closed: List[ClosedTrade], k: int = 8) -> List[dict]:
+    """Split closed trades into k equal-COUNT folds by entry_time order.
+
+    Unlike ``walk_forward`` (equal-TIME folds, which leave empty folds in a
+    trade dry-spell), this sorts by entry_time and uses ``np.array_split`` so
+    every fold holds the same trade count +/- 1 — no empty folds. Per fold:
+    ``{fold, n, start, end, win_rate, gross_expR, net_maker (r=0),
+    net_realistic (r=0.5)}`` where net_* recost the fold via ``recost_trade``
+    under maker_taker at the given ``entry_taker_ratio``.
+    """
+    closed = sorted(closed, key=lambda c: c.entry_time)
+    if not closed:
+        return []
+    base = Config(**_BEST)
+    maker = replace(base, cost_model="maker_taker", entry_taker_ratio=0.0)
+    realistic = replace(base, cost_model="maker_taker", entry_taker_ratio=0.5)
+
+    out = []
+    for i, fold in enumerate(np.array_split(np.array(closed, dtype=object), k)):
+        fold = list(fold)
+        if not fold:
+            out.append({
+                "fold": i + 1, "n": 0, "start": None, "end": None,
+                "win_rate": 0.0, "gross_expR": 0.0,
+                "net_maker": 0.0, "net_realistic": 0.0,
+            })
+            continue
+        res_maker = metrics_from_closed([recost_trade(c, maker) for c in fold])
+        res_real = metrics_from_closed([recost_trade(c, realistic) for c in fold])
+        out.append({
+            "fold": i + 1,
+            "n": res_maker.trade_count,
+            "start": str(fold[0].entry_time),
+            "end": str(fold[-1].entry_time),
+            "win_rate": res_maker.win_rate,
+            "gross_expR": _gross_expR(fold, base),
+            "net_maker": res_maker.avg_R,
+            "net_realistic": res_real.avg_R,
         })
     return out
 
