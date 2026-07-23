@@ -10,11 +10,16 @@ from tjr_4x.tests.conftest import EXPECTED
 
 
 def _force_bias(monkeypatch, sign):
-    """Pin daily bias to a constant sign so the detection path is isolated."""
+    """Pin daily bias to a constant sign so the detection path is isolated.
+
+    ``find_trades`` selects its bias via ``strategy._select_bias`` (which
+    dispatches on ``cfg.bias_mode``); patch that so the test is independent of
+    the promoted default mode (C)."""
     monkeypatch.setattr(
-        strategy, "compute_bias",
+        strategy, "_select_bias",
         lambda df5m, cfg: pd.Series(
-            sign, index=strategy._resample(df5m, cfg.bias_timeframe).index),
+            sign, index=strategy._resample(strategy._prep(df5m),
+                                           cfg.bias_timeframe).index),
     )
 
 
