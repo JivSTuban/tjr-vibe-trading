@@ -33,3 +33,22 @@ BTC-USDT-PERP · 1D bias / 15m setup+sweep / 5m entry · pivot-3 swings · sweep
 3. **Bias quality** — replace the proxy with the real top-down 1D→4H bias rules.
 4. **Resolve OPEN_QUESTIONS** (prominent-level, equilibrium reference-swing, 30m-sweep precondition) and re-run.
 5. **In-sample / out-of-sample split + param sweep** — the harness supports it; not run for v0.
+
+---
+
+## Iteration 1 — session/kill-zone gating (2026-07-23)
+
+Hypothesis: TJR's edge is session-timed, so restricting entries to London/NY windows should help. **Result: it does not.** Same 941 candidate setups, filtered by UTC session windows (`session_sweep.py`):
+
+| preset | trades | win% | exp_R (net) | PF | net_R |
+|---|--:|--:|--:|--:|--:|
+| none (24/7) | 129 | 33.3% | **−0.616** | 0.47 | −79.4 |
+| london (07–10) | 119 | 31.1% | −0.692 | 0.40 | −82.4 |
+| ny_am (12–15) | 50 | 38.0% | −1.315 | 0.31 | −65.7 |
+| london+ny_am | 67 | 32.8% | −1.461 | 0.26 | −97.9 |
+| kill_zones (07–09,12–14) | 86 | 34.9% | −1.101 | 0.32 | −94.7 |
+| ny_full (13–20) | 104 | 37.5% | −0.817 | 0.43 | −84.9 |
+
+**No preset beats the 24/7 baseline on expectancy.** NY windows raise win-rate (37–38%) but expectancy gets *worse* — small-sample R-quality drops. Conclusion: on 24/7 BTC, TJR's session concept (an FX/index liquidity+news artifact) is **not** the missing edge.
+
+**Root-cause diagnostic (all 941 setups):** median stop distance 0.53% of price, median cost 0.38R (only 4% of setups have <0.10% stops). So costs are a real drag but *not* the whole story — **gross expectancy is ~0 (33% at 2R = breakeven), i.e. the entry logic has no edge over random.** The next lever is **setup quality** (real top-down bias, discretionary building-block selection, opposite-liquidity TP), not timing. Caveat: fixed-UTC windows ignore DST (an OPEN_QUESTION).
