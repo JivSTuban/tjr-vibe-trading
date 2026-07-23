@@ -98,7 +98,12 @@ def _cost_R(trade: Trade, cfg, outcome: str, exit_price: float) -> float:
     entry = trade.entry
     model = getattr(cfg, "cost_model", "maker_taker")
     if model == "maker_taker":
-        entry_leg = cfg.maker_fee_pct * entry            # limit entry -> maker
+        # entry blends maker vs taker+slip by entry_taker_ratio (default 0 =
+        # all-maker, reproduces iteration 4). r=1 => entry pays taker+slip.
+        r = getattr(cfg, "entry_taker_ratio", 0.0)
+        entry_rate = ((1.0 - r) * cfg.maker_fee_pct
+                      + r * (cfg.taker_fee_pct + cfg.slippage_pct))
+        entry_leg = entry_rate * entry                   # limit entry -> maker (blended)
         if outcome == "tp":
             exit_leg = cfg.maker_fee_pct * trade.tp      # limit TP -> maker
         else:

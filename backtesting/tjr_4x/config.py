@@ -87,6 +87,15 @@ class Config:
     #   5m walk), so no 8h funding window is crossed in the modelled path.
     cost_model: str = "maker_taker"     # "taker_only" | "maker_taker"
 
+    # --- Cost-mix stress (iteration 5) ----------------------------------- #
+    # Fraction of ENTRY fills that execute as TAKER (market) instead of the
+    # modelled resting MAKER limit. 0.0 = all-maker (iteration-4 assumption).
+    # Under maker_taker the entry leg is blended:
+    #     entry_leg = ((1-r)*maker + r*(taker+slip)) * entry
+    # The TP leg stays maker; the SL leg stays taker+slip. r has NO effect on
+    # taker_only (every leg is already taker+slip there).
+    entry_taker_ratio: float = 0.0
+
     @property
     def cost_per_side_pct(self) -> float:
         """Total adverse cost fraction for a *taker* side (fee + slippage).
