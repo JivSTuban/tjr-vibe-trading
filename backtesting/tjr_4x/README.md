@@ -188,3 +188,31 @@ The credibility test for the C-bias + min-stop + 2R edge. Best config held fixed
 - **Small samples** (OOS n=34, ETH n=89) mean magnitudes are uncertain.
 
 **Not a live green-light.** This is a promising-but-fragile research edge. Before trusting capital: broaden to **many instruments + multiple years/regimes**, use **equal-trade-count walk-forward**, and require robustness to a **realistic maker/taker mix** — then, only if it survives, the PRD §27 **shadow-mode** gate. All rules remain `proposed`.
+
+---
+
+## Iteration 6 — multi-instrument breadth (2026-07-23)
+
+The overfit test: run the fixed config (C bias + 0.2% min-stop + 2R, **no retuning**) across 8 independent perps, 18mo 5m each. `run_multi.py`.
+
+| sym | trades | win% | gross | net@maker | net@realistic | net@taker | PF@real |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| XRP | 109 | 47.7% | +0.431 | +0.324 | +0.272 | +0.220 | 1.43 |
+| ETH | 89 | 43.8% | +0.315 | +0.191 | +0.136 | +0.080 | 1.19 |
+| ADA | 142 | 41.5% | +0.246 | +0.151 | +0.105 | +0.058 | 1.15 |
+| BTC | 137 | 40.9% | +0.226 | +0.070 | −0.001 | −0.072 | 1.00 |
+| DOGE | 126 | 38.9% | +0.167 | +0.064 | +0.017 | −0.029 | 1.02 |
+| SOL | 90 | 37.8% | +0.133 | +0.029 | −0.020 | −0.069 | 0.97 |
+| LINK | 124 | 36.3% | +0.089 | −0.026 | −0.077 | −0.127 | 0.90 |
+| BNB | 64 | 35.9% | +0.078 | −0.105 | −0.184 | −0.262 | 0.78 |
+
+**Breadth: 8/8 instruments have positive GROSS expectancy; 4/8 clear realistic costs.**
+**Pooled: 881 trades, gross +0.216R, net@realistic +0.040R, PF 1.06.**
+**Equal-trade walk-forward (k=8, pooled): 6/8 folds gross-positive** (vs the earlier concentrated equal-time BTC view).
+
+### Verdict — the edge is real and broad, but thin vs costs
+- **The overfit worry is largely resolved.** A directional edge that is gross-positive on **all 8** independent instruments over **881 trades**, and positive in **6/8** time folds, is not a BTC/ETH artifact. The draw-on-liquidity bias captures a genuine, general effect. This is the strongest result in the study.
+- **But the margin is thin.** Pooled net@realistic is only +0.040R (PF 1.06); half the instruments don't clear realistic transaction costs; BNB/LINK are net-losers. The edge exists but has little cushion over fees/slippage.
+- **Instrument dispersion is large** (XRP +0.27R vs BNB −0.18R net) — some of that is real, some is small-sample (BNB n=64).
+
+**Status:** a real, broad, but low-margin edge. Still not live-ready — it needs *margin* (cost reduction via genuine maker fills; setup-quality gains from resolving OPEN_QUESTIONS) and *more history/regimes* — but the core question "is there a real edge?" now answers **yes, tentatively.** All rules `proposed`.
