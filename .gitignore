@@ -93,3 +93,7 @@ wiki/alpha-library/content/
 
 # TJR course: raw copyrighted transcripts are working artifacts, NOT for redistribution (SAFETY_POLICY §9)
 research/course/**/_transcripts/
+
+# TJR-4X backtest run artifacts + data cache (regenerable)
+backtesting/tjr_4x/runs/
+backtesting/tjr_4x/.cache/
