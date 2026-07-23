@@ -27,6 +27,26 @@ class Config:
     # candidate detection once and then filter per bias mode.
     apply_bias_filter: bool = True
 
+    # Which bias encoding find_trades uses (iteration-3 default: C, the
+    # draw-on-liquidity mode promoted from the iteration-2 ablation). Maps to
+    # ``compute_bias_modes`` keys "current"/"A"/"B"/"C"; when
+    # ``use_4h_confluence`` is True the "+4h" gated variant is used.
+    bias_mode: str = "C"
+    use_4h_confluence: bool = False
+
+    # --- Exit model ---
+    # "fixed_rr"          -> tp = entry +/- rr_target * risk (iteration-2 ref).
+    # "opposite_liquidity"-> tp = nearest OPPOSING liquidity level beyond entry,
+    #                        causal (formed at/before the confirming BOS bar);
+    #                        setups with planned rr < min_rr (or no level) skip.
+    exit_model: str = "fixed_rr"
+    min_rr: float = 1.0                 # min planned reward:risk (opp-liq esp.)
+
+    # --- Min-stop filter ---
+    # Skip setups whose structural stop distance is < this fraction of entry
+    # (cuts the fee-per-R cost tax on tiny stops). 0 = off.
+    min_stop_pct: float = 0.0
+
     # --- Structure detection ---
     swing_length: int = 3               # pivot: 3 bars each side
     liquidity_range_percent: float = 0.01

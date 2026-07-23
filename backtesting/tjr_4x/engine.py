@@ -126,7 +126,10 @@ def _resolve_one(df5m: pd.DataFrame, trade: Trade, cfg,
             return ClosedTrade(trade.entry_time, fill_time, idx[i], d, entry,
                                sl, tp, sl, "sl", -1.0, cost_r, -1.0 - cost_r)
         if hit_tp:
-            g = cfg.rr_target
+            # gross_R from ACTUAL prices (variable-R exits). risk = |entry-sl|,
+            # reward = |tp-entry|; for fixed 2R this is exactly 2.0.
+            risk = abs(entry - sl)
+            g = (abs(tp - entry) / risk) if risk > 0 else 0.0
             return ClosedTrade(trade.entry_time, fill_time, idx[i], d, entry,
                                sl, tp, tp, "tp", g, cost_r, g - cost_r)
     return None  # ran out of data -> unresolved, dropped

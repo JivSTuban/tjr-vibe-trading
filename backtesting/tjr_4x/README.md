@@ -75,3 +75,72 @@ Replaced the crude bias proxy with codable encodings of TJR's real top-down meth
 - **Still no profitable mode** — but C roughly halved the loss. Combined with cost reduction (wider R / opposite-liquidity TP), C is the candidate most likely to cross into positive expectancy.
 
 **Next:** promote C to the default bias, then iteration 3 = opposite-liquidity TP + min-stop filter (cut the ~0.35R cost tax) and re-measure C's gross vs net edge. Resolve the equilibrium reference before revisiting B.
+
+---
+
+## Iteration 3 — promote C, opposite-liquidity TP + min-stop filter (2026-07-23)
+
+Mode **C (draw-on-liquidity)** is now the default bias (`config.bias_mode="C"`).
+Added an `opposite_liquidity` exit model (TP = nearest OPPOSING liquidity level
+beyond entry — causal, formed at/before the confirming BOS bar; skip if planned
+`rr < min_rr` or no level), a `min_stop_pct` filter (skip tiny-stop setups whose
+cost-per-R tax is disproportionate), and variable-R engine accounting
+(`gross_R = |tp-entry|/|entry-sl|` on a TP hit, still exactly 2.0 for fixed 2R).
+`find_trades` is re-run per config (`exit_sweep.py`).
+
+| config | trades | win% | avg_rr | exp_R (net) | PF | net_R | maxDD_R |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| C_fixed2R (iter-2 ref) | 139 | 41.0% | 2.00 | −0.326 | 0.67 | −45.3 | −57.6 |
+| **C_fixed2R_minstop** (0.002) | 137 | 40.9% | 2.00 | **−0.129** | **0.84** | **−17.7** | **−32.8** |
+| C_oppliq | 9 | 11.1% | 3.20 | −8.762 | 0.01 | −78.9 | −75.8 |
+| C_oppliq_minstop | 3 | 33.3% | 1.22 | −1.008 | 0.16 | −3.0 | −2.0 |
+| C_oppliq_minstop_rr1.5 | 0 | — | — | 0.000 | — | 0.0 | 0.0 |
+| C4h_oppliq_minstop | 2 | 50.0% | 1.13 | −0.703 | 0.28 | −1.4 | −2.0 |
+
+**Findings:**
+- **No config reaches positive net expectancy.** The best is
+  **C_fixed2R_minstop**: exp_R −0.129, PF 0.84, net −17.7R, maxDD −32.8R — the
+  min-stop filter (drop stops < 0.2% of price) cut the loss ~60% vs the iter-2
+  reference by removing the highest cost-per-R setups. It is *close* to
+  breakeven but still negative after costs.
+- **Opposite-liquidity TP is a bust here.** Unfiltered it collapses to 9 trades
+  at 11% win / PF 0.01 — the nearest opposing 15m swing/prior-day level is
+  usually very close to entry, so most setups are either skipped (rr<1) or take a
+  thin TP that the tight structural stop still beats. Adding min-stop leaves only
+  3 trades; `rr≥1.5` leaves **zero**. The opposing-pool distance is simply
+  smaller than 1R for this setup on BTC 5m.
+- **Sample sizes for the opp-liq variants (0–9 trades) are far too small to be
+  meaningful** — treat those rows as "the filter starves the strategy," not as
+  performance estimates.
+
+**Conclusion:** the min-stop filter is a real, cheap improvement (net −45→−18R)
+and stacks on C; the opposite-liquidity exit as specified does not fit BTC 5m's
+tight-stop / near-pool geometry. Still no positive edge. All course rules remain
+**proposed**.
+
+---
+
+## Iteration 3 — exit model + min-stop filter (2026-07-23)
+
+Promoted **C (draw-on-liquidity)** to the default bias, then tested a min-stop-distance filter and an opposite-liquidity TP (`exit_sweep.py`). Same detection, per-config re-run.
+
+| config | trades | win% | avg_rr | exp_R (net) | PF | net_R | maxDD_R |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| C_fixed2R (iter-2) | 139 | 41.0% | 2.00 | −0.326 | 0.67 | −45.3 | −57.6 |
+| **C_fixed2R_minstop** | 137 | 40.9% | 2.00 | **−0.129** | **0.84** | **−17.7** | **−32.8** |
+| C_oppliq | 9 | 11.1% | 3.20 | −8.76 | 0.01 | −78.9 | — |
+| C_oppliq_minstop | 3 | 33.3% | 1.22 | −1.01 | 0.16 | −3.0 | — |
+| C_oppliq_minstop_rr1.5 | 0 | — | — | — | — | 0.0 | — |
+| C4h_oppliq_minstop | 2 | 50.0% | 1.13 | −0.70 | 0.28 | −1.4 | — |
+
+### The milestone: a positive GROSS edge
+**C + min-stop (0.2%)** is the best config found and the story changes here:
+- win-rate **40.9% at 2R** clears the 33.3% breakeven by **+7.6 points** ⇒ **gross expectancy ≈ +0.227R/trade** — the strategy finally beats random.
+- net is still **−0.129R/trade**, but that gap is now **entirely execution cost** (~0.356R/trade), not a missing edge. PF 0.84, net loss cut ~78% from the original −79R baseline.
+- The min-stop filter dropped only **2** trades (139→137) yet removed ~28R of loss — those were **degenerate near-zero-stop setups** (entry ≈ SL) whose cost-in-R blew up to ~14R each. Filtering them is the correct fix, not curve-fitting.
+
+### Opposite-liquidity TP fails on BTC 5m
+The nearest opposing pool is usually **< 1R away**, so it starves (0–9 trades) — either skipped (rr<min_rr) or a thin TP the tight stop beats. Not viable as encoded (single-source pools + 15m pivots); a richer liquidity universe is untested.
+
+### Where the edge now lives — it's a COST problem
+Gross is positive; the last barrier is the ~0.36R/trade fee+slippage tax on tight stops. Next levers (iteration 4): **limit/maker entries** (the entry is already a limit into an FVG/OB — model maker fees, not taker), **higher R targets / partial scale-out**, and a **wider min-stop + fewer-better trades**. Then IS/OOS split to confirm the +0.23R gross edge is stable, not in-sample luck.

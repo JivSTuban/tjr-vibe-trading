@@ -153,6 +153,19 @@ def _bias_at(bias: pd.Series, ts: pd.Timestamp) -> int:
     return int(prior.iloc[-1])
 
 
+def _select_bias(df5m: pd.DataFrame, cfg) -> pd.Series:
+    """Daily-indexed bias series selected by ``cfg.bias_mode`` (+ 4H confluence).
+
+    Iteration-3 default is mode ``C`` (draw-on-liquidity). Delegates to
+    ``bias.compute_bias_modes`` and returns the key
+    ``bias_mode + ("+4h" if use_4h_confluence else "")``. Imported lazily to
+    avoid a circular import (bias.py imports from strategy.py).
+    """
+    from .bias import compute_bias_modes
+    key = cfg.bias_mode + ("+4h" if cfg.use_4h_confluence else "")
+    return compute_bias_modes(df5m, cfg)[key]
+
+
 # --------------------------------------------------------------------------- #
 # Sweep + BOS + zone detection on the 15m frame
 # --------------------------------------------------------------------------- #
@@ -240,6 +253,51 @@ def _find_bos_after(bos: pd.DataFrame, sweep_bar: int, direction: int,
     return best
 
 
+def _precompute_breaks(bos: pd.DataFrame, n: int) -> "dict[int, np.ndarray]":
+    """Sorted ``BrokenIndex`` bars per direction (+1/-1), computed ONCE.
+
+    Same event definition as ``_find_bos_after`` (BOS or, if absent, CHOCH;
+    anchored at the causal ``BrokenIndex`` completion bar) but hoisted out of
+    the per-sweep loop so lookups become a binary search instead of a full
+    O(n) rescan on every candidate. Returns ``{+1: sorted_bars, -1: ...}``.
+    """
+    bcol = bos["BOS"].values
+    ccol = bos["CHOCH"].values
+    broken = bos["BrokenIndex"].values
+    ups: List[int] = []
+    dns: List[int] = []
+    for i in range(n):
+        v = bcol[i]
+        if np.isnan(v):
+            v = ccol[i]
+        if np.isnan(v) or int(v) == 0:
+            continue
+        bi = broken[i]
+        if np.isnan(bi):
+            continue
+        bi = int(bi)
+        (ups if int(v) == 1 else dns).append(bi)
+    return {1: np.array(sorted(ups), dtype=int),
+            -1: np.array(sorted(dns), dtype=int)}
+
+
+def _bos_after_fast(breaks: "dict[int, np.ndarray]", sweep_bar: int,
+                    direction: int) -> Optional[int]:
+    """Smallest precomputed ``BrokenIndex >= sweep_bar`` for ``direction``.
+
+    Equivalent to ``_find_bos_after`` (returns the earliest same-direction
+    break completing at/after the sweep) via binary search on the sorted
+    per-direction bars.
+    """
+    arr = breaks.get(direction)
+    if arr is None or arr.size == 0:
+        return None
+    pos = int(np.searchsorted(arr, sweep_bar, side="left"))
+    if pos >= arr.size:
+        return None
+    return int(arr[pos])
+
+
 def _zone_from_displacement(fvg: pd.DataFrame, ob: pd.DataFrame,
                             bos_bar: int, direction: int, n: int):
     """Entry edge from the most-recent same-direction FVG/OB, causally safe.
@@ -284,6 +342,75 @@ def _zone_from_displacement(fvg: pd.DataFrame, ob: pd.DataFrame,
     return best[1], best[2], best[0]
 
 
+def _opposite_liquidity_tp(shl: pd.DataFrame, setup: pd.DataFrame,
+                           bos_bar: int, direction: int, entry: float,
+                           cfg, prev_high: "np.ndarray" = None,
+                           prev_low: "np.ndarray" = None) -> Optional[float]:
+    """Nearest OPPOSING liquidity level beyond ``entry``, causally selected.
+
+    For a long: the nearest 15m swing-HIGH ``Level`` (from ``shl``) strictly
+    above ``entry`` whose pivot bar became *confirmed* at/before ``bos_bar``
+    (i.e. ``pivot_bar + swing_length <= bos_bar``), also considering the
+    prior-day high from ``smc.previous_high_low`` in force at the confirming
+    bar. Pick the CLOSEST such level above entry. Mirror for a short (nearest
+    swing-LOW / prior-day-low strictly below). Returns the level price, or
+    ``None`` if no valid opposing level exists.
+
+    Causality: swing pivots are only knowable ``swing_length`` bars after the
+    pivot, so we require ``pivot_bar + swing_length <= bos_bar``. The
+    prior-day-high/low series is anchored per 15m bar; we read its value at
+    the confirming ``bos_bar`` (which is <= the fill anchor), so no future
+    bar informs the TP.
+    """
+    hl = np.asarray(shl["HighLow"].values, dtype=float)
+    lvl = np.asarray(shl["Level"].values, dtype=float)
+    n = len(hl)
+    SL = cfg.swing_length
+
+    # opposing swing levels (vectorized): for a long target swing HIGHS
+    # (kind +1); for a short target swing LOWS (kind -1). A pivot at bar p is
+    # confirmed only once p + SL <= bos_bar, and must be beyond entry.
+    want_kind = 1 if direction == 1 else -1
+    bars = np.arange(n)
+    mask = (hl == want_kind) & (bars + SL <= bos_bar) & ~np.isnan(lvl)
+    if direction == 1:
+        mask &= lvl > entry
+    else:
+        mask &= lvl < entry
+    candidates = [float(x) for x in lvl[mask]]
+
+    # prior-day high/low pool in force at the confirming 15m bar (causal).
+    # ``prev_high``/``prev_low`` are the ``smc.previous_high_low`` columns,
+    # precomputed ONCE by the caller (they are O(bars) to build, so passing
+    # them in avoids recomputing per candidate). Fall back to computing here
+    # only when not supplied (e.g. direct unit tests).
+    ph = prev_high
+    pl = prev_low
+    if ph is None or pl is None:
+        try:
+            phl = smc.previous_high_low(setup, time_frame="1D")
+            ph = phl["PreviousHigh"].values if "PreviousHigh" in phl.columns else None
+            pl = phl["PreviousLow"].values if "PreviousLow" in phl.columns else None
+        except Exception:
+            ph = pl = None
+    col_arr = ph if direction == 1 else pl
+    if col_arr is not None and 0 <= bos_bar < len(col_arr):
+        pd_level = col_arr[bos_bar]
+        if not np.isnan(pd_level):
+            pd_level = float(pd_level)
+            if direction == 1 and pd_level > entry:
+                candidates.append(pd_level)
+            elif direction == -1 and pd_level < entry:
+                candidates.append(pd_level)
+
+    if not candidates:
+        return None
+    # nearest to entry (closest opposing level beyond entry).
+    if direction == 1:
+        return min(candidates)     # smallest high above entry
+    return max(candidates)         # largest low below entry
+
+
 # --------------------------------------------------------------------------- #
 # Public entry point
 # --------------------------------------------------------------------------- #
@@ -299,7 +426,7 @@ def find_trades(df5m: pd.DataFrame, cfg) -> List[Trade]:
     if len(df5m) < 50:
         return []
 
-    bias = compute_bias(df5m, cfg)
+    bias = _select_bias(df5m, cfg)
     setup = _resample(df5m, cfg.setup_timeframe)
     if len(setup) < cfg.swing_length * 3:
         return []
@@ -311,7 +438,21 @@ def find_trades(df5m: pd.DataFrame, cfg) -> List[Trade]:
     fvg = smc.fvg(ohlc)
     ob = smc.ob(ohlc, swing_highs_lows=shl)
 
+    # Prior-day high/low pools for the opposite-liquidity TP, computed ONCE
+    # (per-candidate recompute is quadratic). Only needed for that exit model.
+    prev_high = prev_low = None
+    if cfg.exit_model == "opposite_liquidity":
+        try:
+            phl = smc.previous_high_low(setup, time_frame="1D")
+            if "PreviousHigh" in phl.columns:
+                prev_high = phl["PreviousHigh"].values
+            if "PreviousLow" in phl.columns:
+                prev_low = phl["PreviousLow"].values
+        except Exception:
+            prev_high = prev_low = None
+
     sweeps = _detect_sweeps(ohlc, shl, cfg)
+    breaks = _precompute_breaks(bos, n)  # per-direction sorted BrokenIndex bars
     setup_times = setup.index  # maps positional bar -> 15m bar start
     # duration of one setup bar (for close-time = next bar open, fill anchor)
     if len(setup_times) >= 2:
@@ -325,7 +466,7 @@ def find_trades(df5m: pd.DataFrame, cfg) -> List[Trade]:
         direction = ev["direction"]
         sweep_bar = ev["bar"]
 
-        bos_bar = _find_bos_after(bos, sweep_bar, direction, n)
+        bos_bar = _bos_after_fast(breaks, sweep_bar, direction)
         if bos_bar is None:
             continue
         # causality: BOS must confirm at/after pivot became known
@@ -357,20 +498,36 @@ def find_trades(df5m: pd.DataFrame, cfg) -> List[Trade]:
         anchor_bar = max(bos_bar, zone_known_bar)
         anchor_close = setup_times[anchor_bar] + tf_delta
 
-        # SL beyond the sweep extreme +/- buffer; TP at fixed RR
+        # SL beyond the sweep extreme +/- buffer.
         extreme = ev["extreme"]
         if direction == 1:
             sl = extreme * (1 - cfg.sl_buffer_pct)
             risk = entry - sl
-            if risk <= 0:
-                continue
-            tp = entry + cfg.rr_target * risk
         else:
             sl = extreme * (1 + cfg.sl_buffer_pct)
             risk = sl - entry
-            if risk <= 0:
+        if risk <= 0:
+            continue
+
+        # Min-stop filter: skip setups whose stop is a tiny fraction of price
+        # (their fee-per-R cost tax is disproportionate). 0 = off.
+        if cfg.min_stop_pct > 0 and (risk / entry) < cfg.min_stop_pct:
+            continue
+
+        # TP: fixed RR, or the nearest opposing liquidity level (causal).
+        if cfg.exit_model == "opposite_liquidity":
+            tp = _opposite_liquidity_tp(shl, setup, bos_bar, direction,
+                                        entry, cfg, prev_high, prev_low)
+            if tp is None:
                 continue
-            tp = entry - cfg.rr_target * risk
+            rr = (tp - entry) / risk if direction == 1 else (entry - tp) / risk
+            if rr < cfg.min_rr:
+                continue
+        else:  # fixed_rr
+            if direction == 1:
+                tp = entry + cfg.rr_target * risk
+            else:
+                tp = entry - cfg.rr_target * risk
 
         # entry eligible from the first 5m bar AFTER the anchor bar closes
         trades.append(Trade(
