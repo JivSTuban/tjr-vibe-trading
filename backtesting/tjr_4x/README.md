@@ -164,3 +164,27 @@ Made cost **outcome-aware** and executes-as-modelled: the entry is a **limit** r
 - **Under maker_taker, FULL net expectancy goes POSITIVE for the first time: +0.070R/trade (PF 1.10, +9.6R).** Charging the limit entry + limit TP as maker (not taker) roughly halves the round-trip tax versus taker_only and flips the sign — the gross edge was there; taker fees were eating it.
 - **The gross edge is stable, not overfit.** IS gross +0.165R (n=103) vs **OOS gross +0.412R (n=34)** — OOS is *stronger*, not collapsed (Δ +0.247R). No sign of in-sample luck in the entry logic itself. Both windows are net-positive under maker_taker.
 - **Biggest caveat:** the min_stop 0.2% threshold was chosen from a full-sample diagnostic (mild in-sample leakage), and **OOS n=34 is small** — a +0.41R OOS gap on 34 trades is well within sampling noise, so the honest read is "edge stable and plausibly real, magnitude uncertain." The maker-fill assumption also presumes the limit entry/TP actually rest and fill without being crossed — realistic for FVG/OB retraces but not guaranteed in fast markets. **All rules remain `proposed`; this is research, not a live green-light.**
+
+---
+
+## Iteration 5 — walk-forward + cost-mix stress + ETH holdout (2026-07-23)
+
+The credibility test for the C-bias + min-stop + 2R edge. Best config held fixed (no retuning). `run_validation.py`.
+
+**Walk-forward (6 equal-time folds, maker r=0):** gross positive in **3 of 6** folds, and *concentrated*: fold 1 +0.731R (57.7% win) does the lifting, fold 4 is **−0.182R** (27% win), folds 2–3 have **zero trades** (a real ~5.5-month dry spell — equal-time folds expose density clustering). → **not temporally consistent.**
+
+**Cost-mix stress** (fraction of entries filled taker via `entry_taker_ratio`):
+| scenario | FULL net | OOS net (n=34) | ETH net (n=89) |
+|---|--:|--:|--:|
+| optimistic (all maker) | +0.070 (PF 1.10) | +0.245 (1.37) | +0.191 (1.29) |
+| **realistic (50% taker)** | **−0.001 (1.00)** | +0.162 (1.23) | +0.136 (1.19) |
+| pessimistic (all taker) | −0.072 (0.91) | +0.079 (1.11) | +0.080 (1.11) |
+
+**ETH instrument-holdout** (same cfg, never tuned on ETH): 89 trades, win **43.8%**, gross **+0.315R**, and **net-positive under all three cost scenarios** — cleaner than BTC full-sample.
+
+### Verdict (honest)
+- **There is a real directional signal.** It **transfers to ETH** (an untuned instrument) and holds in BTC OOS across every cost assumption — that's not what noise does. The C-bias (draw-on-liquidity) + min-stop setup finds better-than-random entries.
+- **But it is NOT robust yet.** The BTC full-sample edge is **fee-fragile** (breakeven at a realistic 50% taker mix) and **time-concentrated** (one fold carries it; a losing regime in late-2025; a 5.5-month dry spell). Recent regime + ETH look favorable; older BTC does not.
+- **Small samples** (OOS n=34, ETH n=89) mean magnitudes are uncertain.
+
+**Not a live green-light.** This is a promising-but-fragile research edge. Before trusting capital: broaden to **many instruments + multiple years/regimes**, use **equal-trade-count walk-forward**, and require robustness to a **realistic maker/taker mix** — then, only if it survives, the PRD §27 **shadow-mode** gate. All rules remain `proposed`.
