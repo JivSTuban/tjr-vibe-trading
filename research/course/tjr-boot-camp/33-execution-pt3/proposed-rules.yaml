@@ -1,0 +1,124 @@
+lesson: 33
+slug: execution-pt3
+rules:
+  - id: tjr-execution-pt3-r01
+    name: "Core FVG-entry sequence"
+    teacher_statement: >
+      "liquidity sweep break of structure fair value Gap entry ... this was a fair value
+      Gap entry right where it was our imbalance"
+    source_timestamp: "07:04"
+    proposed_machine_rule: >
+      Long setup: (1) detect a liquidity sweep of a prior low; (2) require a break of
+      structure to the upside; (3) mark the resulting imbalance/FVG; (4) enter when price
+      returns and fills the FVG. Invert for shorts.
+    status: proposed
+    ambiguity: >
+      No numeric FVG fill % specified (full fill vs partial). Timeframe of the setup BOS
+      not fixed (15m shown, but hourly/daily also used).
+    counterexamples: []
+
+  - id: tjr-execution-pt3-r02
+    name: "Order-block entry variant"
+    teacher_statement: >
+      "what is this considered order block, price comes into the order block pushes higher
+      break structure back to the upside ... imbalance price comes in fills rallies"
+    source_timestamp: "12:03"
+    proposed_machine_rule: >
+      Alternate entry: after liquidity sweep, if price returns into an order block (rather
+      than an FVG), enter on the OB tap; optionally require a subsequent lower-TF BOS +
+      fresh imbalance before entry.
+    status: proposed
+    ambiguity: >
+      Order block definition/selection not re-specified in this lesson (assumed from prior
+      lessons). Whether the second BOS is mandatory or optional is unclear.
+    counterexamples: []
+
+  - id: tjr-execution-pt3-r03
+    name: "Lower-timeframe BOS confirmation trigger"
+    teacher_statement: >
+      "you scale down to a lower time frame to find confirmation ... you get a break of
+      structure on the 15 minute right here ... we're gonna close above / execute"
+    source_timestamp: "09:44"
+    proposed_machine_rule: >
+      Before entering, drop to a lower timeframe and require a break of structure in the
+      trade direction; trigger the entry on the close of the confirming lower-TF BOS candle.
+    status: proposed
+    ambiguity: >
+      "Lower timeframe" not fixed (15m shown; earlier he says "maybe you could scale down").
+      Confirmation is described as optional in some examples ("I guess you could scale down
+      for this" [09:44]).
+    counterexamples: []
+
+  - id: tjr-execution-pt3-r04
+    name: "Target previous draws on liquidity"
+    teacher_statement: >
+      "targets previous areas of our previous draws on liquidity here here here"
+    source_timestamp: "10:02"
+    proposed_machine_rule: >
+      Set take-profit objective at the nearest previous liquidity pool(s) / prior swing
+      high(s) (long) or low(s) (short) in the trade direction.
+    status: proposed
+    ambiguity: >
+      No rule for which liquidity pool to target when several exist; formal TP rules
+      deferred to a later lesson [18:02].
+    counterexamples: []
+
+  - id: tjr-execution-pt3-r05
+    name: "Equilibrium confluence overlay"
+    teacher_statement: >
+      "when you start seeing a retracement candle ... I'm instantly looking for equilibrium
+      ... where's our equilibrium matching up perfectly with our fair value Gap ... that's a
+      high Confluence trade ... enter here"
+    source_timestamp: "14:52"
+    proposed_machine_rule: >
+      On the first retracement candle after BOS, draw equilibrium (50%) of the measured leg.
+      If equilibrium overlaps the FVG price band, flag as high-confluence and enter at that
+      overlap zone.
+    status: proposed
+    ambiguity: >
+      "matching up perfectly" has no numeric tolerance. Leg measurement direction stated
+      inconsistently (swing low->high, then corrected to swing high->low) [19:54]/[20:13].
+    counterexamples: []
+
+  - id: tjr-execution-pt3-r06
+    name: "Confluence stacking raises confidence"
+    teacher_statement: >
+      "one Confluence two Confluence three ... break of structure is a Confluence, seven
+      confluences ... build up the confidence to take the trade"
+    source_timestamp: "22:56"
+    proposed_machine_rule: >
+      Score each present confluence (equilibrium, lower-TF OB, lower-TF FVG, BOS, etc.);
+      more overlapping confluences => higher confidence weighting for the setup.
+    status: proposed
+    ambiguity: >
+      No minimum confluence count required to trade is stated; the "seven" is illustrative,
+      not a threshold.
+    counterexamples: []
+
+  - id: tjr-execution-pt3-r07
+    name: "Daily-bias alignment filter"
+    teacher_statement: >
+      "if it's not in line with where we think Market's going to go long term odds are that
+      run will be relatively short-lived ... that move might not hit your first take profit"
+    source_timestamp: "23:36"
+    proposed_machine_rule: >
+      Only take (or upweight) setups whose direction agrees with the established daily bias;
+      counter-bias setups are downweighted or skipped (expected short-lived, may miss TP1).
+    status: proposed
+    ambiguity: >
+      Daily bias derivation is not defined in this lesson (next lesson). Whether counter-bias
+      setups are hard-rejected or merely downweighted is not stated.
+    counterexamples: []
+
+  - id: tjr-execution-pt3-r08
+    name: "Avoid trading around major Fed/news events"
+    teacher_statement: >
+      "I didn't trade today because Powell was speaking"
+    source_timestamp: "06:48"
+    proposed_machine_rule: >
+      Suppress new entries during/around major scheduled news (Fed/Powell, and by extension
+      CPI/PPI/NFP-class events).
+    status: proposed
+    ambiguity: >
+      Only Powell mentioned this lesson; no time window (minutes before/after) specified.
+    counterexamples: []

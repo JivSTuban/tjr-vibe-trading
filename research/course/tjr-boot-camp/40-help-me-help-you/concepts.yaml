@@ -1,0 +1,20 @@
+- name: Behavioral guardrails (don't over-trade / over-leverage)
+  teacher_definition: "There's not much else to cover besides don't over trade, don't over leverage, be disciplined, be motivated, be productive, keep yourself in a good headspace, and then follow those rules very strictly."
+  source_timestamp: "04:07"
+  codex_interpretation: "Guardrails: enforce max trades/day and leverage/risk caps; strict rule adherence. Numeric caps not given here (see L39 risk tiers)."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Every mistake is money lost
+  teacher_definition: "Every mistake is money lost, every mistake is a loss within the market."
+  source_timestamp: "05:56"
+  codex_interpretation: "Justifies strict rule enforcement and journaling; a discipline-first posture for the process layer."
+  confidence: high
+  requires_confirmation: false
+
+- name: Daily bias adapts at NYSE open
+  teacher_definition: "How my daily bias changes as market gives us more price action upon New York Stock Exchange open."
+  source_timestamp: "07:13"
+  codex_interpretation: "Daily bias is not static; re-evaluate on/after New York session open as new price action arrives. Not elaborated in this lesson — forward reference."
+  confidence: low
+  requires_confirmation: true

@@ -1,0 +1,62 @@
+- name: Per-trade risk 1-3%
+  teacher_definition: "Risk one to three percent of your account size per trade."
+  source_timestamp: "03:42"
+  codex_interpretation: "Hard bound: per-trade risk must be within [1%, 3%] of account equity. Reject trades sized outside this range."
+  confidence: high
+  requires_confirmation: false
+
+- name: Per-day risk cap 1-3% (preferred framing)
+  teacher_definition: "What I would like to say: risk one to three percent of your account per DAY. That makes it easiest. Example allocations: 2 trades at 1.5% risk, or 1 trade at 1%, or 1 trade at 3%, or 3 trades at 1% — either way you're within that threshold."
+  source_timestamp: "10:56"
+  codex_interpretation: "Aggregate daily risk cap = 3% of account. Enforce SUM of risk across all trades in a day <= 3%. Any partition summing <=3% is valid (1x3, 2x1.5, 3x1, 1x1). This also bounds max trades/day."
+  confidence: high
+  requires_confirmation: false
+
+- name: Zero-setup days = 0% risk
+  teacher_definition: "Some days you might not see any setups and you risk zero on the day. Other times you see two setups and go heavier on the risk because all the biases are aligning."
+  source_timestamp: "11:30"
+  codex_interpretation: "No minimum trading activity; trading is optional. Scale toward the 3% end only when multiple biases/confluences align (still capped at 3%/day)."
+  confidence: high
+  requires_confirmation: false
+
+- name: Why 1% survives (100-loss / 80%-loss math)
+  teacher_definition: "Risking 1% per trade means you'd have to lose 100 trades in a row to blow the account, which won't happen. Even losing 80% of the time at 1% risk, at year end you'll still have 20% of the account left. You'll probably get at least 2 of 10 trades to take profit even trading badly."
+  source_timestamp: "05:04"
+  codex_interpretation: "1% sizing gives ~100-trade ruin buffer; a valid worst-case sanity check (80% loss rate at 1% still leaves capital). The 2-of-10 win floor is illustrative, not a modeled win rate."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Over-trading trap / daily cap rationale
+  teacher_definition: "1% per trade = 100 trades to lose everything, BUT if you take 100 trades in a DAY the account is gone in a day. The minute you over-trade or risk more than your set amount, that's when you're screwed."
+  source_timestamp: "06:11"
+  codex_interpretation: "Rationale for the daily cap: bound trade count so ruin can't happen in one session. Machine form: enforce the 3%/day aggregate cap, which limits trades per day at a given per-trade risk."
+  confidence: high
+  requires_confirmation: false
+
+- name: Constant-fractional sizing ($200K test)
+  teacher_definition: "Would you risk 20-30% per trade, or your entire account, or take 10 trades a day if you had $200,000? No. You have to treat your account as if it is at that size even when it's small."
+  source_timestamp: "09:11"
+  codex_interpretation: "Apply the SAME % risk rules regardless of account size; no looser sizing on small accounts. Reinforces the fixed 1-3% fractional model."
+  confidence: high
+  requires_confirmation: false
+
+- name: Position/lot size calculation (homework)
+  teacher_definition: "Calculate 1% risk for your instrument from your stop loss — Forex (pip stop), Futures (2/5/10-point stop loss), options. Use a lot size / position size calculator; I won't explain the math."
+  source_timestamp: "04:03"
+  codex_interpretation: "Position size = f(risk% * equity, stop-loss distance). Standard formula per instrument (pip value for FX, point value for futures, premium/SL for options). TF/instrument-agnostic."
+  confidence: high
+  requires_confirmation: false
+
+- name: Live to trade another day (survival objective)
+  teacher_definition: "All you're doing is living to trade another day. If you can live to trade another day there will always be setups tomorrow. This market is not going anywhere. Stop trying to rush zero to 100K in under a month."
+  source_timestamp: "11:52"
+  codex_interpretation: "Capital preservation is the primary objective of the risk rules; survival > per-session return. Reinforces long-horizon evaluation."
+  confidence: high
+  requires_confirmation: false
+
+- name: Skill before money
+  teacher_definition: "New traders want money first and ignore the skill, so they don't get it. Dedicate yourself to understanding how the charts move — the skill is the glitch, an infinite money glitch. Reading the S&P 500 / DXY correctly is insider information."
+  source_timestamp: "13:44"
+  codex_interpretation: "Motivational framing; not a machine rule. Reinforces process-over-outcome discipline."
+  confidence: medium
+  requires_confirmation: false

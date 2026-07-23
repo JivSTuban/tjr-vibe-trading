@@ -1,0 +1,121 @@
+- name: Lose to HTF reversal, not to execution error
+  teacher_definition: >-
+    "Your goal should be to lose trades based on high-timeframe reversals, not
+    based off of execution errors." The best loss to take is when you traded
+    within the daily bias but the daily bias literally shifted market structure
+    during that day. Those should be your only losses.
+  source_timestamp: "03:11"
+  codex_interpretation: >-
+    Loss taxonomy for the journaling/risk engine: classify each loss as
+    bias-invalidation (acceptable) vs execution-error (avoidable) and track the
+    ratio. High execution-error rate should down-weight the trader's confidence.
+  confidence: high
+  requires_confirmation: false
+
+- name: Daily + 4H confluence required before a trade
+  teacher_definition: >-
+    Ideally daily, 4H and 1H are all in confluence, but at minimum TJR needs the
+    daily AND the 4H aligned before taking a trade. If daily is retracing, the
+    4H also needs a break of structure to give daily continuation.
+  source_timestamp: "04:29"
+  codex_interpretation: >-
+    Multi-timeframe AND-gate: enter only if daily_bias == 4H_bias (1H preferred
+    too). Conflicted higher timeframes -> no trade. Directly codeable once the
+    per-timeframe trend labels are defined.
+  confidence: high
+  requires_confirmation: true
+
+- name: Nested break of structure (1H BOS precedes 4H BOS)
+  teacher_definition: >-
+    To even consider a 4H break of structure you first need a break of structure
+    on the 1H. If the 1H hasn't broken, the 4H continuation isn't confirmed.
+  source_timestamp: "05:00"
+  codex_interpretation: >-
+    Structural dependency: a higher-timeframe BOS is only valid if the
+    next-lower timeframe has already broken in the same direction. Codeable as a
+    precondition check.
+  confidence: high
+  requires_confirmation: true
+
+- name: HTF liquidity sweep vs LTF liquidity sweep
+  teacher_definition: >-
+    In the recap TJR faults himself for entering off a liquidity sweep that was
+    lower-timeframe liquidity rather than his marked higher-timeframe liquidity /
+    building blocks. The mistake was using an LTF sweep + LTF confirmation instead
+    of an HTF liquidity sweep + BOS confirmation entry.
+  source_timestamp: "21:50"
+  codex_interpretation: >-
+    The scorer must weight the TIMEFRAME of the swept liquidity. An entry trigger
+    should require the sweep to occur at a pre-marked HTF building block, not any
+    micro-sweep. Threshold for "HTF" (which timeframes qualify) is not numerically
+    defined here.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Entry sequence used on the losing SPX trade
+  teacher_definition: >-
+    Sequence: HTF bias bullish -> price continues up -> liquidity sweep (not
+    enough alone) -> wait for break of structure up (not enough alone either) ->
+    price retraces back into equilibrium -> strong rejection off the BOS closing
+    strong = entry candle. Stop placed just below the wick of that area.
+  source_timestamp: "19:44"
+  codex_interpretation: >-
+    Concrete multi-step long trigger: sweep + BOS + retrace-to-equilibrium +
+    rejection-close, SL below rejection wick. "Strong rejection" / "close strong"
+    are not quantified.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Prefer hourly building blocks over 15m on SPX
+  teacher_definition: >-
+    "What I've been noticing lately I kind of like using hourly building blocks
+    compared to 15-minute building blocks on the S&P — tends to work out a bit
+    better."
+  source_timestamp: "02:34"
+  codex_interpretation: >-
+    Instrument-specific preference: on SPX weight 1H order blocks/FVGs over 15m.
+    Stated as a recent observation, not a hard rule; treat as a tunable per-symbol
+    parameter.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Trade in high-probability conditions only / take news days off
+  teacher_definition: >-
+    "Less days in the market, higher chance of probability." The market is built
+    to beat you, so don't trade on days you're likely to get beat or when you
+    have no setup. Best traders take ~10 trades a month with big wins and small
+    losses. Goal: only lose to bias-invalidation or clean execution error.
+  source_timestamp: "13:31"
+  codex_interpretation: >-
+    Behavioral guardrail: enforce a no-trade default and a low trade-count cap;
+    news-day blackout. No numeric max-trades or news window defined in this lesson.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Don't trade retracements, trade extensions
+  teacher_definition: >-
+    Retracements are the hardest thing to trade because you can't know which
+    building block price will draw to; you map every building block and act off
+    the reaction to catch the EXTENSION, not the move down. Extensions are where
+    volume/volatility are (clean higher highs/lows); retracements are choppy
+    (doji doji doji) with no volatility.
+  source_timestamp: "15:19"
+  codex_interpretation: >-
+    Directional filter: only take trades that are extensions/continuations in the
+    HTF trend direction after a retracement completes at a marked building block.
+    Avoid counter-trend retracement entries. "Reaction" quality is undefined.
+  confidence: high
+  requires_confirmation: true
+
+- name: No revenge / second trade after a loss
+  teacher_definition: >-
+    After losing $9.5k, TJR declines to take another trade: "there's just no
+    reason to add more risk onto the table potentially lose even more"; sticks
+    to the plan.
+  source_timestamp: "21:13"
+  codex_interpretation: >-
+    Behavioral guardrail: stop trading for the day after a defined loss / after
+    the day's setup is spent. Supports a daily-loss-stop and one-setup-per-session
+    rule. No numeric daily-loss limit is stated.
+  confidence: medium
+  requires_confirmation: true

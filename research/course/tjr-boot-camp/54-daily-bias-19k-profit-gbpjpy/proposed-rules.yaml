@@ -1,0 +1,58 @@
+- id: tjr-daily-bias-19k-profit-gbpjpy-r01
+  teacher_statement: >-
+    (TJR 4X strat) Daily bearish + daily BOS + tap into a daily order block; take
+    out London highs then Asian session highs; 5-minute break of structure; enter
+    in the bias direction.
+  source_timestamp: "08:12"
+  proposed_machine_rule: >-
+    Short trigger: (1) daily_bias == bearish with a confirmed daily BOS down, (2)
+    price mitigates a daily order block, (3) sweeps London session high then Asian
+    session high (buy-side liquidity), (4) 5m BOS to the downside, (5) enter on
+    the 5m BOS candle. SL beyond the swept liquidity. Mirror for longs.
+  status: proposed
+  ambiguity: >-
+    Session clock times not defined here; whether BOTH London and Asian sweeps are
+    required or either suffices is unclear.
+  counterexamples: []
+
+- id: tjr-daily-bias-19k-profit-gbpjpy-r02
+  teacher_statement: >-
+    Stay with the daily when it conflicts with the weekly until a daily BOS +
+    weekly continuation flips it.
+  source_timestamp: "04:33"
+  proposed_machine_rule: >-
+    If weekly_bias != daily_bias, use daily_bias for direction; only flip when a
+    daily BOS in the weekly direction occurs AND the weekly shows continuation.
+  status: proposed
+  ambiguity: >-
+    "Weekly continuation" criteria not quantified. Consistent with lessons
+    50/51/53/55.
+  counterexamples: []
+
+- id: tjr-daily-bias-19k-profit-gbpjpy-r03
+  teacher_statement: >-
+    First take profit off the next order block; after TP1 hit, took off 50% of
+    the position and moved stop to break even.
+  source_timestamp: "09:35"
+  proposed_machine_rule: >-
+    Set TP1 at the nearest opposing building block. On TP1 fill: close 50% of the
+    position and move SL on the remainder to entry (break-even); let the runner
+    target the next liquidity pool.
+  status: proposed
+  ambiguity: >-
+    Runner's final TP selection and any further partials are not specified.
+  counterexamples: []
+
+- id: tjr-daily-bias-19k-profit-gbpjpy-r04
+  teacher_statement: >-
+    On SPX I'd flip bias to long only if a 15-minute high forms and price closes
+    above it; otherwise no trade.
+  source_timestamp: "00:27"
+  proposed_machine_rule: >-
+    When 4H and 1H disagree, require a 15m swing high to form AND a 15m close above
+    it before enabling long signals (mirror for shorts). No qualifying close -> no
+    trade.
+  status: proposed
+  ambiguity: >-
+    Swing-high definition (fractal size) not specified.
+  counterexamples: []

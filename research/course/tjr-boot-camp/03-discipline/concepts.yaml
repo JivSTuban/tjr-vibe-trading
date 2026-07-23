@@ -1,0 +1,62 @@
+- name: Mindset is the only difference (discipline gap)
+  teacher_definition: "You guys aren't profitable yet, I am. What's the difference between you and me? Our mindset, that's the only thing that is different. Technically we are trading the same strategy... sometimes you guys are bailing out of a trade, sometimes you aren't confident enough to take those trades. That is the foundation and those are the holes we need to plug up."
+  source_timestamp: "03:34"
+  codex_interpretation: "TJR attributes the profitability gap entirely to behavior, not edge: (a) exiting valid trades early out of fear, (b) skipping valid signals from low confidence. These are the two discipline failures the system must guard against. Requires an objective 'valid setup' definition (from strategy lessons) to be testable."
+  confidence: high
+  requires_confirmation: false
+
+- name: Alternating trading/discipline curriculum
+  teacher_definition: "I want this whole course to just alternate back and forth between trading and discipline — first day discipline, second day trading, today discipline, tomorrow trading — because my biggest issue with courses is they do not prioritize psychology; they leave just one little baby section for it."
+  source_timestamp: "01:23"
+  codex_interpretation: "Structural/context note about course design. Not a machine rule; explains why lessons are ~50% psychology."
+  confidence: high
+  requires_confirmation: false
+
+- name: One-habit foundation (start small, out of comfort zone)
+  teacher_definition: "Develop a single habit. Start with just one habit you've always wished you'd do or never had the discipline to do... it has to be something you are uncomfortable doing. If you already go to the gym every day you're not allowed to say 'I'm already disciplined' — pick something outside your comfort zone. Don't jump into the deep end; walk into the kiddie pool."
+  source_timestamp: "05:02"
+  codex_interpretation: "The prescribed behavioral primitive: exactly ONE new daily habit, chosen to be uncomfortable/beneficial, done every day. Minimum viable dose (he explicitly says do the OPPOSITE of a 100-mile Goggins run: a 1-mile walk). Encodes a 'one habit/day, streak-tracked' guardrail."
+  confidence: high
+  requires_confirmation: false
+
+- name: Habit vs routine timeline (21 days / 60 days)
+  teacher_definition: "There's a statistic that says habits form over — I believe it's 21 days. That's when a habit forms, but a routine or ritual gets formed over the past 60 days. You can get into a habit over 21 days... but it doesn't become routine/habitual/natural to be comfortable doing it until that 60th day."
+  source_timestamp: "09:40"
+  codex_interpretation: "Two stated thresholds: ~21 days = habit acquired, ~60 days = routine/ritual/comfort. Pop-psychology heuristic TJR half-hedges ('I believe'). Use as target parameters for streak milestones, not validated science."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Motivation dwindles, discipline remains (day 7-8 cliff)
+  teacher_definition: "The first day you're super motivated, the second day you question it, by the time a week ends your motivation is probably gone. Motivation starts to dwindle... once you get to that weak point the motivation is gone and the discipline is all that you have left. The only way you can get there is not through motivation but discipline."
+  source_timestamp: "10:52"
+  codex_interpretation: "Predicts a motivation collapse around day 7-8; discipline (systematized habit, not feeling) is what carries execution past it. Justifies why execution must be rule-driven, not mood-driven. Maps to 'do not condition trade execution on emotional state.'"
+  confidence: high
+  requires_confirmation: false
+
+- name: 1% better every day (compounding habits)
+  teacher_definition: "It's not one little switch you flip, not one single thing you do once — it is habitual, it is one percent better every single day. Your goal with this whole course, this whole summer, should be to get one percent better every single day."
+  source_timestamp: "26:14"
+  codex_interpretation: "Stated improvement target: 1%/day compounding via many small habits. Aspirational KPI framing; not a directly enforceable trade rule but a north-star metric for the discipline track."
+  confidence: high
+  requires_confirmation: false
+
+- name: Dream-self modeling
+  teacher_definition: "Imagine the type of person you want to become — their body, face, activities, habits, what they do daily. Then think what do they do right now to maintain that and continue to get better (not just what they did to get there) and follow that. Imagine your dream self, what does he do every single day, and copy that."
+  source_timestamp: "24:14"
+  codex_interpretation: "A goal-setting / behavior-derivation tactic: reverse-engineer daily actions from the target identity and replicate them. Motivational method, not a machine rule."
+  confidence: high
+  requires_confirmation: false
+
+- name: Trade like a professional (no casino behavior)
+  teacher_definition: "If you want to be a profitable trader you can't treat this like a casino, you can't be over-trading, over-leveraging, because you'll never be profitable if you do that. How do professional traders trade? With risk management, with no emotion, with discipline."
+  source_timestamp: "24:56"
+  codex_interpretation: "Direct trading guardrails stated inside the discipline lesson: no over-trading, no over-leveraging, fixed risk management, no emotion, disciplined execution. Concrete thresholds (max trades/day, max risk %, max leverage) are NOT given here — defer to risk/loss lessons."
+  confidence: high
+  requires_confirmation: true
+
+- name: Progress documentation (photos / TikTok journal)
+  teacher_definition: "Take front and back shirtless mirror pictures to realize the improvement — I took pictures every single week and by the end of three months I was shredded. Optionally document the journey daily on TikTok ('day one of doing TJR's boot camp'); you're subconsciously programming your brain and making yourself more responsible/accountable. You don't have to."
+  source_timestamp: "22:39"
+  codex_interpretation: "Optional accountability + progress-tracking mechanics (explicitly 'you don't have to'). Behavioral scaffolding for the human, not an automatable trade rule."
+  confidence: medium
+  requires_confirmation: false

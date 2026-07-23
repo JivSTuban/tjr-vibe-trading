@@ -1,0 +1,39 @@
+- id: tjr-calculating-lot-size-r01
+  teacher_statement: "1000 account, risk one percent, stop loss 30 pips -> 0.03 lots -> risking ten dollars. You can't go past two decimal places."
+  source_timestamp: "02:14"
+  proposed_machine_rule: "lot_size = round( (account_balance * risk_pct) / (SL_pips * pip_value_per_lot), 2 ). Forex lot granularity = 0.01. pip_value_per_lot derived from contract size (units per lot)."
+  status: proposed
+  ambiguity: "Exact pip_value_per_lot per instrument/quote-currency is not given by TJR (delegated to the calculator app/website). Must be sourced from broker specs."
+  counterexamples: []
+
+- id: tjr-calculating-lot-size-r02
+  teacher_statement: "Most offshore brokerages are 100 units per lot. My broker is 10 units per lot. You find contract size in MetaTrader details. This could really mess you up."
+  source_timestamp: "05:32"
+  proposed_machine_rule: "Read contract_size (units per lot) from broker symbol details for each instrument and use it in the pip-value calculation. Treat as a mandatory, per-broker/instrument config; never assume 100."
+  status: proposed
+  ambiguity: "Broker-specific; Hankotrade=10, generic offshore=100, prop firms often 10 — must be verified per account."
+  counterexamples: []
+
+- id: tjr-calculating-lot-size-r03
+  teacher_statement: "My normal risk is one percent (set lot). De-risk is 50% of it. Confident is 2x it. You guys should never use confident, use normal or de-risk."
+  source_timestamp: "14:44"
+  proposed_machine_rule: "Risk tiers: NORMAL=1.0% (default), DE_RISK=0.5% (half lot), CONFIDENT=2.0% (double lot). Cap engine at NORMAL (1%) and only permit downward DE_RISK; disable CONFIDENT unless an explicit proven-track-record flag is set."
+  status: proposed
+  ambiguity: "Threshold defining 'proven' enough to unlock the confident tier is not quantified."
+  counterexamples: []
+
+- id: tjr-calculating-lot-size-r04
+  teacher_statement: "Set lot sized from the minimum expected stop (400 pips), then if stop is 2x -> 2% risk, 3x -> 3%. Most of the time it never goes to 3%."
+  source_timestamp: "10:17"
+  proposed_machine_rule: "If replicating set-lot: realized_risk% = base_risk% * (actual_SL / base_SL). Reject/flag trades where actual_SL/base_SL implies realized risk above a cap (e.g. > 3%). Alternatively, recompute lots per trade to hold risk constant at 1%."
+  status: proposed
+  ambiguity: "TJR tolerates up to ~3% via set-lot; a fixed-risk engine would instead recompute lots. Choice of set-lot vs constant-risk must be decided by human."
+  counterexamples: []
+
+- id: tjr-calculating-lot-size-r05
+  teacher_statement: "De-risk on high impact news days and bank holidays; normal on clean days; only trade one pair as a beginner."
+  source_timestamp: "13:02"
+  proposed_machine_rule: "Auto-select DE_RISK tier (0.5%) when the day has high-impact news (CPI/PPI/NFP), a bank holiday, or expected choppy/low-volatility conditions. Restrict instrument universe to a single pair in beginner mode."
+  status: proposed
+  ambiguity: "Which news events count as 'high impact' is not enumerated here (L38 references it; canonical list = CPI/PPI/NFP per spec jargon)."
+  counterexamples: []

@@ -1,0 +1,32 @@
+- timestamp: "02:14"
+  instrument: Forex (GBP/USD used to demo the app)
+  timeframe: n/a (position-sizing calc)
+  direction: n/a
+  setup_components:
+    - account $1000, risk 1%, SL 30 pips
+    - calculator output 0.03 lots
+    - risk amount = $10 (1% of $1000)
+  stated_outcome: "Worked calculation; not a live trade. Confirms lot = risk$/(pips*pipvalue)."
+  suitable_for_dataset: false
+
+- timestamp: "05:08"
+  instrument: S&P 500 (SPX)
+  timeframe: n/a (position-sizing calc)
+  direction: n/a
+  setup_components:
+    - account $100,000, S&P quoted in points (pip < point)
+    - contract size 10 units/lot (Hankotrade) read from MetaTrader details
+    - SL values shown as calculator intermediates (e.g. 1807)
+  stated_outcome: "Worked calculation showing contract-size dependency; not a live trade."
+  suitable_for_dataset: false
+
+- timestamp: "09:44"
+  instrument: S&P 500
+  timeframe: n/a (set-lot derivation)
+  direction: n/a
+  setup_components:
+    - account $100,000, risk 1%, base SL 400 pips
+    - set lot = 25 lots
+    - 800-pip stop -> 2% realized; 3x base -> 3% realized
+  stated_outcome: "Derivation of the fixed set-lot (25 lots) and how realized risk scales with stop width."
+  suitable_for_dataset: false

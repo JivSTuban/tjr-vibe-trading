@@ -1,0 +1,31 @@
+- id: tjr-candlesticks-r01
+  teacher_statement: "We can only make bias and decision on candles that have formed, not candles that are forming — that's why we always wait for a close. It's not an actual candle until price action is done within the timeframe."
+  source_timestamp: "16:58"
+  proposed_machine_rule: "Only evaluate/act on CLOSED candles. Never generate a signal from the currently-forming (live) candle; wait for the candle on the working timeframe to close before computing OHLC-based logic."
+  status: proposed
+  ambiguity: "Which timeframe is the 'working' one is not fixed in this lesson; he demonstrates on 5m and Gold daily/weekly. Rule is timeframe-agnostic as stated."
+  counterexamples: []
+
+- id: tjr-candlesticks-r02
+  teacher_statement: "The only candlestick patterns I like are the single candlestick patterns. I hate every candlestick pattern that contains more than two candles — mountain tops, W's, Head & Shoulders is BS."
+  source_timestamp: "07:42"
+  proposed_machine_rule: "Restrict candle-pattern detection to single-candle forms only (doji, long-legged doji, cross doji, inverse cross doji, dragonfly doji, hammer). Do NOT implement multi-candle chart patterns (Head & Shoulders, double top/bottom, W/M) as signals."
+  status: proposed
+  ambiguity: "He says 'more than two candles' hate yet lists only single-candle keeps — unclear whether any 2-candle pattern is permitted. Exact geometric definition/thresholds for each doji type and hammer are not given (deferred to a cheat-sheet he shows but does not spec)."
+  counterexamples: []
+
+- id: tjr-candlesticks-r03
+  teacher_statement: "We are obviously not taking a trade off of this [doji]. This is only one confluence. We cannot be taking trades purely off of candlestick patterns."
+  source_timestamp: "11:49"
+  proposed_machine_rule: "A single candlestick pattern (doji/hammer/rejection candle) is NEVER a standalone entry trigger. Require additional confluence (e.g., liquidity sweep + break of structure) before any entry. Treat candle signal as an input feature, not a trade command."
+  status: proposed
+  ambiguity: "The required additional confluences are not enumerated in this lesson (defined in later liquidity/BOS lessons)."
+  counterexamples: []
+
+- id: tjr-candlesticks-r04
+  teacher_statement: "A strong close is a full body, not a high wick against the close; weak is a wick then moving back up. A big body close means momentum; failing to close with a long opposing wick means losing momentum."
+  source_timestamp: "15:14"
+  proposed_machine_rule: "Classify a closed candle as 'strong' when the body is large relative to the opposing wick and it closes in the intended direction; 'weak' when the opposing wick is large relative to the body or price reverses after the wick. Use as a momentum feature only."
+  status: proposed
+  ambiguity: "NO numeric threshold given for 'large body' vs 'long wick' (no body:wick ratio, no tick/pip/% figure). Threshold must be defined by Jiv before this is testable."
+  counterexamples: []

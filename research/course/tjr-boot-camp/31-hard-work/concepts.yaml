@@ -1,0 +1,76 @@
+- name: "Minimum effort yields minimum results"
+  teacher_definition: "If you put in minimum effort and minimum work you are going to get minimum results; conversely put in so much work that success becomes undeniable."
+  source_timestamp: "00:52"
+  codex_interpretation: "Effort-scaling principle. Not a trade rule. Motivates high back-test/study volume and rule-based execution over minimal-effort discretionary trading."
+  confidence: high
+  requires_confirmation: false
+
+- name: "4x work rule (Hormozi)"
+  teacher_definition: "To reach where the top person in an industry is, you must do four times the work they are currently doing; when they were where you are, they did far more."
+  source_timestamp: "01:17"
+  codex_interpretation: "Quoted from Alex Hormozi, not a TJR-native system parameter. No machine rule; operator-effort framing only."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "4 hours/day minimum study (Hormozi)"
+  teacher_definition: "Hormozi says do four hours a day; four hours is not a lot of time — reclaim it from TikTok/YouTube screen time and put it into work."
+  source_timestamp: "04:24"
+  codex_interpretation: "Possible operator study-quota threshold (4 h/day). Attributed to Hormozi, not mandated by TJR as a system input. Could feed a soft daily-study tracker; not a trade filter."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "TJR's own work volume (8 h/day, 10+ books each)"
+  teacher_definition: "Watched ~8 hours of YouTube/day, read 10+ day-trading books and 10+ psychology books; did 2x the 4-hour standard (8 h/day) e.g. 2 hours of trading videos while doing cardio."
+  source_timestamp: "01:49"
+  codex_interpretation: "Anecdotal proof of the effort standard. No direct machine rule; sets an upper reference for operator study volume."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Undeniable results build self-belief"
+  teacher_definition: "You need undeniable results to prove to yourself you are confident enough to offer something; you achieve undeniable results only through work."
+  source_timestamp: "02:43"
+  codex_interpretation: "Confidence is downstream of demonstrated (back-tested/journaled) results. Supports requiring evidence (large sample) before trusting a setup."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Daily improvement self-audit"
+  teacher_definition: "If you don't see yourself getting better every single day, change something and do more (e.g. back-test 1h -> 1.5h; add 30 min trading + 30 min psychology study)."
+  source_timestamp: "06:32"
+  codex_interpretation: "Continuous-improvement loop. Maps to a weekly KPI-trend check on the operator dashboard; escalate effort when no measurable improvement."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Discipline over motivation"
+  teacher_definition: "Motivation won't get you everywhere; discipline will. You won't want to wake early, trade, study, and journal daily -- do it anyway. Let discipline, not motivation, drive you."
+  source_timestamp: "10:40"
+  codex_interpretation: "Argues for fully rule-based / automated execution to remove daily willpower dependence. Behavioral guardrail: process must not depend on 'feeling motivated'."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Embrace failure (fail 1000x)"
+  teacher_definition: "Fail a thousand times -- if you succeed even 1-10 of those you're on a better/great track. Fear of trying is the real blocker."
+  source_timestamp: "14:37"
+  codex_interpretation: "Positive-expectancy, high-sample mindset. Consistent with large back-test samples and not abandoning a rule on a small losing streak. No numeric sample size given -- do not invent one."
+  confidence: medium
+  requires_confirmation: true
+
+- name: "Progress addiction / compounding (gym analogy)"
+  teacher_definition: "Like the gym, sticking with it ~1-1.5 weeks produces first results, which creates addiction to seeing results (win rate, subscribers, numbers going up)."
+  source_timestamp: "12:17"
+  codex_interpretation: "Motivational; reinforces consistency. No machine rule."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Trader improvement KPIs"
+  teacher_definition: "If you're working, these should improve: win rate, risk-to-reward, entry precision ('entries get more exact'), profitability, and learning from mistakes."
+  source_timestamp: "14:15"
+  codex_interpretation: "Directly maps to journal/scorer dashboard metrics tracked weekly. Monitoring outputs, not trade gates."
+  confidence: high
+  requires_confirmation: false
+
+- name: "Homework: re-watch Day 1 & re-assess goals"
+  teacher_definition: "Re-watch boot camp Day 1; reconsider your life goals and the short-term goals set earlier in the boot camp; assess your progress on them."
+  source_timestamp: "11:12"
+  codex_interpretation: "Periodic goal/progress review ritual. Could map to a scheduled operator review cadence; no trade logic."
+  confidence: high
+  requires_confirmation: false

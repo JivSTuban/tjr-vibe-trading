@@ -1,0 +1,12 @@
+{
+  "lesson_number": 25,
+  "video_id": "4moWbfm6smw",
+  "slug": "over-confidence",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 74000,
+  "concepts_count": 9,
+  "rules_count": 6,
+  "examples_count": 2,
+  "notes": "Psychology lesson, yields strong behavioral guardrails. Key numbers: 1-2 trades/day (1 best); first trade near market open = highest probability (price+time, new-money liquidity sweep). Explicit 'I don't trade news' + 'don't trade tomorrow/Thursday' (Powell/FOMC). No explicit per-trade risk % is stated (do not invent). Demo-gate for fearful/unproven. examples.yaml holds 2 REFERENCED (not walked) trades, both suitable_for_dataset:false. Wrote all 8 files. Directly pairs with Day 27 (Fear) as the opposite pole of the confidence band. transcript_chars is an estimate."
+}

@@ -1,0 +1,81 @@
+- id: tjr-order-blocks-r01
+  teacher_statement: >
+    "Essentially all an order block is is that move up that causes the liquidity
+    sweep… it's the leg down prior to the liquidity sweep" (bearish case).
+  source_timestamp: "03:10"
+  proposed_machine_rule: >
+    Identify the OB as the initiating leg that (a) sweeps a prior swing high/low
+    (liquidity sweep) and (b) is immediately followed by a break of structure in
+    that leg's direction. Bullish OB = up-leg sweeping a low then BOS up; bearish
+    OB = down-leg sweeping a high then BOS down. Mark the origin leg, not the
+    displacement candles after BOS.
+  status: proposed
+  ambiguity: >
+    TJR says "move/leg," not "last opposing candle before displacement." Whether
+    the OB is a single candle (standard SMC: last down candle before up move) or
+    the whole leg is NOT stated. Resolve before coding candle-level detection.
+  counterexamples: []
+
+- id: tjr-order-blocks-r02
+  teacher_statement: >
+    "This is this whole price range… where the orders were filled" / "I call
+    them accumulation areas."
+  source_timestamp: "03:24"
+  proposed_machine_rule: >
+    Define the OB zone as a price range spanning the identified origin leg.
+    PLACEHOLDER boundaries pending confirmation: candidate A = body (open→close)
+    of the last opposing candle; candidate B = full candle high→low incl. wick;
+    candidate C = the full initiating leg's high→low. Do NOT hardcode until
+    disambiguated (Day 2 lesson).
+  status: proposed
+  ambiguity: >
+    Zone boundaries (body vs wick, single candle vs leg, high/low anchors) are
+    completely undefined in this lesson. confidence low.
+  counterexamples: []
+
+- id: tjr-order-blocks-r03
+  teacher_statement: >
+    "There's only one order block within a whole trend… a new one is only made
+    when we get another trend shift."
+  source_timestamp: "07:53"
+  proposed_machine_rule: >
+    Enforce a max of ONE active OB per structural trend leg. Create the OB at
+    the trend origin (post sweep + BOS); invalidate/replace it only on the next
+    market-structure shift (new trend). Retracement POIs inside the same trend
+    are FVG/equilibrium, not additional OBs.
+  status: proposed
+  ambiguity: >
+    Requires a machine definition of "trend" and "trend shift" (MSS/BOS) that is
+    consistent with prior lessons. Not defined here.
+  counterexamples: []
+
+- id: tjr-order-blocks-r04
+  teacher_statement: >
+    "The first option every single time for me is going to be an order block…
+    then a fair value gap and then equilibrium."
+  source_timestamp: "06:57"
+  proposed_machine_rule: >
+    For retracement (re-entry) plays after missing the sweep+BOS entry, rank
+    points of interest OB > FVG > equilibrium. Prefer entering on price retrace
+    into the OB zone (highest-priority POI) in the trend direction.
+  status: proposed
+  ambiguity: >
+    No entry trigger/confirmation, stop, or target is specified. LTF
+    confirmation, candle close, SL beyond OB extreme, and TP are all inferences
+    NOT stated in this lesson — do not implement as if taught.
+  counterexamples: []
+
+- id: tjr-order-blocks-r05
+  teacher_statement: >
+    "This is why we need to know when news is going on… you should not be
+    trading today" (PPI/FOMC; GBPJPY only 34 pips since U.S. open).
+  source_timestamp: "12:13"
+  proposed_machine_rule: >
+    Behavioral guardrail: block/suppress OB (and all) entries during high-impact
+    news windows (e.g., PPI, FOMC, and by extension CPI/NFP). Flag compressed
+    post-open ranges on normally volatile pairs as no-trade conditions.
+  status: proposed
+  ambiguity: >
+    No explicit news-window duration or buffer (minutes before/after) is given.
+    "34 pips" is illustrative, not a coded threshold.
+  counterexamples: []

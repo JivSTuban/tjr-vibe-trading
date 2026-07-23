@@ -1,0 +1,12 @@
+{
+  "lesson_number": 3,
+  "video_id": "w2CWF0WtLmQ",
+  "slug": "discipline",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 163907,
+  "concepts_count": 10,
+  "rules_count": 6,
+  "examples_count": 0,
+  "notes": "Pure psychology/discipline lesson (Day 3), part of the alternating trading/discipline curriculum. Core homework: pick ONE uncomfortable daily habit and never break the streak. Verbatim numbers captured: 21-day habit / 60-day routine thresholds, day 7-8 motivation cliff, 1%/day improvement target, 1 habit minimum, every-other-lesson check-in cadence, 1-mile walk floor, weekly progress photos. Direct trading guardrails stated in passing (no over-trading / over-leveraging / emotion; use risk management) but WITHOUT concrete numbers -> r06 placeholder, deferred to risk/loss lessons. examples.yaml skipped: no chart/trade examples walked in this lesson. proposed-rules.yaml, ambiguities.md, verification-questions.md all written. Emotion rule (r05) noted to conflict with Lesson 11's 'take days off when compromised' -> flagged for confirmation. transcript_chars = raw en-orig SRT char count (163907); note ASR line triplication means unique spoken text is ~32k."
+}

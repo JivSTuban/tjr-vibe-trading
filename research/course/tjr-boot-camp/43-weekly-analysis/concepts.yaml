@@ -1,0 +1,48 @@
+- name: Weekly analysis (weekend top-down markup)
+  teacher_definition: "How I do my weekly analysis — I treat it as I do any other pair, as if it were market open, by marking out building blocks, saying this is probably where price will retrace to, these are the draws on liquidity, and we just do top-down analysis."
+  source_timestamp: "08:34"
+  codex_interpretation: "A scheduled pre-week ritual: monthly->weekly->daily->4H->1H markup per instrument producing a directional bias + ordered draw/target list. Feeds intraday setup validation."
+  confidence: high
+  requires_confirmation: false
+
+- name: News-day trading gate (CPI/PPI/claims)
+  teacher_definition: "We have CPI on Wednesday so I likely will not be trading that day; PPI and unemployment claims on Thursday. Both days I'll get on Zoom and mark out levels. These news events happen an hour before market opens."
+  source_timestamp: "01:13"
+  codex_interpretation: "Calendar-driven no-trade / observe-only flag on high-impact release days. Timing stated as ~1h before market open; convert to a hard trading-window blocker."
+  confidence: high
+  requires_confirmation: true
+
+- name: GBP-pairs / London news caution
+  teacher_definition: "Be careful about GBP pairs at around 11 AM US time; this is happening during London session, so if you trade London stay away from GBP pairs or wait for this news to come out."
+  source_timestamp: "00:39"
+  codex_interpretation: "Instrument-specific session news filter: block GBP pairs during the London-session release window (~11 AM US time — timezone needs confirmation)."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Follow-the-HTF-trend-until-broken
+  teacher_definition: "We're following the weekly trend until we get proved incorrect by this monthly ending up pushing higher, and we won't know when the monthly wants to push higher until we get a weekly break of structure — and we haven't even had a daily break of structure, so we continue with our bearish bias."
+  source_timestamp: "08:07"
+  codex_interpretation: "Bias persists in the current higher-timeframe trend direction until a break of structure occurs on that same timeframe. A lower-TF break in the opposite direction = a retrace, not a flip."
+  confidence: high
+  requires_confirmation: false
+
+- name: Draw on liquidity / target laddering
+  teacher_definition: "From there we can start doing draws on liquidity on the weekly time frame — the end of this imbalance, liquidity here, liquidity up here — those are some solid areas that we can see price draw to."
+  source_timestamp: "05:00"
+  codex_interpretation: "Weekly analysis outputs an ordered list of target levels (imbalance edges, resting liquidity pools, order blocks) that price is expected to draw toward."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Daily equilibrium ~ weekly equilibrium confluence
+  teacher_definition: "This daily equilibrium is essentially weekly equilibrium as well."
+  source_timestamp: "04:07"
+  codex_interpretation: "When a daily 50% equilibrium level coincides with the weekly equilibrium, treat it as a higher-confluence reaction zone."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Bias is revisable (adapt when proved wrong)
+  teacher_definition: "You give yourself an overview of where price could draw to, what's likely going to happen, and then if you get proved wrong you change your bias, you adapt to it."
+  source_timestamp: "09:02"
+  codex_interpretation: "Bias is mutable state; HTF structure events can flip it mid-week. Do not hardcode a static weekly bias."
+  confidence: high
+  requires_confirmation: false

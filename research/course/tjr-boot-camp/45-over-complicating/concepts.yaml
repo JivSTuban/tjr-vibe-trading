@@ -1,0 +1,48 @@
+- name: Trust the step-by-step trading plan
+  teacher_definition: "That's why we made our trading plan — so we literally have no other way to mess up besides the market going against us. We know how many times we're trading, when we're trading, why we're trading, and how to execute."
+  source_timestamp: "03:39"
+  codex_interpretation: "The strategy is a fixed, fully-specified plan (count, timing, rationale, execution). Deviations are the failure mode; adherence is the guardrail."
+  confidence: high
+  requires_confirmation: false
+
+- name: The missing link is time / market experience
+  teacher_definition: "There's no missing link — the missing link is just time in the market. Most average disciplined people take about a year minimum to turn profitable. It's not the strategy; it's your ability to read price action."
+  source_timestamp: "12:07"
+  codex_interpretation: "Set profitability-expectation window ~>=1 year; don't over-fit to short eval periods. Improvement = accumulated experience, not strategy changes."
+  confidence: medium
+  requires_confirmation: false
+
+- name: One strategy, one bias (no external signals)
+  teacher_definition: "Use one strategy, find one bias, stop listening to all the traders — don't listen to my daily bias if you know how to find daily bias. Stop taking bits and pieces from every little thing."
+  source_timestamp: "12:38"
+  codex_interpretation: "Architectural invariant: exactly one strategy producing one bias per instrument; no ingestion of external/conflicting signals or multi-strategy ensembles."
+  confidence: high
+  requires_confirmation: false
+
+- name: Don't add components — learn from existing ones
+  teacher_definition: "It's not what can I add to make it better, it's what can I learn from this to make it better. Whatever you add, you have to become an expert at — that just adds more time to turning profitable. Be an expert at the four building blocks."
+  source_timestamp: "17:26"
+  codex_interpretation: "Freeze the feature set at the four building blocks (FVG, OB, liquidity sweep, BOS) + daily bias. Improve via tuning/experience, not new indicators."
+  confidence: high
+  requires_confirmation: false
+
+- name: The four building blocks
+  teacher_definition: "Be so good at the four building blocks — be an expert at spotting fair value gaps, order blocks, liquidity sweeps, and breaking structure — and at finding daily bias using that one strategy."
+  source_timestamp: "18:39"
+  codex_interpretation: "Canonical primitive set: fair value gap, order block, liquidity sweep, break of structure. These are the atomic detectors the strategy composes."
+  confidence: high
+  requires_confirmation: false
+
+- name: Daily bias easy, execution hard
+  teacher_definition: "Understanding where price is going to go on the day is pretty freaking easy. The hard part is finding the right areas to execute and getting good risk-reward trades — and you get better at executing by doing it over and over again."
+  source_timestamp: "05:57"
+  codex_interpretation: "Split the problem: bias determination (tractable) vs. execution/entry timing + RR (the skill/experience-limited part)."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Journaling for recurring-setup recognition
+  teacher_definition: "Take notes — write down why you didn't take a trade and then look back at the end of the day at what the market did. The same exact setup will happen a hundred times; you'll remember from your loss because you wrote it down and study your journal every day."
+  source_timestamp: "14:01"
+  codex_interpretation: "Persistent log of rationale + outcome per setup; recurring patterns are re-recognized. Supports a growing pattern/taste memory (shared with lessons 44, 46)."
+  confidence: high
+  requires_confirmation: false

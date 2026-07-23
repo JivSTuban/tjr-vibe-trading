@@ -1,0 +1,32 @@
+{
+  "lesson_number": 33,
+  "slug": "execution-pt3",
+  "title": "Boot Camp Day 33: Execution pt.3",
+  "video_id": "K8DwhtmvAW8",
+  "duration_s": 1441,
+  "processed_at": "2026-07-23",
+  "primary_topic": "process",
+  "transcript_source": "en-orig-asr",
+  "status": "complete",
+  "counts": {
+    "concepts": 15,
+    "proposed_rules": 8,
+    "examples": 15,
+    "ambiguities": 10,
+    "verification_questions": 11
+  },
+  "files_written": [
+    "metadata.yaml",
+    "lesson-summary.md",
+    "concepts.yaml",
+    "proposed-rules.yaml",
+    "examples.yaml",
+    "ambiguities.md",
+    "verification-questions.md",
+    "completion.json"
+  ],
+  "builds_on": [30, 32],
+  "leads_into": ["daily-bias", "take-profits", "stop-losses"],
+  "core_model": "liquidity sweep -> break of structure -> fair value gap OR order block entry (+ optional equilibrium confluence) -> target previous draws on liquidity",
+  "notes": "Drill/review lesson putting prior building blocks together; only new material is layering equilibrium onto the model. SL/TP and daily-bias rules explicitly deferred to later lessons."
+}

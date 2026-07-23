@@ -1,0 +1,115 @@
+- name: Order block (definition recap)
+  teacher_definition: >
+    "It's the leg up or the leg down prior to the break of structure to the upside or to
+    the downside." The price range where all orders got filled -- "pretty much the move
+    that causes the liquidity sweep." Liquidity sweep -> orders filled -> price breaks
+    structure (market structure shift). On return, market makers fill again and push price.
+  source_timestamp: "07:20"
+  codex_interpretation: >
+    OB = the contiguous displacement leg immediately preceding a BOS/MSS. Bullish OB = last
+    down-leg before up-BOS; bearish OB = last up-leg before down-BOS.
+  confidence: high
+  requires_confirmation: false
+
+- name: Labeling method 1 -- box the entire leg (beginner)
+  teacher_definition: >
+    "Just box off the entire thing." Mark out the entire leg down prior to the up-move (or
+    entire leg up prior to the down-move). Explicitly recommended for beginners.
+  source_timestamp: "10:18"
+  codex_interpretation: >
+    Full-leg zone = [leg extreme, leg origin]. Larger, more forgiving; use for first
+    implementation.
+  confidence: high
+  requires_confirmation: false
+
+- name: Labeling method 2 -- box the wick (TJR's preferred)
+  teacher_definition: >
+    "I literally just do it off the wick of the candle -- from the wick down to the start of
+    the body." Because price often taps just the wick area, OR taps the BASE OF THE BODY
+    (where the body starts), which "is usually the reaction point."
+  source_timestamp: "10:38"
+  codex_interpretation: >
+    Wick zone = [wick tip, body-open]. Store body-open as a discrete reaction level. TJR
+    treats this as the entry/reaction zone.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Base-of-body reaction point
+  teacher_definition: >
+    "Touch the base of the body, right where the body starts -- usually that's like the
+    reaction point." Price commonly reacts exactly at the candle's body-open level.
+  source_timestamp: "11:27"
+  codex_interpretation: >
+    The body-open price of the order-block candle is a high-probability reaction level; can
+    be used as the precise entry trigger price or a tighter zone boundary.
+  confidence: medium
+  requires_confirmation: true
+
+- name: OB is best when paired with a liquidity sweep
+  teacher_definition: >
+    "It's almost always best when we see a liquidity sweep as well." A liquidity sweep +
+    leg + BOS is the highest-quality order block.
+  source_timestamp: "09:52"
+  codex_interpretation: >
+    Quality gate: prefer/score higher OBs whose leg swept a prior high/low before the BOS.
+  confidence: high
+  requires_confirmation: false
+
+- name: Retracement entry tools (FVG and OB)
+  teacher_definition: >
+    Retracement tools to wait for price to fill into are the fair value gap (imbalance) and
+    the order block. "Order block off the first retracement in equilibrium -- which we
+    haven't gotten yet -- so right now we're limited to fair value gap and order block."
+  source_timestamp: "16:47"
+  codex_interpretation: >
+    Valid pullback entry zones = FVG and OB. The equilibrium-based "first retracement" rule
+    is DEFERRED to the equilibrium lesson (Day 26/28). Do not finalize the retracement rule
+    until equilibrium is ingested.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Confirmation entry via lower-timeframe BOS
+  teacher_definition: >
+    After price retraces into the OB, wait for confirmation = a break of structure showing a
+    market structure shift in the trade direction (demonstrated on the 15-minute), then enter.
+    You can also enter off a lower-TF OB or FVG inside the HTF OB for a tighter stop / crazy RR.
+  source_timestamp: "17:29"
+  codex_interpretation: >
+    Entry trigger = confirming LTF BOS/MSS (e.g. 15m) in HTF-bias direction after price fills
+    the OB (or an FVG inside it).
+  confidence: high
+  requires_confirmation: false
+
+- name: Order blocks as take-profit targets
+  teacher_definition: >
+    "I sometimes use order blocks as take profit." Opposing/prior order blocks can serve as
+    TP levels, alongside previous areas of liquidity.
+  source_timestamp: "13:39"
+  codex_interpretation: >
+    OBs and FVGs are valid TP levels in addition to prior liquidity pools on higher TFs.
+  confidence: medium
+  requires_confirmation: false
+
+- name: Multi-timeframe bias alignment
+  teacher_definition: >
+    Scale down through timeframes: daily/4h BOS sets bias -> on hourly wait for any
+    confirmation (BOS) in that direction -> enter off OB/FVG. "Especially if it's in line
+    with our daily and weekly bias, that only means price is going to go higher." A daily
+    bias shift happens when structure breaks with a big move.
+  source_timestamp: "20:26"
+  codex_interpretation: >
+    Only take LTF entries aligned with HTF (daily/4h) + weekly bias. Nested stack:
+    HTF OB+BOS (bias) -> 1h OB/BOS -> 15m/LTF entry OB/FVG (tight stop).
+  confidence: high
+  requires_confirmation: false
+
+- name: Liquidity-sweep-then-leg heuristic
+  teacher_definition: >
+    "If you see a liquidity sweep and then a leg higher, you should assume that there's
+    going to be an order block there."
+  source_timestamp: "23:48"
+  codex_interpretation: >
+    Detection shortcut: liquidity sweep immediately followed by a displacement leg implies an
+    OB in that leg; scan there for the BOS + OB.
+  confidence: high
+  requires_confirmation: false

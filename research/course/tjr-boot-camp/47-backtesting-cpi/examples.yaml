@@ -1,0 +1,54 @@
+# Live hindsight markups on a CPI news day (day NOT traded). Prices/levels were
+# pointed at on the chart and not verbalized, so numeric levels are largely unavailable.
+- timestamp: "01:03"
+  instrument: S&P 500
+  timeframe: "HTF bias daily/4H/1H; execution 5m/15m"
+  direction: long (would-be)
+  setup_components:
+    - "weekly + daily + 4H + 1H all bullish (permabullish)"
+    - "price came into a daily order block then rose"
+    - "4H break of structure to the upside"
+    - "after CPI: rip up, imbalance formed, drew into it, fell, filled order block, rallied into imbalance"
+    - "5m break of structure up off a candle"
+    - "equilibrium reaction as extra confluence"
+  stated_outcome: "Would probably NOT have traded. If any trade, a long off the 5m break. CPI candle was a 27-point move; residual moves only ~4 and ~12 points -- most of the move already gone. A 5m BOS-down into an OB was just an hourly retrace."
+  suitable_for_dataset: true
+
+- timestamp: "06:37"
+  instrument: GBP/JPY
+  timeframe: "HTF bias weekly/daily/4H/1H; execution intraday"
+  direction: short (would-be)
+  setup_components:
+    - "bearish daily bias (first bearish weekly candle, daily BOS down)"
+    - "weekly retracing toward an FVG + equilibrium (co-located)"
+    - "4H and 1H both bearish -- all timeframes aligned bearish"
+    - "London-session high pushed into during New York session (barely)"
+    - "break of structure to the downside"
+    - "optional: wait for reaction off the order block off that candle"
+  stated_outcome: "Cleanest tradeable idea of the day. Short purely off the BOS or off the OB reaction; stop above the OB; target previous draws (unhit OB above, resting liquidity, or daily low as new FVG start). 'That's how I probably would have traded GJ.'"
+  suitable_for_dataset: true
+
+- timestamp: "09:32"
+  instrument: Gold (XAU/USD)
+  timeframe: "HTF bias weekly/daily/4H/1H"
+  direction: none (avoided)
+  setup_components:
+    - "bearish weekly"
+    - "bearish daily but likely to close above and break daily structure within ~3h"
+    - "4H bullish pre-market"
+    - "1H not bullish"
+    - "Forex session strategy fired (London lows swept -> BOS) but the BOS was right during CPI"
+  stated_outcome: "AVOIDED. Too many conflicting biases across timeframes; the session BOS coincided with the CPI release. No trade."
+  suitable_for_dataset: true
+
+- timestamp: "12:31"
+  instrument: GBP/USD
+  timeframe: "HTF bias weekly/daily/4H/1H"
+  direction: none (avoided)
+  setup_components:
+    - "bullish daily, bullish weekly (already reached previously-stated target: top of the imbalance)"
+    - "price: swept London-session lows -> BOS up -> rallied into Asian-session highs -> took liquidity -> fell -> filled imbalance -> pushed higher"
+    - "4H bullish but 1H bearish (conflict)"
+    - "reaction point had NO FVG, NO order block, NO equilibrium"
+  stated_outcome: "AVOIDED. Conflicting 4H/1H bias and no building block at the reaction point -- 'not a good spot to be trading in.' No trade."
+  suitable_for_dataset: true

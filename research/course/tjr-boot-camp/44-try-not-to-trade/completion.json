@@ -1,0 +1,12 @@
+{
+  "lesson_number": 44,
+  "video_id": "uGi6EeKnWSk",
+  "slug": "try-not-to-trade",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 111088,
+  "concepts_count": 7,
+  "rules_count": 5,
+  "examples_count": 0,
+  "notes": "Psychology + trade-suppression-filter lesson. All chart references are hypothetical ('let's say'); no dated resolved trade -> examples.yaml skipped. verification-questions.md skipped (open items in ambiguities.md: chop metric, max-trades cap not numerically stated)."
+}

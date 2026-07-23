@@ -1,0 +1,76 @@
+- name: Three long-term end goals
+  teacher_definition: "The first thing we do is find three long-term end goals. Not medium-term — being a funded trader is a medium-term goal. These are super-long-term, ~10 years down the line, that you don't necessarily understand how to reach yet but you know you want. Examples: manage six figures in a trading account, make six figures profit a month, a seven-figure account, buy a $10M house. Doesn't all have to be trading — these are life goals."
+  source_timestamp: "02:53"
+  codex_interpretation: "Fixed count = 3. Horizon = long-term/aspirational (~10yr). 'Funded trader' is explicitly medium-term, so it does NOT count as a long-term goal. Goals may be non-trading."
+  confidence: high
+  requires_confirmation: false
+
+- name: Ten short-term goals / steps per long-term goal (30 total)
+  teacher_definition: "Then write down 10 short-term goals or steps to get to each long-term goal. Ten for each of the three, so you should have 30 short-term goals/steps total. These are the laid-out path — 'Google Maps this' — the steps you complete day in and day out."
+  source_timestamp: "05:42"
+  codex_interpretation: "Fixed structure: 10 short-term steps x 3 long-term goals = 30 short-term goals. These are the daily-actionable layer that bridges to the aspirational layer."
+  confidence: high
+  requires_confirmation: false
+
+- name: At least one goal must be trading-related
+  teacher_definition: "Most of you should have at least one trading-related long-term goal; in fact I advise one of them to be trading-related because that's what we're focusing on here."
+  source_timestamp: "07:07"
+  codex_interpretation: "Advisory: >=1 of the 3 long-term goals should be trading-focused. Stated as advice ('I advise'), not an absolute mandate."
+  confidence: high
+  requires_confirmation: false
+
+- name: Process/daily-action short-term goals
+  teacher_definition: "Short-term goals can be daily process actions: 'I follow my trading plan every single day', 'I use risk management every single day', 'I journal my trades and review what I did right/wrong every single day.' As you do them every day they put you on track to reach the long-term goals."
+  source_timestamp: "06:47"
+  codex_interpretation: "Process goals = repeatable daily behaviors (plan-adherence, risk management, journaling). These are directly encodable as a compliance checklist for the operator."
+  confidence: high
+  requires_confirmation: false
+
+- name: Outcome-checkpoint short-term goals (weekly then monthly profitable)
+  teacher_definition: "Short-term goals don't have to be one daily thing — they can be 'I am profitable for the week' (a great place to start) or 'I am profitable for the month.' Turn profitable in a week via little baby steps, then profitable for a month, then keep climbing the ranks toward the long-term goals."
+  source_timestamp: "10:12"
+  codex_interpretation: "Escalation ladder: weekly-profitable -> monthly-profitable -> scale. Weekly is the recommended starting checkpoint. No profit % or $ target attached."
+  confidence: high
+  requires_confirmation: false
+
+- name: 1% better every single day (incremental improvement)
+  teacher_definition: "It's like climbing a mountain — there's no elevator to the top. You take steps and steps getting one percent better, one percent higher every single day until you reach the top."
+  source_timestamp: "11:31"
+  codex_interpretation: "Motivational framing for compounding daily improvement. Not a literal measurable 1% metric — treat as ethos, not a KPI."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Read and vocalize goals daily (>=5x, out loud, as if already there)
+  teacher_definition: "Read and vocalize your goals every day as if you are already there. Several times, at least five times, out loud, every single day. Say it with confidence. It drills into your subconscious until you believe it yourself."
+  source_timestamp: "16:07"
+  codex_interpretation: "Concrete ritual: recite goals aloud >=5 times/day. Purpose is self-belief/conditioning. Directly checklist-able as a daily operator habit."
+  confidence: high
+  requires_confirmation: false
+
+- name: "'I am' / 'I will' framing (never 'I want')"
+  teacher_definition: "Write and say goals as 'I am' or 'I will' — never 'I want.' Choose one of the two. 'I will be a millionaire', 'I am a profitable trader.' Saying 'I want' is how people fail; 'I am/I will' puts you in the right headspace and you're owning it."
+  source_timestamp: "16:52"
+  codex_interpretation: "Phrasing rule for how goals are written/recited: present-tense/future-commitment affirmation ('I am'/'I will'), banned form = 'I want'."
+  confidence: high
+  requires_confirmation: false
+
+- name: Daily rewrite ritual (write + read + vocalize)
+  teacher_definition: "TJR's method: goals written at the back of the notebook; every single morning flip the page and rewrite all three long-term goals and all 10 short-term goals, so you're reading it, writing it, and vocalizing it. Ensures the goals don't fizzle into nothing."
+  source_timestamp: "19:48"
+  codex_interpretation: "Full ritual = re-write (all 3 + all 30) + read + say aloud each morning. Reinforces the >=5x vocalization rule with a written component."
+  confidence: high
+  requires_confirmation: false
+
+- name: Affirmation ritual as an anti-over-trading guardrail
+  teacher_definition: "After reading your disciplined-trader goals five times over before market opens, it's really really difficult to over-leverage or over-trade. Once I started doing this I got locked in — blinders on — and stopped folding to emotions, other opinions, and pressure."
+  source_timestamp: "21:04"
+  codex_interpretation: "TJR's causal claim: the pre-market affirmation ritual suppresses over-leverage/over-trading and improves discipline. Testable as a behavioral guardrail gating live activity."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Put a deadline on goals
+  teacher_definition: "With this I put a deadline on it — e.g., hit 100,000 subscribers within this year. A deadline makes you take the steps to try and get there."
+  source_timestamp: "15:13"
+  codex_interpretation: "Goals should carry an explicit deadline. The 100k-subs figure is TJR's personal example, not a trading target."
+  confidence: medium
+  requires_confirmation: false

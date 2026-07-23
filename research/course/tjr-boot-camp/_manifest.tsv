@@ -1,0 +1,57 @@
+idx	video_id	duration_s	slug	title	primary_topic
+01	Xq6-oO2n6-U	3304	take-action	Boot Camp Day 1: Take Action	psychology
+02	bEkbNGUzQME	1398	candlesticks	Boot Camp Day 2: Candlesticks	concept
+03	w2CWF0WtLmQ	2020	discipline	Boot Camp Day 3: Discipline	psychology
+04	viuGHEuv0nw	1725	trends	Boot Camp Day 4: Trends	concept
+05	N7so8LEHmLA	1432	goal-setting	Boot Camp Day 5: Goal Setting	psychology
+06	PmhuPbY8ZHo	1831	break-of-structure	Boot Camp Day 6: Break of Structure	concept
+07	_6voYEdi5j4	1126	individuality	Boot Camp Day 7: Individuality	psychology
+08	Lxnu7InGhGE	702	liquidity-pt1	Boot Camp Day 8: Liquidity Pt 1	concept
+09	-ga9oK2bClQ	462	check-in	Boot Camp Day 9: Check In	psychology
+10	rdz6vnXb8wE	991	liquidity-pt2	Boot Camp Day 10: Liquidity Pt. 2	concept
+11	_jLR3XcB5eQ	1066	how-to-take-a-loss	Boot Camp Day 11: How to take a Loss	psychology
+12	KtC2SbemF6w	1204	liquidity-pt3	Boot Camp Day 12: Liquidity Pt 3	concept
+13	RkMBoqbeUq8	1007	risk-management	Boot Camp Day 13: Risk Management	risk
+14	d0AxLACYaqU	607	fair-value-gaps-pt1	Boot Camp Day 14: Fair Value Gaps Pt. 1	concept
+15	T4xVS7iV5d8	1094	identifying-problems	Boot Camp Day 15: Identifying problems	psychology
+16	S1kY3Fw6JUQ	760	fvg-pt2	Boot Camp Day 16: FVG Pt. 2	concept
+17	339amTioakE	899	patience	Boot Camp Day 17: Patience	psychology
+18	qecF411R83s	1067	fvg-pt3	Boot Camp Day 18: FVG Pt. 3	concept
+19	w5sUCqFH3Lg	1475	how-to-read-news-data	Boot Camp Day 19: How to Read News Data	concept
+20	qhuFg_OXdmE	777	order-blocks	Boot Camp Day 20: Order Blocks	concept
+21	z9p7OThLkr4	3652	how-to-take-a-win-life-lessons	Boot Camp Day 21: How to Take a Win & Life Lessons	psychology
+22	RQSVIKddFHI	1559	order-blocks-pt2	Boot Camp Day 22: Order Blocks pt.2	concept
+23	ERbhCL9KW_g	902	check-in-be-my-boy	Boot Camp Day 23: Check In/ Be my boy	psychology
+24	12_F-mIUfL0	1674	order-blocks-pt3	Boot Camp Day 24: Order Blocks pt.3	concept
+25	4moWbfm6smw	1123	over-confidence	Boot Camp Day 25: Over Confidence	psychology
+26	j1pVK897oZQ	1084	equilibrium	Boot Camp Day 26: Equilibrium	concept
+27	TwakmPZJGJA	1940	fear	Boot Camp Day 27: Fear	psychology
+28	-E7plUbSJUk	1260	equilibrium-pt2	Boot Camp Day 28: Equilibrium pt.2	concept
+29	065lMUrD_kg	1403	trading-plan	Boot Camp Day 29: Trading Plan	process
+30	ESsy0uoFAz4	556	execution	Boot Camp Day 30: Execution	process
+31	isetVuqlSLo	1169	hard-work	Boot Camp Day 31: Hard Work	psychology
+32	SLhIA7vW9x8	1419	execution-pt2	Boot Camp Day 32: Execution pt.2	process
+33	K8DwhtmvAW8	1441	execution-pt3	Boot Camp Day 33: Execution pt.3	process
+34	sjuWqKDsQtI	1220	daily-bias	Boot Camp Day 34: Daily Bias	concept
+35	UPA9LQW7phk	900	daily-bias-pt2	Boot Camp Day 35: Daily Bias pt. 2	concept
+36	Y1lqifylC4s	1345	daily-bias-pt3	Boot Camp Day 36: Daily Bias pt. 3	concept
+37	FjSiLFrg5fo	665	taking-profits	Boot Camp Day 37: Taking Profits	process
+38	1FunNCUw_jM	795	stop-losses	Boot Camp Day 38: Stop Losses	risk
+39	KSiWKfPOlh4	928	calculating-lot-size	Boot Camp Day 39: Calculating Lot Size	risk
+40	O_4yHzZO0u0	542	help-me-help-you	Boot Camp Day 40: Help me help you	psychology
+41	PyCPHiO2nj0	740	learn-from-losses	Boot Camp Day 41: Learn from Losses	psychology
+42	NPG_BZ_83fo	624	how-to-backtest	Boot Camp Day 42: How to Backtest	process
+43	9SUJfAo6Sl8	610	weekly-analysis	Boot Camp Day 43: Weekly Analysis	process
+44	uGi6EeKnWSk	1585	try-not-to-trade	Boot Camp Day 44: Try not to Trade	psychology
+45	LG_IbfjbaOo	1372	over-complicating	Boot Camp Day 45: Over Complicating	psychology
+46	CZRs2NuLQIw	730	journaling-trades	Boot Camp Day 46: Journaling Trades	process
+47	S-scwzKRP-8	1064	backtesting-cpi	Boot Camp Day 47: Back Testing CPI	process
+48	OQIs8I2jMgs	1872	live-daily-bias-ppi	Boot Camp Day 48: Live Daily Bias Analysis on PPI	example
+49	4FEty6xgOc0	939	live-daily-bias-ppi-pt2	Boot Camp Day 48 Pt. 2: Live Daily Bias Analysis on PPI	example
+50	__fKQR5RR08	1808	daily-bias-backtesting-9k-loss-spx	Boot Camp Day 49: Daily Bias/Backtesting + $9k Loss SPX Trade Recap	example
+51	QRvZgj3k8pk	643	weekly-analysis-2	Boot Camp Day 50: Weekly Analysis	process
+52	XcA0GiWZp7M	1463	sunday-motivation	Boot Camp Day 51: Sunday Motivation	psychology
+53	-rYGugTIsbU	1223	daily-bias-breakeven-recap	Boot Camp Day 52: Daily Bias + Break Even Trading Recap	example
+54	Oi_mK1Lt-iQ	632	daily-bias-19k-profit-gbpjpy	Boot Camp Day 53: Daily Bias + $19k Profit GBPJPY Recap	example
+55	9sD9kTia4V4	982	daily-bias-no-trades	Boot Camp Day 54: Daily Bias + No Trades Today	example
+56	IFgysr8gDjc	1275	the-end	Boot Camp Day 55: THE END	psychology

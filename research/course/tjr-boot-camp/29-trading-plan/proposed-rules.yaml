@@ -1,0 +1,90 @@
+course: "TJR Boot Camp"
+lesson_number: 29
+rules:
+  - id: tjr-trading-plan-r01
+    teacher_statement: "First we want to pre-designate our risk so we know what we are risking every single day... I'm not taking a trade until I figure that [pre-designated risk] out."
+    source_timestamp: "[06:16] / [18:50]"
+    proposed_machine_rule: "Require a daily pre-designated risk budget (max loss for the day) to be set before session start. If no daily risk budget is configured, block all trade entries."
+    status: proposed
+    ambiguity: "Monetary/percent value is user-defined; TJR's only example is '$100 a day'."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r02
+    teacher_statement: "How many trades are you taking... I recommend one trade a day. Just stick to one for now."
+    source_timestamp: "[08:11] / [08:13] / [09:41]"
+    proposed_machine_rule: "Cap trades at 1 per day by default. Once the daily trade count reaches the cap, block further entries for that day."
+    status: proposed
+    ambiguity: "TJR allows 2/day for disciplined traders; default for the system should be 1."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r03
+    teacher_statement: "When I take two I also de-risk on both those trades so it pretty much equals out to the risk of one trade."
+    source_timestamp: "[08:18] / [08:41]"
+    proposed_machine_rule: "If trade-count cap is set to 2/day, halve per-trade risk so that the sum of both trades' risk equals the single-trade daily risk budget."
+    status: proposed
+    ambiguity: "'De-risk' assumed to mean split the daily risk budget evenly; not explicitly defined."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r04
+    teacher_statement: "Beginners should use a calculated lot size... you shouldn't use a predetermined lot size because you won't know what you're risking."
+    source_timestamp: "[07:57] / [08:05]"
+    proposed_machine_rule: "Default position sizing = calculated: lot_size derived from account_balance, risk_percent, and stop_loss_in_pips (as a lot-size calculator would). Fixed-lot mode is an advanced opt-in only."
+    status: proposed
+    ambiguity: "Exact risk % not stated in this lesson."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r05
+    teacher_statement: "I trade New York Stock Exchange open... I take a trade within the first hour and a half... if I can't find a trade I'm not taking it."
+    source_timestamp: "[10:45] / [11:15] / [11:18]"
+    proposed_machine_rule: "Restrict entries to the user's designated session window. TJR's personal window = first 90 minutes after NYSE open. Reject any signal outside the configured window."
+    status: proposed
+    ambiguity: "Session/timezone is user-specific; TJR's is NYSE AM open. Exact clock times and timezone not stated."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r06
+    teacher_statement: "Not CPI, not NFP, not FOMC, not PPI, not the high impact news that [messes] up the market."
+    source_timestamp: "[11:37] / [11:42]"
+    proposed_machine_rule: "Hard-block trading around high-impact scheduled events (CPI, NFP, FOMC, PPI). Do not enter on these releases."
+    status: proposed
+    ambiguity: "Exact pre/post-event blackout window not specified in this lesson."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r07
+    teacher_statement: "If news causes like a five-point spike within a five-minute candle... are you going to be willing to trade that day or are you going to opt out... you determine this yourself because I don't even know."
+    source_timestamp: "[12:55] / [13:00] / [13:13]"
+    proposed_machine_rule: "Optional volatility filter: if a news-driven move exceeds a user-configured threshold (illustrative default: ~5 points within a 5-minute candle), stand aside for the day."
+    status: proposed
+    ambiguity: "Number explicitly labeled by TJR as arbitrary and user-defined; instrument-dependent."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r08
+    teacher_statement: "Most of you guys should only be sticking to one pair. Choose one and master it... once you turn profitable [add] another."
+    source_timestamp: "[13:50] / [15:35] / [16:26]"
+    proposed_machine_rule: "Constrain the instrument universe to a single symbol by default. Additional symbols permitted only after a profitability gate is met on the first."
+    status: proposed
+    ambiguity: "'Profitable' threshold not quantified in this lesson."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r09
+    teacher_statement: "Take a trade that is only aligned with your daily bias, that has a liquidity sweep with your daily bias, that has a break of structure all aligned with that daily bias, aligned with the overall trend of the market."
+    source_timestamp: "[18:04] / [18:22]"
+    proposed_machine_rule: "Only permit entries in the direction of the daily bias (long if daily bias bullish, short if bearish). Setup must include a liquidity sweep and a break of structure, both in the bias direction."
+    status: proposed
+    ambiguity: "Precise definitions/timeframes of liquidity sweep, BOS, and how daily bias is derived are deferred to the next lesson."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r10
+    teacher_statement: "Does it follow your trading plan? If no, leave. If you already took your trade for the day, leave. If you already maxed out your pre-designated risk for the day, leave. If it's a US bank holiday and you can't trade [your pair], leave. If you don't get a liquidity sweep and a break of structure and all your confluences getting hit, don't take a trade."
+    source_timestamp: "[19:45] / [19:48] / [19:52] / [19:57] / [20:16]"
+    proposed_machine_rule: "Pre-trade gate (AND-chain): permit an entry ONLY if all pass — (a) matches plan/confluences, (b) daily trade cap not reached, (c) daily risk budget not maxed, (d) not a US bank holiday for the traded instrument, (e) within designated session, (f) correct instrument, (g) daily-bias-aligned liquidity sweep + BOS present. Otherwise reject."
+    status: proposed
+    ambiguity: "Confluence definitions deferred; bank-holiday calendar must be sourced externally."
+    counterexamples: []
+
+  - id: tjr-trading-plan-r11
+    teacher_statement: "Test out liquidity sweep break of structure as one confluence for like two weeks... write down your win rate... write down your emotions... Journal Journal Journal."
+    source_timestamp: "[17:13] / [17:23] / [17:29]"
+    proposed_machine_rule: "Before promoting a new confluence/entry model to live trading, backtest it over a validation period (~2 weeks) and log win rate and outcomes; require the log before activation."
+    status: proposed
+    ambiguity: "'Two weeks' is a rough guideline, not a strict statistical sample-size requirement."
+    counterexamples: []

@@ -1,0 +1,31 @@
+- id: tjr-backtesting-cpi-r01
+  teacher_statement: "On CPI most of the time the move has already been made — the CPI candle made a 27-point move versus a 4-point and 12-point move after. Post-news is low volatility."
+  source_timestamp: "03:04"
+  proposed_machine_rule: "After a same-day high-impact release (CPI/PPI), heavily penalize or suppress new entries — the release candle typically captures the majority of the day's displacement, leaving low-volatility follow-through."
+  status: proposed
+  ambiguity: "The 27/4/12-point figures are instance-specific (S&P this day), not a general threshold. Needs a normalized 'release-candle range vs. residual range' metric."
+  counterexamples: []
+
+- id: tjr-backtesting-cpi-r02
+  teacher_statement: "A 15m BOS to the downside while the hourly is bullish is odds-on a retrace for the hourly; same for 5m vs 15m and hourly vs 4H. Higher timeframes hold higher power."
+  source_timestamp: "04:52"
+  proposed_machine_rule: "Classify a BOS on TF_n opposite the TF_(n+1) trend as a retrace of TF_(n+1) by default; override only if a liquidity sweep or change-of-market-structure is present."
+  status: proposed
+  ambiguity: "The override conditions (liquidity sweep / CHoCH) need precise, machine-checkable definitions."
+  counterexamples: []
+
+- id: tjr-backtesting-cpi-r03
+  teacher_statement: "Bearish weekly, bullish 4H, bearish 1H — you probably don't want to be trading; too many conflicting biases."
+  source_timestamp: "11:28"
+  proposed_machine_rule: "Suppress entries on instruments with conflicting timeframe biases; require timeframe alignment (or a clean HTF-aligned sweep+BOS+building-block) before entry."
+  status: proposed
+  ambiguity: "Which subset of timeframes must agree (all of W/D/4H/1H, or just D/4H/1H) is not fully pinned; lesson 49 leans on daily-as-primary for intraday."
+  counterexamples: []
+
+- id: tjr-backtesting-cpi-r04
+  teacher_statement: "No fair value gap, no order block, no equilibrium — not necessarily a good spot to be trading in."
+  source_timestamp: "14:44"
+  proposed_machine_rule: "Require the retrace/reaction zone to coincide with a building block (FVG, OB, or equilibrium); reject entries where the reaction point has none."
+  status: proposed
+  ambiguity: "Tolerance for how close price must be to the building block (exact touch vs. zone) not specified."
+  counterexamples: []

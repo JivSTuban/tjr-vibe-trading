@@ -1,0 +1,104 @@
+- name: Equilibrium (50% of the current-trend swing) -- how to draw it
+  teacher_definition: >
+    "A retracement tool that allows us to measure a premium and a discount market for smart
+    money to enter." Measure from swing high to swing low (or low to high) and find the 50%
+    mark. Practically: new high in an uptrend -> drag fib from the low up to the high; new low
+    in a downtrend -> drag from the high down to the low. Re-draw as new swings form.
+  source_timestamp: "01:01"
+  codex_interpretation: >
+    Equilibrium = 0.5 fib of the most recent impulse swing in the bias direction; re-anchor on
+    each new swing extreme. This pins down the reference-swing question left open in Day 26.
+  confidence: high
+  requires_confirmation: false
+
+- name: Premium (above 0.5 = sell zone)
+  teacher_definition: >
+    "Everything from the 50 mark up there is a premium." Expensive; smart money does not buy or
+    short there. Above 0.5 = premium = where smart money looks to SELL/short (once price is
+    'on sale' relative to the range, i.e. expensive to buyers).
+  source_timestamp: "01:39"
+  codex_interpretation: >
+    price > 0.5 => PREMIUM => short-only bias zone.
+  confidence: high
+  requires_confirmation: false
+
+- name: Discount (0.5 down to 0 = buy zone)
+  teacher_definition: >
+    "The discount [is] from that 0.5 down to the zero... everything within here is a discount
+    because it's below the 50 mark." Cheap / on sale; where smart money buys.
+  source_timestamp: "02:16"
+  codex_interpretation: >
+    price <= 0.5 (0.5 down to 0) => DISCOUNT => long-only bias zone.
+  confidence: high
+  requires_confirmation: false
+
+- name: Smart-money premium/discount rule
+  teacher_definition: >
+    "Smart money never buys in a premium, [never] shorts in a premium; they always buy and
+    [short] in a discount." Canonical intent: banks BUY at a DISCOUNT and SELL at a PREMIUM
+    (this clarifies the Day 26 verbal slip). Buyers want cheap, sellers want expensive.
+  source_timestamp: "02:54"
+  codex_interpretation: >
+    Directional gate: only long from discount, only short from premium. (TJR's wording tangles
+    'short in a premium/discount' -- resolve to: shorts are set up FROM premium targeting the
+    discount; longs FROM discount targeting the premium. See ambiguities.)
+  confidence: medium
+  requires_confirmation: true
+
+- name: Indicator settings (Gann box / Fib, levels 0/0.5/1)
+  teacher_definition: >
+    TJR uses a Gann box showing only price levels 0, 1, and 0.5 (strips the rest). "It's
+    essentially a fib -- you can also use a Fibonacci." Choose whichever.
+  source_timestamp: "03:51"
+  codex_interpretation: >
+    Tooling detail: the 0 / 0.5 / 1 levels of a fib/Gann drawn across the reference swing;
+    0.5 is equilibrium.
+  confidence: high
+  requires_confirmation: false
+
+- name: Fib 50% / ~61.8% ("64 mark") IS equilibrium
+  teacher_definition: >
+    "There's a reason people love using the 50 mark and the ~64 [61.8] mark on a Fibonacci for
+    retracements -- it's because it's equilibrium."
+  source_timestamp: "07:47"
+  codex_interpretation: >
+    The classic 0.5-0.618 fib retracement band coincides with the equilibrium / premium-discount
+    boundary; watch that band for OB/FVG entries.
+  confidence: medium
+  requires_confirmation: false
+
+- name: Equilibrium is a filter, combined with FVG/OB + BOS (not standalone)
+  teacher_definition: >
+    "How can we find a better entry rather than taking a trade purely off equilibrium? Maybe a
+    fair value gap within here, or an order block, combined with the confirmation of it being in
+    equilibrium." Entering on equilibrium + BOS alone is "not much confirmation."
+  source_timestamp: "03:10"
+  codex_interpretation: >
+    Require equilibrium zone + a trigger (FVG or OB at equilibrium) + confirming BOS/MSS on a
+    lower TF. Highest conviction: FVG/imbalance located exactly at equilibrium.
+  confidence: high
+  requires_confirmation: false
+
+- name: Works on every timeframe (multi-TF stack)
+  teacher_definition: >
+    "It happens on literally every single time frame." Measure equilibrium on HTF (monthly,
+    daily) -> wait for price to hit equilibrium -> scale down (4h/1h/15m) for the FVG/OB + BOS
+    entry. Demonstrated monthly Gold, daily, 4h, 1h, 15m.
+  source_timestamp: "07:41"
+  codex_interpretation: >
+    Measure equilibrium on HTF, refine entry on LTF; align with HTF/weekly bias (short in
+    downtrend, long in uptrend).
+  confidence: high
+  requires_confirmation: false
+
+- name: Full entry flow + targets/stops
+  teacher_definition: >
+    Price returns to equilibrium -> find FVG/OB at equilibrium -> wait for break of structure ->
+    enter -> stop beyond the swing extreme -> target successive previous areas of liquidity
+    (multiple take-profits, scale out).
+  source_timestamp: "06:22"
+  codex_interpretation: >
+    Concrete testable rule; TP = laddered prior-liquidity pools; SL = beyond the reference swing
+    extreme.
+  confidence: high
+  requires_confirmation: false

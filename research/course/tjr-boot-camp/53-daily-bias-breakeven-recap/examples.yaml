@@ -1,0 +1,35 @@
+- timestamp: "12:31"
+  instrument: GBPUSD (GU)
+  timeframe: "bias: weekly/daily bullish, 4H/1H bearish; execution ~5m/lower"
+  direction: short
+  setup_components:
+    - "Daily bullish but 'real overextended', price at daily equilibrium (low conviction)"
+    - "4H break of structure down + bearish 4H and 1H"
+    - "Highs swept (called hourly liquidity)"
+    - "Break of structure to the downside = entry trigger"
+    - "Stop above Asian session highs = 15-pip stop"
+    - "Severely de-risked: ~15 lots vs usual ~100 lots (about 1/10 size)"
+  stated_outcome: >-
+    BREAK-EVEN. Got stuck consolidating in profit ~2-2.5 hours; exited when price
+    broke structure up against the short. Closed +$199.09. TJR's own verdict:
+    "Don't take this trade" - counter to weekly+daily-bullish alignment,
+    overextended-at-equilibrium, low conviction; glad it scratched to profit
+    rather than a loss.
+  suitable_for_dataset: true
+
+- timestamp: "16:24"
+  instrument: GBPJPY (GJ)
+  timeframe: "bias: weekly bullish, daily bearish; hourly BOS; execution lower"
+  direction: short
+  setup_components:
+    - "Daily bearish (weekly bullish retracement being traded on the daily)"
+    - "Price mitigated a daily order block"
+    - "Drew to the Asian session high (past the London high)"
+    - "Reacted down with a break of structure in the daily-bias direction"
+    - "Marked draws: London high, untouched liquidity, large FVG/liquidity void below"
+  stated_outcome: >-
+    NOT TAKEN (the A+ he skipped). "This is probably the best trade we could have
+    taken today." Skipped because price pushed past his intended level before
+    reacting. Presented as the higher-quality, trend-aligned setup vs the GU
+    trade he actually took.
+  suitable_for_dataset: true

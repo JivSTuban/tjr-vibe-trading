@@ -1,0 +1,97 @@
+- name: Take a win the same as a loss (emotionless)
+  teacher_definition: "When you win you should treat it no different than a loss, right, you should be emotionless. If I win $20,000 I'm like cool, that's just a percentage gain, that's a probability. I could very well lose the next day."
+  source_timestamp: "02:03"
+  codex_interpretation: "Outcome must not change behavior. A win should not trigger any change in risk %, trade count, or setup selection versus a loss. Behavioral neutrality after any closed trade."
+  confidence: high
+  requires_confirmation: false
+
+- name: Think in probabilities/percentages, not cash
+  teacher_definition: "The most important part about all of this is thinking in probabilities. If you're just thinking purely about the cold hard cash you're getting fucked... you cannot act based off money. Focus on percent — how much percent did you make, what's your win rate."
+  source_timestamp: "02:48"
+  codex_interpretation: "Scorer/journal should evaluate trades in R-multiples and % return and win rate, never absolute dollars. Dollar-value fixation is flagged as the failure mode driving greed/fear."
+  confidence: high
+  requires_confirmation: false
+
+- name: Do not close early on emotion — let it hit TP or SL
+  teacher_definition: "Most people if they see price get up to like 50k [half of a 100k 1R] they're close close close, I'm securing all that bread. What are you doing? It didn't hit your take profit, it didn't hit your stop loss. Why are you acting on emotion?"
+  source_timestamp: "03:34"
+  codex_interpretation: "Disallow discretionary partial/full closes before the predefined TP. Only exits allowed: TP, SL, or the stated break-even SL trail after a TP is hit."
+  confidence: high
+  requires_confirmation: true
+
+- name: One trade a day, then walk away
+  teacher_definition: "This is why just taking one trade a day is so beneficial. Take one trade and just go home. Whether it's a win or a loss you're done, you're just done for the day."
+  source_timestamp: "04:59"
+  codex_interpretation: "Hard cap of 1 entry per trading day. After that trade closes (win or loss), lock out new entries until next session. Directly testable trade-count guardrail."
+  confidence: high
+  requires_confirmation: true
+
+- name: Overconfidence / greed / fear after a win
+  teacher_definition: "When I won I was like bet I'm so good at this, let me do it again, let me take another trade and actually risk more so I can make more — you tend to get overconfident. Wanting to win more is greed talking; not wanting to give profits back is fear talking."
+  source_timestamp: "04:41"
+  codex_interpretation: "A win must not increase risk % or trade frequency. Any post-win increase in size or count is the overconfidence/greed pattern the lesson forbids."
+  confidence: high
+  requires_confirmation: false
+
+- name: Stick to the plan over maximizing the dollar outcome
+  teacher_definition: "There were days where I had $330,000 floating in profit where my stop loss was at break even and I could have closed it and I didn't because I had to stick to my plan. [Another day] I made 60 bands, could have made 100K, the rest of my position got stopped out at break even — guess what, I stuck to my trading plan."
+  source_timestamp: "04:03"
+  codex_interpretation: "Plan adherence is the success metric, not realized dollars. A break-even stop-out on a runner after banking partials counts as a correct, plan-compliant outcome."
+  confidence: high
+  requires_confirmation: false
+
+- name: Don't celebrate / don't screenshot & post wins
+  teacher_definition: "Should you be happy about a win? No, you've got to be emotionless. If a trade is running and you screenshot it, you should probably close that trade [i.e. don't]. Act like you've been there before. Stop screenshotting your shit, stop posting it."
+  source_timestamp: "05:32"
+  codex_interpretation: "Behavioral guardrail: no celebration/broadcasting of live or closed wins. Screenshotting a running trade is treated as a tell of emotional attachment (often marks the top)."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Zoom out — a win only matters over the month/year
+  teacher_definition: "A win don't matter until the end of the year and you see your win rate... end of the month and you see if you're up or down. Stop focusing on the damn day to day. Stop watching your money go up and down in your account — take the trade and forget about it, don't even look at that account balance."
+  source_timestamp: "11:15"
+  codex_interpretation: "Evaluate performance on monthly/annual aggregates. Suppress intraday P&L monitoring. Do not react to floating/daily balance changes."
+  confidence: high
+  requires_confirmation: false
+
+- name: A win is a learning opportunity — journal and find why
+  teacher_definition: "Don't be happy about a win, it's a learning opportunity. Why did I win? Let me analyze it. Half the time y'all are winning and getting lucky, y'all don't even know why you won. Understand why you won and figure out how to repeat it."
+  source_timestamp: "13:39"
+  codex_interpretation: "Require post-trade attribution journaling for wins (not just losses). A win with no documented causal reasoning is treated as luck, not skill."
+  confidence: high
+  requires_confirmation: false
+
+- name: Break-even stop after take profits are hit
+  teacher_definition: "I set my take profits based off previous areas of liquidity... I managed my positions, when take profits were hit I moved my stop loss to break even. Today was good — that is what you need to be doing."
+  source_timestamp: "20:07"
+  codex_interpretation: "Position-management rule: after a TP level is reached, trail the stop loss to break-even to protect the remaining position. Exact TP level / number of TPs undefined."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Improve 1% better every day
+  teacher_definition: "Bump, keep cruising, one step, 1% better every day. A win isn't a day off — you should be hungry for more. That doesn't mean go trade more, that means how can I repeat that."
+  source_timestamp: "18:49"
+  codex_interpretation: "Hunger post-win must channel into process improvement/backtesting, never into additional trades or larger size."
+  confidence: high
+  requires_confirmation: false
+
+- name: Learn the skill, not the money
+  teacher_definition: "We are here to learn the skill of trading, not the money from trading, because we understand that if you have this skill money will come regardless no matter what. Two losing days could wipe all that back out."
+  source_timestamp: "14:41"
+  codex_interpretation: "Long-horizon framing: prioritize repeatable process/skill over any single day's gain; treat capital as fragile (two bad days can erase a big run)."
+  confidence: high
+  requires_confirmation: false
+
+- name: Giving over receiving (life lesson)
+  teacher_definition: "Once you get rich you really do start to realize that giving is way better than receiving. I gave [a friend] $10,000... giving makes you feel so much better. Helping other people brings me the most happiness."
+  source_timestamp: "29:52"
+  codex_interpretation: "Non-trading life philosophy; no machine rule. Captured for completeness of the life-lessons half."
+  confidence: high
+  requires_confirmation: false
+
+- name: Resilience / take the hits and get back up (life lesson)
+  teacher_definition: "You can be proud of that sad broke life and be satisfied, or you can take hits and keep getting the fuck up until you're so built that nothing can stand in your way. That's what this shit's about."
+  source_timestamp: "49:43"
+  codex_interpretation: "Motivational/mindset framing; no machine rule. Tied to his personal account of hardship and recovery."
+  confidence: medium
+  requires_confirmation: false

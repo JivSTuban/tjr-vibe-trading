@@ -1,0 +1,118 @@
+lesson: 33
+slug: execution-pt3
+note: >
+  All examples are historical chart walkthroughs (no live entries). Instrument is
+  explicitly the S&P (SP/ES) only for the first example; the rest are unnamed charts on
+  various timeframes. Directions inferred from TJR's narration.
+examples:
+  - timestamp: "06:48"
+    instrument: "SP (S&P 500)"
+    timeframe: "15m"
+    direction: long
+    setup_components: [liquidity sweep (took out lows), break of structure to upside, fair value gap entry]
+    stated_outcome: "price capitulates / rallies after filling imbalance; FVG-entry (not an OB entry)"
+    suitable_for_dataset: true
+
+  - timestamp: "08:09"
+    instrument: unknown
+    timeframe: "15m"
+    direction: long
+    setup_components: [liquidity taken out, BOS to upside, imbalance, sweep of 15m liquidity, fill]
+    stated_outcome: "price fills imbalance and rallies, targeting previous liquidity areas above"
+    suitable_for_dataset: true
+
+  - timestamp: "08:51"
+    instrument: unknown
+    timeframe: unknown
+    direction: short
+    setup_components: [liquidity sweep (with trend), imbalance, fill]
+    stated_outcome: "price comes up, fills imbalance, continues lower"
+    suitable_for_dataset: true
+
+  - timestamp: "09:13"
+    instrument: unknown
+    timeframe: "15m (confirmation)"
+    direction: long
+    setup_components: [swing high, BOS to upside, two imbalances, fill, 15m BOS confirmation]
+    stated_outcome: "close above executes; targets previous draws on liquidity, HTF highs"
+    suitable_for_dataset: true
+
+  - timestamp: "10:11"
+    instrument: unknown
+    timeframe: "hourly"
+    direction: long
+    setup_components: [BOS, massive move down = imbalance, price fills imbalance completely]
+    stated_outcome: "fills the imbalance (not the deeper FVG), targets previous draws on liquidity"
+    suitable_for_dataset: true
+
+  - timestamp: "11:27"
+    instrument: unknown
+    timeframe: unknown
+    direction: long
+    setup_components: [BOS to upside (no clear sweep), imbalance, fill]
+    stated_outcome: "price fills and rallies (example of BOS variant without an obvious sweep)"
+    suitable_for_dataset: false
+
+  - timestamp: "11:44"
+    instrument: unknown
+    timeframe: unknown
+    direction: long
+    setup_components: [liquidity sweep, BOS, imbalance, fill]
+    stated_outcome: "'this one's perfect' - fill then rally"
+    suitable_for_dataset: true
+
+  - timestamp: "12:03"
+    instrument: unknown
+    timeframe: unknown
+    direction: long
+    setup_components: [liquidity sweep (down-move), order block, OB tap, BOS back to upside, imbalance, fill]
+    stated_outcome: "order-block-entry variant; price rallies ('baby food')"
+    suitable_for_dataset: true
+
+  - timestamp: "12:43"
+    instrument: unknown
+    timeframe: unknown
+    direction: long
+    setup_components: [BOS to upside, massive imbalance within candles, fill]
+    stated_outcome: "price fills the imbalance and rallies higher"
+    suitable_for_dataset: true
+
+  - timestamp: "14:52"
+    instrument: unknown
+    timeframe: unknown
+    direction: long
+    setup_components: [liquidity sweep, BOS, FVG, retracement candle, equilibrium matches FVG]
+    stated_outcome: "high-confluence trade; enter where equilibrium matches the FVG"
+    suitable_for_dataset: true
+
+  - timestamp: "16:12"
+    instrument: unknown
+    timeframe: "daily"
+    direction: long
+    setup_components: [liquidity sweep, BOS, imbalance, one bearish daily candle, equilibrium drawn]
+    stated_outcome: "'in the money'; measured from the low; equilibrium marks the entry zone"
+    suitable_for_dataset: true
+
+  - timestamp: "19:04"
+    instrument: unknown
+    timeframe: "HTF -> lower TF"
+    direction: long
+    setup_components: [HTF liquidity sweep, BOS to upside, fair value gap (swing high to swing low), equilibrium (last-chance entry)]
+    stated_outcome: "FVG lands right on measurement; scale down to lower TF for entry"
+    suitable_for_dataset: true
+
+  - timestamp: "21:08"
+    instrument: unknown
+    timeframe: unknown
+    direction: long
+    setup_components: [sweep of liquidity, BOS to upside, order block, OB fill, second BOS]
+    stated_outcome: "order block gets filled, another BOS, price targets prior liquidity"
+    suitable_for_dataset: true
+
+  - timestamp: "22:06"
+    instrument: unknown
+    timeframe: "multi-TF (5m confluences)"
+    direction: long
+    setup_components: [liquidity sweep, BOS, order block, equilibrium, 5m order block, 5m FVG, BOS]
+    stated_outcome: "price wicks into equilibrium + 5m OB + 5m FVG; 'seven confluences' - highest-confidence example"
+    suitable_for_dataset: true

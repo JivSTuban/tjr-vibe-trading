@@ -1,0 +1,51 @@
+# Psychology/goal-setting lesson: rules are BEHAVIORAL GUARDRAILS for the operator/psychology
+# layer, not market/entry rules. Every rule is status:proposed and requires human confirmation
+# before wiring into any automated gate.
+
+- id: tjr-goal-setting-r01
+  teacher_statement: "Write down three long-term end goals, and 10 short-term goals/steps for each — 30 short-term goals total — to lay out the path to reach them."
+  source_timestamp: "05:42"
+  proposed_machine_rule: "Operator config MUST define exactly 3 long-term goals and 10 short-term/process goals per long-term goal (30 total). Treat as a completeness check on the trader's documented goal plan; block 'ready-to-trade' onboarding until the 3x10 structure exists."
+  status: proposed
+  ambiguity: "Whether 3 and 10 are strict minimums or exact counts is not fully explicit (he says 'make sure it's 10 for each'). Non-trading goals count toward the 3."
+  counterexamples: []
+
+- id: tjr-goal-setting-r02
+  teacher_statement: "I advise at least one of your long-term goals to be trading-related, because that's what we're focusing on."
+  source_timestamp: "07:07"
+  proposed_machine_rule: "At least 1 of the 3 long-term goals must be trading-related. Enforce as a soft requirement (advisory) in the goal-plan validator."
+  status: proposed
+  ambiguity: "Stated as advice ('I advise'), not an absolute mandate — encode as warning, not hard block."
+  counterexamples: []
+
+- id: tjr-goal-setting-r03
+  teacher_statement: "Follow your trading plan every single day; use risk management every single day; journal your trades and review what you did right/wrong every single day."
+  source_timestamp: "06:47"
+  proposed_machine_rule: "Daily compliance checklist gating live activity: (a) trading-plan adherence logged, (b) risk-management/position-sizing rules applied, (c) trade journal + review completed. Missing items flag a discipline violation."
+  status: proposed
+  ambiguity: "No numeric thresholds (max risk %, max trades) are given in THIS lesson; those come from other lessons. Here only the daily-habit requirement is stated."
+  counterexamples: []
+
+- id: tjr-goal-setting-r04
+  teacher_statement: "Be profitable for the week first (great place to start), then profitable for the month, then keep climbing toward long-term goals."
+  source_timestamp: "10:12"
+  proposed_machine_rule: "Consistency ladder before scaling: require weekly-profitable, then monthly-profitable milestones before increasing size / advancing to larger accounts. Process/consistency goals precede profit-size goals."
+  status: proposed
+  ambiguity: "No profit target (% or $), no minimum number of weeks/months of profitability, and no size-increase schedule are specified."
+  counterexamples: []
+
+- id: tjr-goal-setting-r05
+  teacher_statement: "Read and vocalize your goals out loud, at least five times, every single day, as if you're already there; phrase them 'I am' or 'I will', never 'I want'."
+  source_timestamp: "16:07"
+  proposed_machine_rule: "Daily pre-market ritual checklist: recite documented goals aloud >=5x/day, written in 'I am'/'I will' form. Log completion. Reject/flag goal statements containing 'I want'. Intended as an anti-over-leverage / anti-over-trade conditioning gate (his claim, 21:04)."
+  status: proposed
+  ambiguity: "The '>=5x' count is explicit but its causal effect on over-trading (21:04) is TJR's anecdotal claim, not measured. 'As if already there' is subjective."
+  counterexamples: []
+
+- id: tjr-goal-setting-r06
+  teacher_statement: "Put a deadline on your goals."
+  source_timestamp: "15:13"
+  proposed_machine_rule: "Every goal in the operator's goal plan must carry an explicit target date/deadline field; goals without a deadline are flagged incomplete."
+  status: proposed
+  ambiguity: "No guidance on how to set a realistic deadline length; his own example (100k subs / 1 year) is personal, not trading."
+  counterexamples: []

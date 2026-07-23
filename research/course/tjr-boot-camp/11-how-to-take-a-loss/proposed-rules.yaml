@@ -1,0 +1,23 @@
+- id: tjr-how-to-take-a-loss-r01
+  teacher_statement: "When I lose I don't revenge trade, I don't over trade, I don't react."
+  source_timestamp: "12:28"
+  proposed_machine_rule: "After a losing trade, enforce a cooldown period and block any re-entry whose motivation is loss-recovery; do not increase size after a loss. Loss outcome must not alter subsequent trade selection or sizing."
+  status: proposed
+  ambiguity: "Cooldown duration and whether it is per-loss or per-loss-streak are unspecified. (Lesson 13 caps daily risk, which partially enforces this.)"
+  counterexamples: []
+
+- id: tjr-how-to-take-a-loss-r02
+  teacher_statement: "Take days off for news, when up late, or when emotionally compromised — when you're least probable to win."
+  source_timestamp: "13:43"
+  proposed_machine_rule: "Add no-trade filters: block trading during/around high-impact news events; expose a manual degraded-state kill switch (fatigue/emotion) to disable trading for the session."
+  status: proposed
+  ambiguity: "Which news events, and the pre/post window, are not defined here (news lesson comes later, day 19). Fatigue/emotion cannot be auto-detected — needs a manual gate."
+  counterexamples: []
+
+- id: tjr-how-to-take-a-loss-r03
+  teacher_statement: "Get profitable on demo before trading live; be robotic and follow the trading plan step by step."
+  source_timestamp: "10:26"
+  proposed_machine_rule: "Gate live sizing behind a demonstrated profitable demo/backtest track record; execute the strategy deterministically from a fixed rule set (no discretionary overrides)."
+  status: proposed
+  ambiguity: "The demo profitability threshold (sample size, win rate, % return) is unspecified."
+  counterexamples: []

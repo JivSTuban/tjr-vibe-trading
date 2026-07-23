@@ -1,0 +1,30 @@
+- timestamp: "19:41"
+  instrument: unspecified
+  timeframe: "multi-TF (weekly -> daily -> lower TF)"
+  direction: long
+  setup_components:
+    - "Followed daily bias; checked weekly TF and daily TF — all in line with bias"
+    - "Scaled down to a lower time frame; all three biases aligned"
+    - "Began looking for longs"
+    - "Equilibrium present"
+    - "Fair value gap (FVG) present"
+    - "Order block present; price moved into it"
+    - "Saw market structure shift (MSS)"
+    - "Saw break of structure (BOS)"
+    - "Entered"
+    - "Take profits set off previous areas of liquidity; extended TPs because biases aligned (expects price higher)"
+    - "Managed positions; when take profits were hit, moved stop loss to break even"
+  stated_outcome: "Presented as a model winning day ('today was good') — used as the template of a correctly executed, plan-compliant win. No dollar figure given for this specific trade."
+  suitable_for_dataset: true
+
+- timestamp: "20:43"
+  instrument: unspecified
+  timeframe: unspecified
+  direction: unspecified
+  setup_components:
+    - "Banked partials (~$60k / '60 bands') on a runner"
+    - "Left remaining position to run toward an extended target (~$100k potential)"
+    - "Remaining position stopped out at break-even after TP-triggered BE stop"
+    - "Followed trading plan; did not close early on emotion"
+  stated_outcome: "Made ~$60,000 in a day (~month and a half prior); could have made ~$100k; runner stopped out at break-even. Framed as a WIN for plan adherence, not a regret."
+  suitable_for_dataset: false

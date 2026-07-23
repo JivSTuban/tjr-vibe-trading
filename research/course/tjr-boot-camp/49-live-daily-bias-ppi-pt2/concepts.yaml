@@ -1,0 +1,48 @@
+- name: Live testing (mock trades on no-trade days)
+  teacher_definition: "Live back testing means figuring out your daily bias for every pair, figuring out where price is going to draw towards, and then setting up a mock trade on a day you don't want to or can't trade. We got on Zoom and marked out all our building blocks and predicted how price would react off them."
+  source_timestamp: "00:37"
+  codex_interpretation: "Forward-testing loop: pre-mark building blocks, set per-instrument daily bias, predict draws, place mock entries, then verify against realized price. Generates labeled prediction/outcome data."
+  confidence: high
+  requires_confirmation: false
+
+- name: Daily bias is authoritative for intraday
+  teacher_definition: "Gold is bearish on the weekly but bullish on the daily — what bias do we use? The daily bias, because we are trying to predict the daily moves, not the weekly. We're not swing trading, we're doing intraday trades."
+  source_timestamp: "09:56"
+  codex_interpretation: "When weekly and daily disagree, the daily bias governs intraday entries; weekly disagreement only marks retrace/target context. Resolves lesson 47's open TF-authority question."
+  confidence: high
+  requires_confirmation: false
+
+- name: Never trade retraces except on the weekly
+  teacher_definition: "We never want to trade retraces unless it's on the weekly time frame. Ideally most of our trades are in line with the daily trend. If you trade a daily retrace and price continues in the daily direction, you're screwed because you broke your daily bias."
+  source_timestamp: "10:03"
+  codex_interpretation: "Entries must be in the daily-trend direction; do not fade the daily to trade a lower-TF retrace. Weekly-timeframe retraces are the only sanctioned counter-trend context."
+  confidence: high
+  requires_confirmation: false
+
+- name: Equilibrium-confirmation strictness
+  teacher_definition: "When price comes into equilibrium and you get one bullish candle that doesn't close back above the equilibrium line — yes it's technically bullish confirmation, but not enough for me. It would be enough at an order block or filling a fair value gap. At bare equilibrium, wait for the equilibrium point to get closed above again, along with a break of structure over the prior high."
+  source_timestamp: "04:32"
+  codex_interpretation: "Confirmation threshold varies by building-block type: at OB/FVG a single reaction candle suffices; at bare equilibrium require a close back above EQ AND a BOS over the prior high."
+  confidence: high
+  requires_confirmation: false
+
+- name: HTF-aligned + smaller-TF primed for execution
+  teacher_definition: "Ideally: high time frame aligned, high time frame aligned, high time frame aligned, smaller time frame primed for execution — e.g. 1H, 4H, daily all in an uptrend but the 15-minute just broke structure to the downside because it's drawing toward an hourly building block. That's where we execute; it's a retrace for the higher timeframe."
+  source_timestamp: "07:58"
+  codex_interpretation: "Execution trigger = all HTFs aligned + a smaller-TF opposite BOS into a building block (the retrace fill). This is the entry timing signal, not a reversal."
+  confidence: high
+  requires_confirmation: false
+
+- name: No-execution-point = no-trade (even fully aligned)
+  teacher_definition: "GBP/USD: weekly/daily/4H/1H all bullish, looking for any reason to go long, but the order block I marked never got hit. Even though everything was in alignment, we wouldn't have taken a trade because our building blocks didn't get hit and we couldn't find execution points."
+  source_timestamp: "13:18"
+  codex_interpretation: "Full timeframe alignment is necessary but not sufficient; entry also requires price to reach a pre-marked building block and give a reaction. Hard AND-gate."
+  confidence: high
+  requires_confirmation: false
+
+- name: Long entry template (sweep + BOS + retest + reaction)
+  teacher_definition: "I want to wait for a liquidity sweep, a break of structure, and then a retest into either an order block, equilibrium, or fair value gap, and then a reaction off of that. Mock long entry, stop underneath the liquidity sweep, targets off the 4-hour candle bodies and highs."
+  source_timestamp: "03:56"
+  codex_interpretation: "Aligned-bias long: liquidity sweep -> BOS up -> retest into OB/EQ/FVG -> reaction confirmation -> enter; stop below the sweep; targets at nearest left-side 4H structure (bodies/highs)."
+  confidence: high
+  requires_confirmation: false

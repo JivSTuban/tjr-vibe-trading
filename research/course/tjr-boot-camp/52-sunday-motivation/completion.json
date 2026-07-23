@@ -1,0 +1,12 @@
+{
+  "lesson_number": 52,
+  "video_id": "XcA0GiWZp7M",
+  "slug": "sunday-motivation",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 99262,
+  "concepts_count": 8,
+  "rules_count": 4,
+  "examples_count": 0,
+  "notes": "Psychology lesson. Converts discipline content into behavioral guardrails: post-loss stop (a loss ends the day, no revenge trades), no over-trading after a win, mandatory post-loss journaling, and evaluate performance on rolling weekly/monthly/yearly windows / samples not single trades. Remainder (meditation, self-worth, loneliness, confidence, personal mental-health disclosure) is human-development context with no machine rule. examples.yaml SKIPPED (no trade walked through). All rules status: proposed."
+}

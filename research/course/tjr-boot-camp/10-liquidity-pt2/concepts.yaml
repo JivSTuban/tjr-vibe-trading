@@ -1,0 +1,41 @@
+- name: Buy-side liquidity above highs
+  teacher_definition: "Above highs there are buy stops (retail pending orders to go long on continuation) AND stop losses of shorts (invalidated if price pushes above the high). When the high gets taken out in an uptrend, longs enter and short-stops trigger, creating liquidity for banks to fill orders and change direction (usually to the downside)."
+  source_timestamp: "02:47"
+  codex_interpretation: "BSL sits immediately above prior swing highs. In an uptrend, price is drawn up to sweep these before a downside reversal. Codable as: liquidity level = prior swing high (+ small buffer)."
+  confidence: high
+  requires_confirmation: false
+
+- name: Sell-side liquidity below lows
+  teacher_definition: "Below lows there are sell stops / sell limits (continuation shorts) AND stop losses of longs trying to catch a bounce. When the low gets taken out in a downtrend, shorts enter and long-stops trigger, letting banks fill orders and reverse (usually up)."
+  source_timestamp: "05:38"
+  codex_interpretation: "SSL sits immediately below prior swing lows. In a downtrend, price is drawn down to sweep these before an upside reversal."
+  confidence: high
+  requires_confirmation: false
+
+- name: Liquidation mechanic (stops taken by a couple pips)
+  teacher_definition: "When the high is pushed above, breakout buyers get filled, then their stop losses just under the high get taken out by a couple of pips and the market moves against them. They literally liquidated all of those people."
+  source_timestamp: "04:14"
+  codex_interpretation: "The sweep intentionally overshoots the extreme just enough to trigger stops, then reverses. Explains why shallow/marginal penetration + reversal is the signature. Exact overshoot threshold undefined."
+  confidence: high
+  requires_confirmation: true
+
+- name: Liquidity sweeps occur on all timeframes
+  teacher_definition: "This happens on every single timeframe — daily, 4h, 1h, 15m, 5m, 1m, weekly, monthly, yearly. Sweep then fall, sweep then rally. It jumps off the page."
+  source_timestamp: "07:19"
+  codex_interpretation: "The sweep->reversal pattern is fractal/timeframe-agnostic; detection logic can run on any timeframe. Multi-timeframe alignment refined later."
+  confidence: high
+  requires_confirmation: false
+
+- name: Liquidity as reversal-at-trend-extreme (not continuation)
+  teacher_definition: "Trends don't last forever, so using liquidity we catch the top of a downtrend or the bottom of an uptrend because we get into the market at the beginning of a trend."
+  source_timestamp: "05:54"
+  codex_interpretation: "Confirms the strategy enters reversals at range extremes after a sweep, not mid-trend continuation. Reinforces Pt1 r02."
+  confidence: high
+  requires_confirmation: false
+
+- name: Order block (introduced, deferred)
+  teacher_definition: "This move down that causes the liquidation and then allows the market to fill orders — this whole thing would essentially be an order block. (We'll talk about that later.)"
+  source_timestamp: "06:56"
+  codex_interpretation: "Order block = the origin candle/zone of the impulsive move that liquidated stops and filled institutional orders. Full definition deferred to a later lesson."
+  confidence: low
+  requires_confirmation: true

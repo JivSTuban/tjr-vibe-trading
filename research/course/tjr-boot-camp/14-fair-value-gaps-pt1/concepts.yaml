@@ -1,0 +1,41 @@
+- name: Fair Value Gap / imbalance / liquidity void (definition)
+  teacher_definition: "A fair value gap, imbalance, and liquidity void are all pretty much the same thing (I prefer 'liquidity void'). It's the opposite of liquidity: a void, a price range where there are no contradicting orders. A big move up happens because there are no sell orders through that range; a sharp drop because there are no resting buy orders."
+  source_timestamp: "02:00"
+  codex_interpretation: "FVG = imbalance = liquidity void (strict synonyms). A price range left unfilled by an impulsive move, lacking opposing orders. Typically manifests as a large candle. Exact detection (3-candle rule / gap boundaries) deferred."
+  confidence: high
+  requires_confirmation: true
+
+- name: FVG usage = retracement target, not primary entry
+  teacher_definition: "Fair value gaps are used for retracements. I don't use fair value gaps for entries necessarily. I use liquidity sweeps to understand where the market's going, and then I use fair value gaps to figure out where price wants to draw to, or for a secondary entry."
+  source_timestamp: "03:58"
+  codex_interpretation: "Role separation: sweep = bias/direction; FVG = draw-to/retracement target and SECONDARY entry only. Primary entry remains the sweep->BOS chain. Critical for the setup state machine."
+  confidence: high
+  requires_confirmation: false
+
+- name: FVG-fill continuation entry (secondary)
+  teacher_definition: "Price in an uptrend draws back down into a liquidity void; if you see a reaction off it or a break of structure on a lower timeframe, execute — you know there's a lack of opposing orders in that range and the trend is up."
+  source_timestamp: "04:20"
+  codex_interpretation: "Continuation-into-void entry: on retrace into an HTF FVG + LTF BOS in the trend direction, enter with-trend. Distinct from the reversal-at-sweep entry."
+  confidence: high
+  requires_confirmation: true
+
+- name: FVG forms as a big impulsive candle
+  teacher_definition: "Most of the time it's a big candle down because there are literally no orders stopping it from dropping that far; same on the upside — no sell orders stopping it pushing so high."
+  source_timestamp: "05:31"
+  codex_interpretation: "FVG signature = impulsive displacement candle(s). Displacement magnitude implies the void; exact minimum-size threshold undefined here."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Interchangeable building blocks / timeframe-agnostic
+  teacher_definition: "FVG, liquidity, order block are interchangeable execution pieces — one size fits all. You can trade this on any timeframe and any pair / any financial market because it's how price moves. More confirmations = higher confluence."
+  source_timestamp: "06:46"
+  codex_interpretation: "Modular confluence model: each block is optional and stackable; more aligned blocks = higher-confidence setup. Detection logic is TF- and instrument-agnostic."
+  confidence: high
+  requires_confirmation: false
+
+- name: Combined setup chain (with FVG)
+  teacher_definition: "Liquidity sweep -> break of structure -> trend forming -> notice a fair value gap -> FVG gets filled -> lower-timeframe break of structure -> we're in."
+  source_timestamp: "06:02"
+  codex_interpretation: "Full multi-block sequence: sweep (bias) -> BOS (confirmation) -> FVG fill on retrace -> LTF BOS -> entry. Ties FVG into the liquidity model from lessons 08/12."
+  confidence: high
+  requires_confirmation: true

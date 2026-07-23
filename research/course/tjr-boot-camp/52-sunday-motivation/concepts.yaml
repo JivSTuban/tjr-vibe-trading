@@ -1,0 +1,95 @@
+- name: Yearly perspective (higher timeframes hold more power)
+  teacher_definition: >-
+    View trading in a yearly perspective, not a weekly or daily one - just like
+    higher timeframes hold more power than lower ones. One bad day is one bad shot
+    in a round of golf; one bad week leaves three others in the month; one bad
+    month leaves eleven others in the year.
+  source_timestamp: "01:11"
+  codex_interpretation: >-
+    Metrics/journaling layer should surface rolling weekly/monthly/yearly P&L to
+    the human, not single-trade outcomes, to prevent short-term tilt. No direct
+    trade-engine rule.
+  confidence: high
+  requires_confirmation: false
+
+- name: Accept the loss, don't chase it
+  teacher_definition: >-
+    Taking a bad trade then trading the rest of the day with a bad mindset to win
+    the money back ends far worse than accepting "I took a loss today, I'll stick
+    to my plan and make it back tomorrow." A single losing trade is expected.
+  source_timestamp: "04:02"
+  codex_interpretation: >-
+    Anti-revenge-trading guardrail: after a loss, do not increase frequency or
+    size to recover. Feeds the daily-loss-stop rule.
+  confidence: high
+  requires_confirmation: false
+
+- name: A loss ends the trading day
+  teacher_definition: >-
+    "When you lose in the market you just have to be comfortable saying I'm done,
+    I'm done for today." His losing days end ~1.5h earlier than winning days.
+  source_timestamp: "08:53"
+  codex_interpretation: >-
+    Codeable: stop_trading_for_session = true after the first losing trade closes.
+    Whether it's the session or the whole calendar day is inferred.
+  confidence: high
+  requires_confirmation: true
+
+- name: Don't over-trade after a win
+  teacher_definition: >-
+    Sometimes when you win you try to take more trades to make even more - avoid
+    that just as much as revenge trading a loss.
+  source_timestamp: "01:02"
+  codex_interpretation: >-
+    Guardrail: don't open additional trades purely because a winner closed;
+    respect the one-setup/low-frequency cadence.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Don't judge by a single trade
+  teacher_definition: >-
+    People flip between "he never loses / GOAT" and "he isn't profitable" off one
+    trade - the exact short-term thinking to avoid. Judge over samples, not
+    single outcomes.
+  source_timestamp: "04:41"
+  codex_interpretation: >-
+    Statistical framing: evaluate strategy/trader quality over a sample of trades
+    (expectancy, win-rate over N), never a single result.
+  confidence: high
+  requires_confirmation: false
+
+- name: Post-loss journaling then let go
+  teacher_definition: >-
+    After a loss: do your journaling and recap, figure out what you could have
+    done better, then let it go and be done for the day.
+  source_timestamp: "08:35"
+  codex_interpretation: >-
+    Enforce a mandatory recap/journal step on losing trades before the session
+    closes. Feeds the loss-taxonomy field (see lesson 50).
+  confidence: high
+  requires_confirmation: false
+
+- name: Meditation + distraction journaling (homework)
+  teacher_definition: >-
+    30 min meditation (lights off, phone under the door on a timer, sit up, eyes
+    closed, breathe) to feel how long 30 minutes is; then journal where your
+    thoughts went and list your biggest distractions / check screen time.
+  source_timestamp: "09:52"
+  codex_interpretation: >-
+    Human self-development exercise; no machine-executable rule.
+  confidence: high
+  requires_confirmation: false
+
+- name: Be alone, not lonely (self-worth as edge)
+  teacher_definition: >-
+    Successful people thrive alone; needing constant company signals being
+    uncomfortable with yourself (self-conscious/anxious). Confidence comes from
+    knowing/loving yourself, after which criticism can't affect you. TJR shares
+    his worst mental-health period and suicide attempts stemmed from not being
+    comfortable alone.
+  source_timestamp: "10:46"
+  codex_interpretation: >-
+    Human psychology/coaching content; no machine rule. Relevant to the human
+    onboarding/wellbeing layer only.
+  confidence: high
+  requires_confirmation: false

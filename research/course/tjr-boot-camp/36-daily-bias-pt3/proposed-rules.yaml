@@ -1,0 +1,23 @@
+- id: tjr-daily-bias-pt3-r01
+  teacher_statement: "15 minute break of structure one hour retrace, one hour break of structure four hour retrace, four hour break of structure daily retrace, daily break of structure weekly retrace. Higher time frame holds higher power."
+  source_timestamp: "07:44"
+  proposed_machine_rule: "When a BOS occurs on timeframe N in the direction opposite to the established bias on timeframe N+1, classify it as a retrace of N+1 and do NOT flip bias. Only treat a BOS as a genuine reversal if confirmed on N+1 or higher."
+  status: proposed
+  ambiguity: "The number of timeframe levels of protection (one level up vs two) and how 'established bias' on N+1 is measured are not specified numerically."
+  counterexamples: []
+
+- id: tjr-daily-bias-pt3-r02
+  teacher_statement: "High time frame confluence with low time frame execution... execute when 15 minute is telling us execute (liquidity sweep then break of structure on the five minute)."
+  source_timestamp: "07:22"
+  proposed_machine_rule: "Arm an entry only when: (a) HTF bias aligned across daily/4h/1h, (b) price is inside a pre-marked HTF high-confluence zone (OB/FVG/liquidity), and (c) a 5m liquidity sweep followed by a 5m MSS confirms in the bias direction."
+  status: proposed
+  ambiguity: "'High-confluence area' is qualitative; minimum number of aligned timeframes not fixed; reaction not numerically defined."
+  counterexamples: []
+
+- id: tjr-daily-bias-pt3-r03
+  teacher_statement: "If it comes into these areas and doesn't give us a reaction... like it was never there... we don't care about it anymore."
+  source_timestamp: "09:43"
+  proposed_machine_rule: "If price enters a marked confluence zone but produces no confirming reaction (no sweep + MSS within the zone), invalidate that zone for the current visit and do not execute from it."
+  status: proposed
+  ambiguity: "'Reaction' undefined — no candle count, displacement magnitude, or time window given."
+  counterexamples: []

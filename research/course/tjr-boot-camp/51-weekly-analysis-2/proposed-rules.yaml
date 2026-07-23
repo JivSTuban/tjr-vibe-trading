@@ -1,0 +1,59 @@
+- id: tjr-weekly-analysis-2-r01
+  teacher_statement: >-
+    Go through the week's calendar first and decide which days are tradeable and
+    which need waiting for news; on CPI Wednesday avoid GBP/USD and GBP/JPY.
+  source_timestamp: "02:07"
+  proposed_machine_rule: >-
+    For each session, mark trade-eligibility from an economic-calendar feed: if a
+    high-impact release is scheduled, exclude every pair containing the release's
+    currency for that session. Pre-market minor releases -> allow trading only
+    after the market open.
+  status: proposed
+  ambiguity: >-
+    Impact tiers, the exact pre/post-release window, and the "minor vs major"
+    boundary are not numerically defined in this lesson.
+  counterexamples: []
+
+- id: tjr-weekly-analysis-2-r02
+  teacher_statement: >-
+    After a monthly BOS up with no building blocks in between, price should
+    continue to the next draws on liquidity (the highs above).
+  source_timestamp: "04:17"
+  proposed_machine_rule: >-
+    Set the HTF directional target to the nearest unmitigated liquidity pool in
+    the trend direction when no opposing building block lies between current price
+    and that pool.
+  status: proposed
+  ambiguity: >-
+    "No building blocks in between" requires a defined building-block set and a
+    mitigation test.
+  counterexamples: []
+
+- id: tjr-weekly-analysis-2-r03
+  teacher_statement: >-
+    A great spot for retracements is where FVG + equilibrium + order block all
+    line up.
+  source_timestamp: "05:25"
+  proposed_machine_rule: >-
+    Score retracement zones by the number of overlapping building blocks (FVG,
+    equilibrium, order block, liquidity); prioritize the highest-overlap zone as
+    the expected reaction/entry area.
+  status: proposed
+  ambiguity: >-
+    No minimum overlap count or overlap-distance tolerance is specified.
+  counterexamples: []
+
+- id: tjr-weekly-analysis-2-r04
+  teacher_statement: >-
+    When weekly is bearish but the daily broke structure up, take bullish trades
+    off the daily; look for a 4H BOS to confirm.
+  source_timestamp: "06:10"
+  proposed_machine_rule: >-
+    If weekly_bias != daily_bias, use daily_bias for trade direction and require a
+    4H BOS in that direction before signalling (treat the move as a weekly
+    retracement being traded in the daily direction).
+  status: proposed
+  ambiguity: >-
+    Consistent across lessons 50/53/55; still needs the per-timeframe bias
+    computation from lessons 34-36.
+  counterexamples: []

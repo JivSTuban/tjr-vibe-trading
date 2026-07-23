@@ -1,0 +1,83 @@
+- id: tjr-over-confidence-r01
+  teacher_statement: >
+    "I only want to take like one to two trades... one trade is best a day." / "Your
+    mentors take one to two trades a day -- you need to do the same." [04:40], [16:56]
+  source_timestamp: "04:40"
+  proposed_machine_rule: >
+    Enforce a hard cap of 2 filled trades per trading day (target 1). After the 2nd filled
+    entry in a day, block all new entries until the next session/day.
+  status: proposed
+  ambiguity: >
+    "Day" vs "session" not distinguished; if two sessions (London + NY) are traded, is the
+    cap per day or per session? Assume per day unless a later lesson says per session.
+  counterexamples: []
+
+- id: tjr-over-confidence-r02
+  teacher_statement: >
+    First trade near market open is highest probability (new money, liquidity sweep); after
+    it, volume dies and you only catch retracements / lower-RR trades. [04:16]
+  source_timestamp: "04:16"
+  proposed_machine_rule: >
+    Prefer/allow the first qualifying setup within the session-open window; down-weight or
+    skip later low-volume retracement setups. (Session-open clock time is defined in a
+    session/kill-zone lesson, not here.)
+  status: proposed
+  ambiguity: >
+    No exact open time, timezone, or session name is given in this lesson. "Volume dies out"
+    has no measurable threshold.
+  counterexamples: []
+
+- id: tjr-over-confidence-r03
+  teacher_statement: >
+    "I don't trade news." / "Don't trade tomorrow and don't trade on Thursday" (Powell
+    speaking). [16:13], [18:31]
+  source_timestamp: "16:13"
+  proposed_machine_rule: >
+    Suppress new entries on scheduled high-impact event days/windows (FOMC decisions and
+    Fed-chair speeches at minimum; extend to CPI/PPI/NFP). Do not enter during the release
+    window.
+  status: proposed
+  ambiguity: >
+    No general event list, no time window, no timezone specified here. The stance ("don't
+    trade news") is clear; the exact schedule/window must come from a news lesson.
+  counterexamples: []
+
+- id: tjr-over-confidence-r04
+  teacher_statement: >
+    Don't chase "that one trade to get you out" of a hole; don't over-leverage/over-risk
+    after a loss. [05:15]
+  source_timestamp: "05:15"
+  proposed_machine_rule: >
+    No revenge trades: after a loss, do not take any unplanned/off-plan entry and do not
+    increase per-trade risk or leverage. Risk % stays fixed. No martingale.
+  status: proposed
+  ambiguity: >
+    "Fixed risk %" is implied but no explicit number is given in this lesson.
+  counterexamples: []
+
+- id: tjr-over-confidence-r05
+  teacher_statement: >
+    On a win streak wins get in your head; a loss is always coming. Once profitable, don't
+    change what got you there (risk mgmt, no over-leverage/over-trade). [09:39], [10:58]
+  source_timestamp: "09:39"
+  proposed_machine_rule: >
+    Keep per-trade risk fixed and the trade cap enforced regardless of recent win/loss run;
+    do NOT scale size up after consecutive wins.
+  status: proposed
+  ambiguity: >
+    No streak length threshold given; rule is "never scale up on wins" rather than a
+    counted trigger.
+  counterexamples: []
+
+- id: tjr-over-confidence-r06
+  teacher_statement: >
+    If fearful / losing a lot, use a demo account; prove yourself there; don't jump to live
+    and over-leverage. [11:54], [12:29]
+  source_timestamp: "11:54"
+  proposed_machine_rule: >
+    Gate live/scaled size behind a proven-profitability sample (demo or small size). Do not
+    increase leverage when switching demo -> live.
+  status: proposed
+  ambiguity: >
+    "Proven profitability" sample size / criteria not quantified.
+  counterexamples: []

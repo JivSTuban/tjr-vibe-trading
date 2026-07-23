@@ -1,0 +1,95 @@
+rules:
+  - id: tjr-execution-r01
+    teacher_statement: >
+      "Liquidity sweep combined with a break of structure... we have the
+      potential to fill orders and then we see confirmation that orders were
+      filled — enter, because that's going to be the top of the move."
+    source_timestamp: "03:15"
+    proposed_machine_rule: >
+      Model 1 (aggressive). Trigger: a prior swing high/low is swept
+      (liquidity sweep, unconfirmed). Confirmation: a break of structure in the
+      direction opposite the swept extreme (bearish BOS after a swept high →
+      short; bullish BOS after a swept low → long). Entry: at/on the BOS
+      confirmation. No retracement is waited for. SL/TP: NOT specified in this
+      lesson.
+    status: proposed
+    ambiguity: >
+      No SL, TP, or R:R stated for this model. "Top of the move" implies entry
+      at the extreme (worst R:R). Exact BOS definition/timeframe not given here.
+    counterexamples: []
+
+  - id: tjr-execution-r02
+    teacher_statement: >
+      "We wait for the price range where orders were filled previous... in that
+      order block in that move up to get an optimal entry, we enter at the order
+      block, stops above the highs."
+    source_timestamp: "04:14"
+    proposed_machine_rule: >
+      Model 2 (OB retracement). Prerequisite: liquidity sweep + BOS confirmed
+      (as r01). Then wait for price to retrace into the order block = the
+      origin price range of the impulsive move that caused the sweep. Entry:
+      at the order block. STOP LOSS: above the highs (short case: SL just above
+      the swept swing high). Long mirror inferred: SL below the swept swing low.
+      TP: NOT specified.
+    status: proposed
+    ambiguity: >
+      Only the short-side SL ("above the highs") is stated; long-side SL is
+      inferred, not taught. "Optimal entry" (OB high vs 50% vs low) not
+      numerically defined. No TP/R:R. Used specifically when BOS-entry R:R is
+      disliked, but no R:R threshold given.
+    counterexamples: []
+
+  - id: tjr-execution-r03
+    teacher_statement: >
+      "We wait for the price range where there was a lack of liquidity within
+      the market in the opposite direction of our bias... we're waiting for that
+      price range to get hit and a reaction off of it, or it just for it to get
+      hit for us to enter."
+    source_timestamp: "04:42"
+    proposed_machine_rule: >
+      Model 3 (FVG retracement). Prerequisite: liquidity sweep + BOS confirmed.
+      Then wait for a fair value gap (imbalance) located opposite the bias to
+      get hit; enter on a reaction off it, or on a plain touch. Steps need not
+      be simultaneous — valid even if the OB entry was missed. SL/TP: NOT
+      specified.
+    status: proposed
+    ambiguity: >
+      "React off it OR just get hit" gives two entry triggers without a rule to
+      choose between them. No SL, TP, or R:R stated. FVG fill threshold
+      (touch vs 50% vs full fill) not defined here.
+    counterexamples: []
+
+  - id: tjr-execution-r04
+    teacher_statement: >
+      "Liquidity sweep plus a break of structure plus a fair value gap or order
+      block getting filled plus equilibrium on top of that for ultimate
+      Confluence... along with it being within a discount for us to enter."
+    source_timestamp: "05:34"
+    proposed_machine_rule: >
+      Model 4 (max confluence). Prerequisite: liquidity sweep + BOS confirmed +
+      retracement into an OB or FVG (as r02/r03). ADD FILTER: the OB/FVG entry
+      level must be within a discount (below the 50% equilibrium of the range
+      for longs; above 50% for shorts). Enter only if all conditions align.
+      SL/TP: NOT specified (SL "above the highs" from r02 presumably still
+      applies to the OB variant — inferred).
+    status: proposed
+    ambiguity: >
+      Equilibrium/discount 50% value not restated numerically in this lesson.
+      Which high-low range defines equilibrium is not specified here. No TP/R:R.
+      SL only inferred from r02.
+    counterexamples: []
+
+  - id: tjr-execution-r05
+    teacher_statement: >
+      "In your execution plan you need to choose which one of these that you
+      want to use... write these down in your notebook."
+    source_timestamp: "07:12"
+    proposed_machine_rule: >
+      Process/config rule: the trading system (or trader) must commit to exactly
+      ONE of the four entry models as its configured execution model, rather
+      than switching ad hoc. Discipline constraint, not market logic.
+    status: proposed
+    ambiguity: >
+      Does not say a system cannot support multiple models; TJR frames it as the
+      trader picking one for their plan. Not a market-condition rule.
+    counterexamples: []

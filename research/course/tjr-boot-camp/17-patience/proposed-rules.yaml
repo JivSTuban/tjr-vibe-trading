@@ -1,0 +1,94 @@
+- id: tjr-patience-r01
+  teacher_statement: >-
+    "First we need to see a liquidity sweep... then we see a break of structure...
+    then maybe you gotta wait a little bit more until you see their value gap get
+    entered in... and then you see a reaction and then you enter. If none of those
+    things apply you don't trade."
+  source_timestamp: "03:36"
+  proposed_machine_rule: >-
+    Enforce an ordered pre-entry gate. Only permit an entry when ALL of the
+    following occur in sequence: (1) liquidity sweep, (2) break of structure /
+    MSS, (3) fair value gap fill, (4) confirmation reaction. If any step is
+    absent, emit NO-TRADE. This is a hard gate (AND), not a weighted score.
+  status: proposed
+  ambiguity: >-
+    Timeframe for each step is not specified in this lesson. "Reaction" is not
+    quantified. Must cross-reference a technical execution lesson before coding.
+  counterexamples: []
+
+- id: tjr-patience-r02
+  teacher_statement: >-
+    "You do not need to place 10 trades a day to make a lot of money in this. I
+    take one trade a day and I call it good."
+  source_timestamp: "10:04"
+  proposed_machine_rule: >-
+    Set a soft max_trades_per_day cap = 1 (configurable) for the beginner
+    profile. After 1 filled trade, block further entries for the session unless
+    the cap is explicitly raised in config.
+  status: proposed
+  ambiguity: >-
+    Stated as TJR's personal cadence and advice, not an explicit course mandate.
+    Whether "one trade" is a hard cap or aspirational is unconfirmed.
+  counterexamples: []
+
+- id: tjr-patience-r03
+  teacher_statement: >-
+    "What if there's news? ... if there's news in the market you shouldn't even
+    trade."
+  source_timestamp: "06:15"
+  proposed_machine_rule: >-
+    When a news event is flagged for the traded instrument, suppress all entries
+    (news blackout). Return NO-TRADE regardless of setup quality.
+  status: proposed
+  ambiguity: >-
+    No blackout window (minutes before/after), no impact tier (high/med/low),
+    and no instrument scope given. Thresholds must come from a dedicated news
+    lesson.
+  counterexamples: []
+
+- id: tjr-patience-r04
+  teacher_statement: >-
+    "The market should be giving me a reason to enter a trade and I shouldn't be
+    making up a reason for me to trade... be open to not trading — in fact
+    encourage it."
+  source_timestamp: "05:20"
+  proposed_machine_rule: >-
+    Default state is NO-TRADE. An entry may only be produced by a positively
+    satisfied setup gate (r01); absence of a qualifying setup must never trigger
+    a fallback/forced entry.
+  status: proposed
+  ambiguity: >-
+    Philosophical framing; concrete only insofar as it forbids fallback entries.
+    No numeric parameter.
+  counterexamples: []
+
+- id: tjr-patience-r05
+  teacher_statement: >-
+    "Waiting an extra one or two candlesticks isn't going to hurt you that much
+    when entering a trade... wait for price to develop, see if you get the volume,
+    see if you get the volatility, and then enter."
+  source_timestamp: "08:18"
+  proposed_machine_rule: >-
+    After the setup gate (r01) is satisfied, require 1-2 additional confirmation
+    candles showing volume/volatility on the entry timeframe before triggering
+    entry.
+  status: proposed
+  ambiguity: >-
+    Candle count is soft ("one or two"). Entry timeframe unspecified. "Volume"
+    and "volatility" thresholds undefined.
+  counterexamples: []
+
+- id: tjr-patience-r06
+  teacher_statement: >-
+    "Wait for a good, high quality, high potential, high probability setup... not
+    just entering off of 'oh it looks good' or 'only one confluence I'll enter.'"
+  source_timestamp: "03:00"
+  proposed_machine_rule: >-
+    Require a minimum confluence/score threshold on a setup before it is eligible
+    for entry; reject single-confluence or partially-met setups (e.g. against
+    daily bias, off a retracement).
+  status: proposed
+  ambiguity: >-
+    No numeric minimum confluence count or score cutoff is given in this lesson.
+    Threshold must be sourced from a scoring/technical lesson.
+  counterexamples: []

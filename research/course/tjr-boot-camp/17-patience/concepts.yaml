@@ -1,0 +1,114 @@
+- name: Dopamine hit on trade entry
+  teacher_definition: >-
+    Trading gives a dopamine boost the moment you hit buy or sell. Citing a
+    gambling study, TJR says the hit comes from placing the bet and is bigger
+    than the hit from actually winning, so win or lose the impatient trader is
+    chasing the button-press, thinking only about money to be made.
+  source_timestamp: "01:39"
+  codex_interpretation: >-
+    Behavioral risk factor, not a machine rule. Explains WHY the guardrail rules
+    (checklist gate, max-trades, sit-out) exist; no direct engine input.
+  confidence: high
+  requires_confirmation: false
+
+- name: Step-by-step trading plan (patience via rules)
+  teacher_definition: >-
+    Have an exact, step-by-step list of conditions that must occur before you
+    execute. Example order: liquidity sweep, then break of structure, then wait
+    for the fair value gap to be entered/filled, then a reaction, then enter. If
+    none of those apply, you don't trade. Makes patience automatic.
+  source_timestamp: "03:23"
+  codex_interpretation: >-
+    Ordered pre-entry gate (AND, sequential), not a weighted score. Sequence:
+    liquidity sweep -> BOS/MSS -> FVG fill -> reaction -> entry. Timeframe of
+    each step is NOT specified in this lesson; must be sourced from a technical
+    lesson before coding.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Sitting out is a valid position
+  teacher_definition: >-
+    Part of the patience game is being willing to sit out a day. Come into the
+    market thinking "I do not want to trade today." The market should give you a
+    reason to enter; you should not make up a reason to trade. Be open to not
+    trading and in fact encourage it.
+  source_timestamp: "04:44"
+  codex_interpretation: >-
+    Supports a no-trade default state: absence of a qualifying setup is a valid
+    outcome and must not trigger any forced entry. Reinforces max-trades cap and
+    the checklist gate.
+  confidence: high
+  requires_confirmation: false
+
+- name: A+ / high-probability-only filter
+  teacher_definition: >-
+    Wait for a good, high-quality, high-potential, high-probability setup. Don't
+    enter off one confluence or because "it looks good." Want the market to prove
+    itself so good there's no reason not to take it. Reject ambivalent setups
+    (some conditions met, against daily bias, off a retracement).
+  source_timestamp: "03:00"
+  codex_interpretation: >-
+    Argues for a minimum-confluence / minimum-score threshold on setups and
+    rejection of partial-condition trades. No numeric threshold or confluence
+    count is given here; the scorer cutoff must come from a technical lesson.
+  confidence: medium
+  requires_confirmation: true
+
+- name: One trade a day (frequency discipline)
+  teacher_definition: >-
+    "You do not need to place 10 trades a day to make a lot of money. I take one
+    trade a day and I call it good." Focus on the skill first; money comes later.
+  source_timestamp: "10:04"
+  codex_interpretation: >-
+    Proposed soft max_trades_per_day = 1 guardrail for the beginner cohort.
+    Stated as personal cadence + advice, not a hard course mandate; treat as a
+    configurable cap.
+  confidence: medium
+  requires_confirmation: true
+
+- name: No trading during news
+  teacher_definition: >-
+    Even when all checklist items are hit you sometimes still shouldn't trade -
+    e.g. if there's news you shouldn't even trade.
+  source_timestamp: "06:15"
+  codex_interpretation: >-
+    Supports a news-blackout guardrail, but no time window, impact tier, or
+    instrument list is given here. Thresholds must be sourced from a dedicated
+    news lesson before coding.
+  confidence: medium
+  requires_confirmation: true
+
+- name: Micro-patience on entry (wait 1-2 candles)
+  teacher_definition: >-
+    Even after all execution points hit, waiting an extra one or two
+    candlesticks won't hurt. Wait for price to develop, confirm you get the
+    volume and volatility, then enter.
+  source_timestamp: "08:18"
+  codex_interpretation: >-
+    Implies a confirmation-candle requirement on the entry timeframe. Count is
+    soft ("one or two") and the timeframe is unspecified in this lesson.
+  confidence: low
+  requires_confirmation: true
+
+- name: Two-year path to profitability
+  teacher_definition: >-
+    "It took me two years to turn profitable." Everyone is on a different
+    timeline; don't expect fast riches. Don't trade with friends (their biases
+    contaminate your read); trading is individualized, you vs. the market.
+  source_timestamp: "09:48"
+  codex_interpretation: >-
+    Expectation-setting; no machine rule. Relevant only to human onboarding /
+    coaching layer.
+  confidence: high
+  requires_confirmation: false
+
+- name: 30-minute meditation homework
+  teacher_definition: >-
+    Dark room, phone outside the door on a 30-minute alarm (not a stopwatch),
+    eyes shut, can't stand up, focus on breathing. Reveals how short your
+    attention span is. He used to do 10 minutes every morning after a cold shower.
+  source_timestamp: "11:59"
+  codex_interpretation: >-
+    Human self-development exercise. No machine-executable rule.
+  confidence: high
+  requires_confirmation: false

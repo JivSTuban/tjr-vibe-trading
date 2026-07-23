@@ -1,0 +1,155 @@
+rules:
+  - id: tjr-daily-bias-pt2-r01
+    name: "Weekly sets overall direction"
+    teacher_statement: >
+      "What I like to do for daily bias is we start off on the weekly time frame
+      figure out okay where's our overall direction."
+    source_timestamp: "01:04"
+    proposed_machine_rule: >
+      overall_direction = weekly_structure_trend; determine bullish/bearish from
+      weekly market structure (BOS) before evaluating lower timeframes.
+    status: proposed
+    ambiguity: "No explicit definition of how weekly trend is computed (structure vs line-chart slope)."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r02
+    name: "Daily structure sets daily bias"
+    teacher_statement: >
+      "We go to the daily time frame... if we can understand the daily market
+      structure... then we'll know what our daily bias is." Bullish daily -> look
+      for longs; bearish daily -> look for shorts.
+    source_timestamp: "03:03"
+    proposed_machine_rule: >
+      daily_bias = daily_structure_trend. IF daily_bias == bullish THEN
+      trade_direction = long ELSE short. Bias persists until daily structure
+      flips (BOS in opposite direction).
+    status: proposed
+    ambiguity: "Flip trigger = daily close beyond structure level vs intraday break not fully specified."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r03
+    name: "Prefer extension (trend) over retracement entries"
+    teacher_statement: >
+      "The extension is always way larger... ideally you're trying to catch longs
+      in an uptrend."
+    source_timestamp: "03:19"
+    proposed_machine_rule: >
+      Prefer entries in the direction of the established trend (extension); do not
+      counter-trend on the retracement.
+    status: proposed
+    ambiguity: "No numeric threshold distinguishing extension vs retracement magnitude."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r04
+    name: "Use draw on liquidity to bias direction"
+    teacher_statement: >
+      "My next draw on liquidity is up here." "We swept daily liquidity up here"
+      (reason for short). "Market likely going to draw towards these highs...
+      fill this imbalance."
+    source_timestamp: "01:47"
+    proposed_machine_rule: >
+      draw_on_liquidity = nearest untapped {resting_liquidity_pool | unfilled_imbalance}
+      in bias direction; bias should point toward it. A completed sweep of a
+      liquidity pool can flip short-term direction back toward opposing draw.
+    status: proposed
+    ambiguity: "No rule for selecting among multiple simultaneous draws (he notes two draws but no priority)."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r05
+    name: "Retracement tools = FVG + equilibrium; 50% = premium/discount split"
+    teacher_statement: >
+      "Our retracement tools: fair value gap, equilibrium... we're not yet in a
+      discount... everything above this 50 mark [is premium/money]."
+    source_timestamp: "09:01"
+    proposed_machine_rule: >
+      equilibrium = 50% of the reference leg. discount = price < 50%; premium =
+      price > 50%. In a bearish bias, only short from premium; add confluence when
+      an FVG sits inside the premium (for shorts) / discount (for longs).
+    status: proposed
+    ambiguity: "Reference leg for the 50% (which swing high/low pair) not explicitly defined; premium/discount label for the '50 mark' inferred."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r06
+    name: "Scale-down entry sequence: sweep -> BOS -> OB/FVG entry (15m -> 5m -> 1m)"
+    teacher_statement: >
+      "Liquidity sweeps on the 15 minute... break of structure on the 15 minute...
+      order block entry... scale down to the 5 minute... breaker structure... that's
+      our sniper entry." S&P: "breaking structure on the 5 minute, order block entry
+      with a break of structure on the 1 minute, boom long."
+    source_timestamp: "07:09"
+    proposed_machine_rule: >
+      entry_sequence = [price taps HTF building block] -> [LTF liquidity sweep] ->
+      [LTF break_of_structure in bias direction] -> [order_block or FVG entry].
+      Forex frames: 15m then 5m. Indices (S&P): 5m then 1m.
+    status: proposed
+    ambiguity: "'breaker structure' ASR term treated as break of structure; exact OB definition deferred to earlier lessons."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r07
+    name: "Require lower-timeframe confirmation before entry"
+    teacher_statement: >
+      "We swept daily liquidity... but we didn't have confirmation on lower time
+      frames and that's where I f***ed up." For GU: "I want at least a 15 minute
+      break of structure because we're bullish on the hourly and 4 hour even though
+      our daily bias is short."
+    source_timestamp: "03:52"
+    proposed_machine_rule: >
+      Do NOT enter on HTF sweep alone. Require a lower-TF break of structure in the
+      trade direction as confirmation. When LTFs (1h/4h) conflict with daily bias,
+      require at least a 15m BOS in the daily-bias direction before entry.
+    status: proposed
+    ambiguity: "Which specific LTF for confirmation depends on instrument; general threshold '15m BOS' stated only for the GU conflict case."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r08
+    name: "Highest confidence when all timeframes align"
+    teacher_statement: >
+      "The hourly's in an uptrend, the 4 hour in an uptrend, the daily in an uptrend,
+      the weekly in an uptrend, 15 minutes in an uptrend... wait for these price
+      points to get filled, break of structure to the upside on lower time frame for
+      confirmation, enter."
+    source_timestamp: "13:10"
+    proposed_machine_rule: >
+      confidence = HIGH when {15m,1h,4h,daily,weekly} trends all match bias. Then
+      wait for HTF building-block fill + LTF BOS in-direction, then enter.
+    status: proposed
+    ambiguity: "No scoring threshold for partial alignment (e.g., 4 of 5)."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r09
+    name: "Do not force bias; trade what the market gives"
+    teacher_statement: >
+      "As much as I would like to force my bias... we can't do that. We have to take
+      a trade based off of what market gives us."
+    source_timestamp: "04:17"
+    proposed_machine_rule: >
+      Override subjective/fundamental view with objective structure. If structure
+      contradicts desired direction, defer to structure-derived bias.
+    status: proposed
+    ambiguity: "Behavioral rule; not directly machine-testable without a structure oracle."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r10
+    name: "Do not trade before high-impact news"
+    teacher_statement: >
+      "Don't be dumb, trade after news comes out in 30 minutes." News at market open,
+      ~30 minutes out.
+    source_timestamp: "14:53"
+    proposed_machine_rule: >
+      IF high_impact_news scheduled within pre-open window THEN block new entries
+      until after the release.
+    status: proposed
+    ambiguity: "No explicit list of which news events count as high-impact in this lesson (CPI/PPI/NFP implied by series, not stated here)."
+    counterexamples: []
+
+  - id: tjr-daily-bias-pt2-r11
+    name: "Skip sloppy/low-quality instruments"
+    teacher_statement: >
+      "I'm not going to trade GJ just because it's been trading pretty sloppily."
+    source_timestamp: "10:06"
+    proposed_machine_rule: >
+      Exclude instruments exhibiting choppy/non-structural ('sloppy') price action
+      from the tradable set for the session.
+    status: proposed
+    ambiguity: "'Sloppy' is qualitative; no measurable definition given."
+    counterexamples: []

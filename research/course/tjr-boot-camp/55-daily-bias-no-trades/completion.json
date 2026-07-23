@@ -1,0 +1,12 @@
+{
+  "lesson_number": 55,
+  "video_id": "9sD9kTia4V4",
+  "slug": "daily-bias-no-trades",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 65834,
+  "concepts_count": 7,
+  "rules_count": 6,
+  "examples_count": 4,
+  "notes": "No-trades day - discipline exemplified. Each of 4 pairs is a labeled SKIP with a specific failed gate: SPX (no HTF building-block tap + late session), Gold (hourly-only justification vs bullish daily/4H), GU (no 1H confirmation + CPI on GBP), GJ (4X-strat 30-minute-high sweep never occurred, skipped despite a 5m BOS). Surfaces the 30m-high-sweep as a concrete 4X-strat precondition. Also captures TJR's precise news-correlation rule (X/USD moves opposite a USD release; GBP/Y moves with GBP) and a session-timing cutoff. examples.yaml holds the 4 skips as negative examples. All rules status: proposed. All 8 files written."
+}

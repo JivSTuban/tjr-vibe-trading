@@ -1,0 +1,66 @@
+examples:
+  - timestamp: "01:51"
+    instrument: SP500 (S&P 500)
+    timeframe: 15m context / 5m imbalance / 1m entry
+    direction: short
+    setup_components:
+      - small uptrend, then 15m break of structure to the downside
+      - big 15m imbalance (FVG) left behind
+      - HTF BOS + trend shift = confirmation 1
+      - price rallies back and fills the 15m imbalance during pre-market (not traded)
+      - at market open price pushes up into a 5m imbalance
+      - scale to 1m: break of structure off candle close = entry trigger
+      - only traded off/after market open
+    stated_outcome: >
+      Entered short off the 1m BOS. Both take profits (a liquidity pool below and a
+      small order block) were hit before the remainder stopped out at break-even.
+      Described as a "perfect example" / winning trade.
+    suitable_for_dataset: true
+
+  - timestamp: "06:00"
+    instrument: GJ (GBPJPY)
+    timeframe: 15m sweep+BOS / 5m entry (1h also broke structure)
+    direction: short
+    setup_components:
+      - HTF highs swept (liquidity grab) at the top
+      - 15m break of structure to the downside after sweep
+      - multiple 15m fair value gaps marked out
+      - 5m BOS to the upside read as a RETRACE (HTF still bearish)
+      - first imbalance fills, then 5m BOS down = entry
+      - stop above the swept highs
+      - targets: previous liquidity / accumulation zones all the way down
+    stated_outcome: >
+      "All of these end up getting hit" — targets down to a 1h/4h accumulation area
+      were reached. Called "a great trade."
+    suitable_for_dataset: true
+
+  - timestamp: "08:24"
+    instrument: Gold (via GBPUSD/XAUUSD context — "what does gold do")
+    timeframe: 4h BOS + imbalance / 15m entry
+    direction: short
+    setup_components:
+      - 4h break of structure, 4h imbalance marked
+      - price spikes up into the liquidity area (sweep) in line with the imbalance
+      - 15m break of structure (drastic) after the spike
+      - short off the 15m BOS
+      - target previous liquidity / accumulation below, or start/50%/end of opposing imbalance
+    stated_outcome: >
+      "Spike up into the liquidity area, boom... market falls." Presented as another
+      working example; no explicit R:R or PnL number.
+    suitable_for_dataset: true
+
+  - timestamp: "11:19"
+    instrument: (unnamed instrument — "eyeballing" 1h/4h chart, gold context)
+    timeframe: daily bias / 4h & 1h imbalance / 15m & 1h BOS entry
+    direction: long
+    setup_components:
+      - daily BOS to upside => bullish bias
+      - price drags down into accumulation that caused the rally
+      - 4h and 1h imbalances; prioritizes the 1h imbalance (cleaner unfilled zone)
+      - doji candle = indecision, then BOS on the candle that also broke 1h structure
+      - scale-out TPs; price retraces into FVG once more, fills, then rips up
+      - targets successive liquidity pools ("clockwork")
+    stated_outcome: >
+      Described as fluid / "clockwork" — multiple imbalance fills + BOS carried price to
+      successive liquidity targets. No numeric outcome given.
+    suitable_for_dataset: false

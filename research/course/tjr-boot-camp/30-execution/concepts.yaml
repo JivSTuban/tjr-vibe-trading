@@ -1,0 +1,132 @@
+concepts:
+  - name: Five building blocks
+    teacher_definition: >
+      The strategy's five tools/building blocks: liquidity sweep, break of
+      structure, order block, fair value gap, and equilibrium.
+    source_timestamp: "01:07"
+    codex_interpretation: >
+      The complete primitive set the execution models are composed from. Every
+      entry model in this lesson is a subset/stack of these five.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Liquidity sweep (what it tells us)
+    teacher_definition: >
+      Shows the potential for orders to get filled; it just means a high or a
+      low getting taken out. "We don't know whether it's confirmed yet."
+    source_timestamp: "01:26"
+    codex_interpretation: >
+      Unconfirmed setup trigger: a prior swing high/low is taken out. On its own
+      it does not authorize an entry; it flags a candidate reversal zone.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Break of structure (what it tells us)
+    teacher_definition: >
+      Confirmation that orders were filled; we see a market structure shift. In
+      an uptrend, a liquidity sweep then a BOS to the downside means smart-money
+      orders got filled and price will go the opposite direction.
+    source_timestamp: "01:41"
+    codex_interpretation: >
+      Confirmation trigger. BOS in the direction opposite the swept extreme
+      validates the sweep and is the earliest valid entry (Model 1).
+    confidence: high
+    requires_confirmation: false
+
+  - name: Order block (what it tells us)
+    teacher_definition: >
+      The price range where orders were filled — the move up that caused the
+      liquidity sweep, where orders got filled within that price range, after
+      which price drops.
+    source_timestamp: "02:03"
+    codex_interpretation: >
+      Retracement entry zone: the origin candle/range of the impulsive move that
+      swept liquidity. Called "our first retracement tool" [04:05].
+    confidence: high
+    requires_confirmation: false
+
+  - name: Fair value gap (what it tells us)
+    teacher_definition: >
+      The price range with a lack of liquidity — nobody going in the opposite
+      direction of the market. Usually the big imbalance candle (up or down)
+      with no counteracting orders inside it.
+    source_timestamp: "02:18"
+    codex_interpretation: >
+      Imbalance/inefficiency zone used as an alternate retracement entry; the
+      counter-bias gap price expects to be filled.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Equilibrium
+    teacher_definition: >
+      Finding that discounted price between highs and lows.
+    source_timestamp: "02:42"
+    codex_interpretation: >
+      The 50% midpoint of a defined high-low range separating premium from
+      discount. Numeric 50% value is from prior lessons, not restated here.
+    confidence: medium
+    requires_confirmation: true
+
+  - name: "Entry Model 1 — Sweep + BOS (enter on the break of structure)"
+    teacher_definition: >
+      Liquidity sweep combined with a break of structure: orders had the
+      potential to fill off a high/low and were confirmed filled by the BOS,
+      so enter. This entry will be "the top of the move."
+    source_timestamp: "03:15"
+    codex_interpretation: >
+      Aggressive entry at the confirmation candle, at/near the swept extreme.
+      Earliest fill, worst R:R of the four; no retracement waited for.
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Entry Model 2 — Sweep + BOS + Order block (enter at the OB)"
+    teacher_definition: >
+      Used when you don't like the R:R the BOS entry gives. Wait patiently for
+      price to retrace into the order block (the price range where orders were
+      filled in that move up) for an optimal entry; enter at the order block,
+      stops above the highs.
+    source_timestamp: "03:54"
+    codex_interpretation: >
+      Retracement entry at the OB. SL above the swept swing high (short case
+      stated); long mirror = SL below swing low (inferred). Only explicit SL
+      rule in the lesson.
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Entry Model 3 — Sweep + BOS + Fair value gap (enter at the FVG)"
+    teacher_definition: >
+      Sweep, BOS, then a fair value gap gets filled — these need not be
+      simultaneous (you may miss the OB, price trends lower, then an FVG appears
+      to enter off of). The FVG marks a lack of liquidity opposite our bias;
+      wait for that price range to get hit and react, or just get hit, to enter.
+    source_timestamp: "04:42"
+    codex_interpretation: >
+      Alternate retracement entry into a counter-bias imbalance when the OB
+      entry was missed. Same sweep+BOS confirmation gate as Model 2.
+    confidence: high
+    requires_confirmation: false
+
+  - name: "Entry Model 4 — Sweep + BOS + (OB or FVG) + Equilibrium/discount (ultimate Confluence)"
+    teacher_definition: >
+      Sweep + BOS + FVG or OB getting filled + equilibrium on top, for ultimate
+      Confluence — a "foolproof plan to enter if you are a beginner." Enter only
+      when the OB/FVG level is also within a discount.
+    source_timestamp: "05:34"
+    codex_interpretation: >
+      Highest-confluence model: adds a premium/discount (50%) filter on top of
+      the OB/FVG retracement entry. TJR labels it foolproof for beginners
+      despite calling higher list items "more risky" — see ambiguities.
+    confidence: high
+    requires_confirmation: false
+
+  - name: Choose one execution model (process rule)
+    teacher_definition: >
+      This is part of your execution plan. In your trading plan you must choose
+      which one of these models you want to use and write it down. Understand
+      why the market moves, not "it's bouncing off the EMAs."
+    source_timestamp: "07:01"
+    codex_interpretation: >
+      Discretionary process constraint: the trader commits to a single model in
+      their plan. Not machine-actionable market logic; a discipline/journaling rule.
+    confidence: high
+    requires_confirmation: false

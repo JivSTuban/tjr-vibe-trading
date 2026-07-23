@@ -1,0 +1,112 @@
+- name: Trading is probabilities (not certainty)
+  teacher_definition: >
+    "We're playing purely off of probabilities... the lower probability that you have,
+    the less likely you are to win." Every trade is a probabilistic bet; overconfidence
+    assumes certainty and destroys edge.
+  source_timestamp: "03:48"
+  codex_interpretation: >
+    Framing that motivates fixed-risk sizing and setup scoring (higher-probability
+    setups get taken; low-probability forced trades get skipped).
+  confidence: high
+  requires_confirmation: false
+
+- name: First trade of the day is highest probability (price + time theory)
+  teacher_definition: >
+    At/near market open is "when we are going to be most probable" because that is when
+    new money comes into the market -- you usually see a liquidity sweep, orders get
+    filled, and price is pushed in its intended direction. After the first trade, volume
+    dies out; later trades only catch retracements / lower-RR setups that take longer to
+    develop.
+  source_timestamp: "04:16"
+  codex_interpretation: >
+    Weight/prefer the first qualifying setup near session open; down-weight or skip later
+    low-volume retracement setups. Exact open time / session name not given in THIS lesson;
+    treat as the same session window defined elsewhere.
+  confidence: medium
+  requires_confirmation: true
+
+- name: One-to-two trades per day (one is best)
+  teacher_definition: >
+    "I only want to take like one to two trades, if anything one trade is best a day."
+    Repeated: "Your mentors take one to two trades a day -- you need to do the same."
+  source_timestamp: "04:40"
+  codex_interpretation: >
+    Hard cap of 2 filled trades per day, preferred 1. Clean risk-engine guardrail: block
+    new entries after the cap is hit.
+  confidence: high
+  requires_confirmation: false
+
+- name: The confidence band (between fear and overconfidence)
+  teacher_definition: >
+    "Be confident enough to take the trade, not overconfident enough to over-risk,
+    over-leverage and over-trade, and also not scared enough to miss your entry, under-
+    leverage, or wait too long to pull the trigger." A narrow line between overconfidence
+    and fear.
+  source_timestamp: "07:56"
+  codex_interpretation: >
+    Two-sided guardrail: cap size/frequency on the overconfidence side; ensure valid
+    setups are actually taken (no skipping) on the fear side. Pairs with the Day 27 (Fear)
+    lesson.
+  confidence: high
+  requires_confirmation: false
+
+- name: "You are not profitable" mindset
+  teacher_definition: >
+    "Put it in your head that you are not profitable... you're here to learn the skill."
+    Assuming you are unprofitable "kills that overconfidence immediately" and keeps you
+    open to taking losses.
+  source_timestamp: "06:37"
+  codex_interpretation: >
+    Mindset guardrail; not directly automatable. Supports a rule that risk size does NOT
+    scale up until profitability is proven over a sample.
+  confidence: high
+  requires_confirmation: false
+
+- name: Win-streak danger / a loss is always coming
+  teacher_definition: >
+    On a win streak, wins "get into your head really quick." A loss is always coming, even
+    on a streak. Once you have proven profitability, do NOT change what got you there
+    (risk management, no over-leverage, no over-trading).
+  source_timestamp: "09:39"
+  codex_interpretation: >
+    Keep risk % fixed regardless of recent win/loss run; do not size up after wins; keep
+    the trade cap enforced (especially on streaks).
+  confidence: high
+  requires_confirmation: false
+
+- name: Revenge / recovery trading trap
+  teacher_definition: >
+    Searching for "that one trade to get you out" of a hole -- overconfident, greedy,
+    forces a low-probability, un-thought-out trade with high leverage (often the 5th-6th
+    trade). "You're literally better off putting it all on black."
+  source_timestamp: "05:15"
+  codex_interpretation: >
+    Never take an unplanned trade to recover a loss; never increase leverage after a loss.
+    Fixed risk, no martingale.
+  confidence: high
+  requires_confirmation: false
+
+- name: Demo-account gate for the fearful / unproven
+  teacher_definition: >
+    If you're fearful or losing a lot, "use a demo account... master yourself on demo, gain
+    that confidence over demo." But don't get overconfident on demo, jump to a live account,
+    and start over-leveraging (TJR did this and got screwed).
+  source_timestamp: "11:54"
+  codex_interpretation: >
+    Supports a "prove profitability on a sample / demo before scaling size or going live"
+    gate. Do not up leverage on the switch to live.
+  confidence: high
+  requires_confirmation: false
+
+- name: Do not trade news / high-impact events
+  teacher_definition: >
+    "I don't trade news." Warns the boot camp NOT to trade the next two days because Fed
+    Chair Powell is speaking (likely the most volatile days). Beginners who trade those days
+    win by luck (dangerous) or lose big.
+  source_timestamp: "16:13"
+  codex_interpretation: >
+    Suppress entries on high-impact event days (FOMC / Fed-chair speeches; by extension
+    CPI/PPI/NFP). General event list and window NOT defined here -- pin from a dedicated
+    news lesson.
+  confidence: medium
+  requires_confirmation: true

@@ -1,0 +1,12 @@
+{
+  "lesson_number": 51,
+  "video_id": "QRvZgj3k8pk",
+  "slug": "weekly-analysis-2",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 47242,
+  "concepts_count": 7,
+  "rules_count": 4,
+  "examples_count": 0,
+  "notes": "Process lesson: weekly routine = (1) build a per-day news/trade-eligibility calendar and blackout the affected currency on high-impact days (CPI -> avoid GBP pairs), then (2) top-down weekly->daily->4H bias per pair, marking draws on liquidity and high-confluence retracement zones (FVG+equilibrium+OB). Reiterates trade-the-daily when weekly/daily conflict and price-over-fundamentals. examples.yaml SKIPPED (no completed worked trade; only forward-looking setups). All rules status: proposed."
+}

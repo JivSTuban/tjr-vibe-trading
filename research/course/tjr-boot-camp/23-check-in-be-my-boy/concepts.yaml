@@ -1,0 +1,36 @@
+- name: Loss-then-learn profitability loop
+  teacher_definition: >
+    "The way that you turn profitable in trading is you lose, you learn from it,
+    you lose, you learn from it... you're just continuously learning these small
+    little lessons." Profitability is built from many small compounding lessons
+    over years (he cites 5 years of experience).
+  source_timestamp: "04:12"
+  codex_interpretation: >
+    Mindset framing, not a machine rule. Supports adding a post-trade journaling /
+    review step to the loop, but nothing directly automatable.
+  confidence: high
+  requires_confirmation: false
+
+- name: Do not trade directly after news (wait for price to develop)
+  teacher_definition: >
+    Cited as an example of a small lesson he learned: "I shouldn't trade directly
+    after news comes out — I should wait for price to develop a little bit."
+  source_timestamp: "04:27"
+  codex_interpretation: >
+    Seeds a news-cooldown guardrail: hold/skip entries for a window right after a
+    high-impact release, entering only once price has "developed." No duration,
+    no news list, and no definition of "developed" is given here — all unknown.
+  confidence: low
+  requires_confirmation: true
+
+- name: Course roadmap (order blocks -> equilibrium -> full strategy)
+  teacher_definition: >
+    "Finishing up the order blocks series and then we get into equilibrium and
+    then after equilibrium boom strategy time putting everything together."
+  source_timestamp: "14:37"
+  codex_interpretation: >
+    Ingestion metadata, not a trading concept. Confirms equilibrium (premium/
+    discount) layers on top of order blocks, and a later combined-strategy lesson
+    exists against which OB + equilibrium rules should be reconciled.
+  confidence: high
+  requires_confirmation: false

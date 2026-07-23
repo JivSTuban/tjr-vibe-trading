@@ -1,0 +1,41 @@
+- name: Live hindsight backtest ("aim-bot practice")
+  teacher_definition: "Obviously this is in hindsight but that's how I like doing backtesting — spotting things and how we could have traded them. Since we didn't trade today, it's a great time to do this."
+  source_timestamp: "00:46"
+  codex_interpretation: "A structured hindsight review of a live day: mark levels at open, then label each instrument's would-be trade (take/avoid) with reasons. Produces labeled training examples."
+  confidence: high
+  requires_confirmation: false
+
+- name: News-move exhaustion (avoid trading CPI)
+  teacher_definition: "On CPI most of the time the move has already been made. The CPI candle made a 27-point move versus a 4-point and 12-point move after — just that one CPI candle is usually the majority of the move. Post-news is low volatility."
+  source_timestamp: "03:04"
+  codex_interpretation: "Heuristic: the high-impact release candle captures most of the day's displacement; strongly penalize entries after a same-day CPI/PPI release due to residual low volatility."
+  confidence: high
+  requires_confirmation: true
+
+- name: Retrace rule (opposite BOS on lower TF = HTF retrace)
+  teacher_definition: "If a 15 minute breaks structure to the downside but the hourly is bullish, odds are that break is a retrace for the hourly. Same for 5m vs 15m, and hourly vs 4H. Not every time — there are liquidity sweeps and changes of market structure — but higher timeframes hold higher power."
+  source_timestamp: "04:52"
+  codex_interpretation: "A BOS on TF_n opposite the TF_(n+1) trend defaults to a retrace of TF_(n+1), unless a liquidity sweep / CHoCH overrides. Core multi-TF interpretation rule."
+  confidence: high
+  requires_confirmation: false
+
+- name: Avoid conflicting-bias instruments
+  teacher_definition: "Bearish on the weekly, bullish on the four hour, and bearish on the one hour — you probably don't want to be trading under those conditions because there's too many conflicting biases; we don't really know where price wants to go."
+  source_timestamp: "11:28"
+  codex_interpretation: "Filter: reject instruments whose timeframe biases conflict; require alignment (or a clean HTF-aligned sweep+BOS+building-block) before considering entry."
+  confidence: high
+  requires_confirmation: false
+
+- name: Reaction point must have a building block
+  teacher_definition: "This probably wouldn't have given us much because no fair value gap, no order block, no equilibrium — not necessarily a good spot to be trading in."
+  source_timestamp: "14:44"
+  codex_interpretation: "Entry requires the reaction zone to coincide with a building block (FVG / OB / equilibrium); a BOS with no building block at the retrace point is not a valid entry."
+  confidence: high
+  requires_confirmation: false
+
+- name: Session-liquidity short template (GJ)
+  teacher_definition: "You do end up getting that break of structure to the downside — you can short purely off that or wait for price to react off the order block off this candle, stop above there, and target previous draws."
+  source_timestamp: "08:35"
+  codex_interpretation: "HTF-bearish + session-high liquidity sweep (London high into NY) + BOS down + optional OB reaction; stop above OB/sweep, target prior liquidity/imbalance draws."
+  confidence: high
+  requires_confirmation: false

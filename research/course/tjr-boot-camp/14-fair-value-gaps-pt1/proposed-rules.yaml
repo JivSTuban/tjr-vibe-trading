@@ -1,0 +1,23 @@
+- id: tjr-fair-value-gaps-pt1-r01
+  teacher_statement: "Fair value gaps are used for retracements. I don't use them for entries necessarily — I use liquidity sweeps to understand where the market's going, then FVGs to figure out where price wants to draw to, or for a secondary entry."
+  source_timestamp: "03:58"
+  proposed_machine_rule: "Assign FVG role = retracement/draw-to target and SECONDARY entry location only. The PRIMARY directional bias/entry comes from the liquidity sweep + BOS chain; FVG must not be used as a standalone entry signal."
+  status: proposed
+  ambiguity: "What distinguishes a 'secondary entry' trigger from the primary is not fully specified; combined-chain rule r02 gives the concrete case."
+  counterexamples: []
+
+- id: tjr-fair-value-gaps-pt1-r02
+  teacher_statement: "Liquidity sweep -> break of structure -> trend forming -> notice a fair value gap -> FVG gets filled -> lower-timeframe break of structure -> we're in."
+  source_timestamp: "06:02"
+  proposed_machine_rule: "With-trend FVG entry: after (sweep -> BOS establishing trend), when price retraces and fills an HTF FVG AND a lower-timeframe BOS prints in the trend direction, enter with-trend."
+  status: proposed
+  ambiguity: "FVG-fill definition (touch of gap edge vs 50% vs full fill) undefined; the LTF for the confirming BOS not fixed; detection of the FVG itself deferred to lesson 16."
+  counterexamples: []
+
+- id: tjr-fair-value-gaps-pt1-r03
+  teacher_statement: "FVG, liquidity, order block are interchangeable execution pieces — more confirmations = higher confluence."
+  source_timestamp: "06:46"
+  proposed_machine_rule: "Model each block (sweep, BOS, FVG, order block) as an optional, stackable confluence; score setup confidence by count/alignment of confirmed blocks (higher = stronger, may map to the 1->3% risk dial from lesson 13)."
+  status: proposed
+  ambiguity: "No explicit confluence-count-to-confidence or confidence-to-risk mapping is given; needs definition."
+  counterexamples: []

@@ -1,0 +1,42 @@
+# Behavioral / operator guardrails only. This is a psychology lesson -- NO trade-entry rules.
+# All rules remain status: proposed. None are trade triggers.
+
+- id: "tjr-hard-work-r01"
+  teacher_statement: "Do four hours a day; four hours is not a lot of time. Look at your TikTok/YouTube screen time and put it into working. [04:24]"
+  source_timestamp: "04:24"
+  proposed_machine_rule: "Operator study-quota tracker: log daily minutes of trading study + back-testing + psychology study; flag (soft warning, non-blocking) any day below 240 minutes (4h). Operator-facing only; does NOT gate live trades."
+  status: proposed
+  ambiguity: "The 4h/day figure is quoted from Alex Hormozi, not mandated by TJR as a system parameter. Threshold and whether it applies to the automated system's operator are unconfirmed."
+  counterexamples: []
+
+- id: "tjr-hard-work-r02"
+  teacher_statement: "If you don't see yourself getting better every single day, change something and do more. [06:32] ... If you haven't seen your win rate improve, R:R improve, entries get more exact, you're doing something wrong. [14:15]"
+  source_timestamp: "06:32"
+  proposed_machine_rule: "Continuous-improvement monitor: trend weekly win rate, R:R, entry-precision, and profitability from the journal/scorer; raise an operator alert when no metric improves over a configurable window. Monitoring output only, not a trade gate."
+  status: proposed
+  ambiguity: "No numeric improvement threshold or window length is specified by TJR."
+  counterexamples: []
+
+- id: "tjr-hard-work-r03"
+  teacher_statement: "Motivation won't get you everywhere, it's the discipline that will ... don't let the motivation drive you, make the discipline make you get up every single day. [10:40, 19:07]"
+  source_timestamp: "10:40"
+  proposed_machine_rule: "Design guardrail (meta): execution must be fully rule-based/automated so it does not depend on daily discretionary motivation. No 'trade if I feel like it' path. Enforced at architecture level, not per-trade."
+  status: proposed
+  ambiguity: "General principle, not an executable numeric rule."
+  counterexamples: []
+
+- id: "tjr-hard-work-r04"
+  teacher_statement: "Fail a thousand times ... what happens if you succeed one/ten out of those thousand times, you're already on a better/great track. [~14:37]"
+  source_timestamp: "14:37"
+  proposed_machine_rule: "Sample-size / drawdown-tolerance mindset: do not abandon a positive-expectancy setup on a small losing streak; require a large validation sample before trusting or discarding a rule. NO specific sample size stated -- must be defined elsewhere; do not invent."
+  status: proposed
+  ambiguity: "No numeric sample size, expectancy threshold, or max-consecutive-loss figure is given. This lesson only supplies the mindset."
+  counterexamples: []
+
+- id: "tjr-hard-work-r05"
+  teacher_statement: "Re-watch day one, reconsider your goals and short-term goals, and assess how you're doing on them. [11:12]"
+  source_timestamp: "11:12"
+  proposed_machine_rule: "Scheduled operator review ritual: prompt a periodic (e.g. weekly/monthly) goals-and-progress review. Cadence unspecified by TJR. Non-trade."
+  status: proposed
+  ambiguity: "Review cadence not specified (lesson references '~a week' and '~a month into the boot camp' but sets no fixed schedule)."
+  counterexamples: []

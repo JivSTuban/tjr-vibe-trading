@@ -1,0 +1,37 @@
+- name: Course wrap-up / method is fully covered by lessons 1-55
+  teacher_definition: >-
+    The boot camp is ending because "I feel like I kind of got everything out...
+    brain-dumped as much as I possibly could." The final pointer to the whole
+    method is "just re-watch that first boot camp video and you'll know what it's
+    all about." No consolidated re-teach of the mechanics is given.
+  source_timestamp: "00:03"
+  codex_interpretation: >-
+    No new machine rules. Confirms the strategy corpus is contained in lessons
+    1-55; lesson 01 is the thesis statement. Meta/organizational only.
+  confidence: high
+  requires_confirmation: false
+
+- name: Protect mental health / take breaks / trade for yourself
+  teacher_definition: >-
+    Took a break due to burnout (low energy/sleep, posting a 'character' for the
+    audience). Now prioritizes health and posts only what he wants. Trading's
+    purpose is freedom and giving back (gave $5k to the Discord, plans $10k to
+    homeless), not chasing views/validation.
+  source_timestamp: "04:23"
+  codex_interpretation: >-
+    Human wellbeing/motivation context. Reinforces existing behavioral guardrails
+    (low frequency, take breaks) from lessons 17/52; no new executable rule.
+  confidence: high
+  requires_confirmation: false
+
+- name: $27k SPX win (no setup detail)
+  teacher_definition: >-
+    "I hit a pretty big play on the S&P 500 today, I made around 27k, which was
+    pretty solid" - after two-three weeks of not trading well. No entry, timeframe,
+    or setup breakdown is provided.
+  source_timestamp: "18:51"
+  codex_interpretation: >-
+    A P&L data point only; insufficient detail to form a trade example
+    (no direction/timeframe/setup components). Not dataset-usable.
+  confidence: high
+  requires_confirmation: false

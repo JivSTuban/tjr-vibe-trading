@@ -1,0 +1,12 @@
+{
+  "lesson_number": 53,
+  "video_id": "-rYGugTIsbU",
+  "slug": "daily-bias-breakeven-recap",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 77439,
+  "concepts_count": 8,
+  "rules_count": 5,
+  "examples_count": 2,
+  "notes": "Worked example contrasting a SKIP-worthy trade taken vs an A+ skipped. Took GBPUSD short against weekly+daily-bullish alignment (overextended-at-equilibrium, low conviction, de-risked to ~15 vs usual ~100 lots, 15-pip stop), closed +$199.09 break-even after ~2.5h consolidation. Verdict: 'don't take this trade.' The A+ he skipped was GBPJPY: daily-order-block mitigation -> draw to Asian session high -> reaction BOS in the daily-bias direction. Both captured in examples.yaml. Key mined lessons: don't trade against both HTF biases; penalize overextended-at-equilibrium; A+ = OB + named-liquidity draw + reaction + trend-aligned BOS; consolidation-stall/counter-BOS exit. All rules status: proposed. All 8 files written."
+}

@@ -1,0 +1,12 @@
+{
+  "lesson_number": 18,
+  "video_id": "qecF411R83s",
+  "slug": "fvg-pt3",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 79901,
+  "concepts_count": 9,
+  "rules_count": 7,
+  "examples_count": 4,
+  "notes": "CORE strategy-integration lesson: FVG combined with liquidity sweep + BOS + HTF bias into a full entry model. Key rule: FVG is a RETRACEMENT/CONFIRMATION tool, never a standalone entry — entry trigger is a lower-timeframe BOS after the FVG fills. SL beyond swept high/low; TP at previous liquidity/opposing imbalance. No numeric R:R, risk %, or lot math stated (see ambiguities.md). Session rule: trade only at/after market open. All 8 artifact files written (examples & proposed-rules populated). FVG 3-part thread: pt1, pt2=lesson 16, pt3=this. Next series: order blocks -> equilibrium -> strategy."
+}

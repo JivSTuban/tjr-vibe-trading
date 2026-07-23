@@ -1,0 +1,12 @@
+{
+  "lesson_number": 47,
+  "video_id": "S-scwzKRP-8",
+  "slug": "backtesting-cpi",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 72354,
+  "concepts_count": 6,
+  "rules_count": 4,
+  "examples_count": 4,
+  "notes": "Live hindsight backtest on a CPI day across S&P, GJ, gold, GU. 4 labeled would-be trades captured (1 would-be long S&P, 1 clean GJ short template, 2 avoided). Numeric price levels unavailable (screen-share). All files written."
+}

@@ -1,0 +1,48 @@
+# TJR scans many historical/live examples across pairs, but walks them qualitatively
+# (no entry/SL/TP prices, no dates). All illustrative -> not dataset-usable.
+
+- timestamp: "09:47"
+  instrument: unspecified (chart scan)
+  timeframe: multi (daily down to 15m)
+  direction: long
+  setup_components:
+    - "liquidity sweep"
+    - "leg down = bullish order block"
+    - "break of structure to upside"
+    - "price retraces into OB (wick / base of body)"
+    - "target previous areas of liquidity"
+  stated_outcome: "illustrative -- price taps OB and rallies; no levels given"
+  suitable_for_dataset: false
+
+- timestamp: "15:43"
+  instrument: Gold (XAUUSD)
+  timeframe: daily / 1h / 15m
+  direction: long
+  setup_components:
+    - "liquidity sweep down"
+    - "big rally up + BOS to upside"
+    - "retrace tools available: FVG (imbalance) and OB"
+    - "wait for fill + confirming BOS, enter, target prior liquidity for 'crazy RR'"
+  stated_outcome: "described as a live read-and-react example; no entry/exit prices"
+  suitable_for_dataset: false
+
+- timestamp: "18:48"
+  instrument: GBPJPY (pound pairs 'ripping')
+  timeframe: 1h / 15m
+  direction: short then long examples
+  setup_components:
+    - "liquidity sweep, BOS, price pokes head back into OB, 15m BOS confirmation"
+    - "target previous areas of liquidity"
+  stated_outcome: "illustrative; no levels"
+  suitable_for_dataset: false
+
+- timestamp: "20:26"
+  instrument: unspecified pair (nested daily->4h->1h->15m)
+  timeframe: daily / 4h / 1h / 15m
+  direction: long
+  setup_components:
+    - "daily BOS sets bullish bias (aligned with weekly bias)"
+    - "daily OB, 4h BOS, 1h OB, 15m entry BOS -- nested confirmation stack"
+    - "target liquidity above"
+  stated_outcome: "illustrative nested-timeframe example; no prices"
+  suitable_for_dataset: false

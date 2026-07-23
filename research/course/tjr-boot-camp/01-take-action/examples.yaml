@@ -1,0 +1,15 @@
+# Only one trade example is walked in this lesson, and it is HISTORICAL backstory
+# (how TJR first became profitable), NOT the taught system. Flagged accordingly.
+
+- timestamp: "37:20"
+  instrument: "GBPJPY (ASR 'GJ')"
+  timeframe: "intraday, anchored to London session open (specific TF not stated)"
+  direction: "short (reversal) — 'when it took out a high I would press sell'; opposite for lows"
+  setup_components:
+    - "London session open"
+    - "price fakes out / sweeps a session high (or low)"
+    - "reversal in the opposite direction (his 'London fake out')"
+    - "fixed 15-pip stop loss"
+  stated_outcome: "This was his 'start to profitability' — presented as what worked, no specific win/RR numbers given."
+  suitable_for_dataset: false
+  notes: "Legacy self-taught proto-strategy told as origin story to prove he didn't copy ICT. Predates the formal sweep -> MSS/BOS framework (Lesson 08). The 15-pip SL is almost certainly a legacy hardcode, not the course's method. Do NOT train/backtest as the taught system without confirmation."

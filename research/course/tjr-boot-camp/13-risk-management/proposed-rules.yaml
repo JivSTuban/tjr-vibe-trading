@@ -1,0 +1,39 @@
+- id: tjr-risk-management-r01
+  teacher_statement: "Risk one to three percent of your account size per trade."
+  source_timestamp: "03:42"
+  proposed_machine_rule: "Enforce per-trade risk in [1%, 3%] of current account equity. Reject or resize any order whose risk (entry-to-SL * size) falls outside this band."
+  status: proposed
+  ambiguity: "Whether the % is of starting equity, current equity, or high-water mark is unstated; assume current equity."
+  counterexamples: []
+
+- id: tjr-risk-management-r02
+  teacher_statement: "Risk one to three percent of your account per DAY. E.g. 2 trades at 1.5%, 1 trade at 1%, 1 trade at 3%, or 3 trades at 1% — either way within the threshold."
+  source_timestamp: "10:56"
+  proposed_machine_rule: "Enforce a daily aggregate risk cap of 3% of account equity: SUM(risk of all trades opened that trading day) <= 3%. Once cumulative allocated/realized risk reaches 3%, block further entries until the next trading day."
+  status: proposed
+  ambiguity: "Does a WIN free up risk budget for more trades same day? Does realized loss count against the cap or only allocated risk-at-entry? Assume allocated-risk-at-entry counts, no top-up on wins."
+  counterexamples: []
+
+- id: tjr-risk-management-r03
+  teacher_statement: "Some days you risk zero (no setups); other days go heavier when all biases align."
+  source_timestamp: "11:30"
+  proposed_machine_rule: "No minimum daily activity (0 trades / 0% risk permitted). Permit scaling per-trade risk up to 3% only for high-conviction, multi-confluence setups, still bounded by the 3%/day cap."
+  status: proposed
+  ambiguity: "'All biases aligning' is not quantified — needs a defined conviction/confluence score to map to the 1->3% dial."
+  counterexamples: []
+
+- id: tjr-risk-management-r04
+  teacher_statement: "Calculate position/lot size from your risk % and your stop-loss distance (pips FX / points futures / SL options)."
+  source_timestamp: "04:03"
+  proposed_machine_rule: "size = (risk% * equity) / (stop_loss_distance * per_unit_value), per instrument: pip value (FX), point/tick value (futures), premium-at-SL (options). Round to broker lot/contract increments; if rounding pushes risk >3%, round DOWN."
+  status: proposed
+  ambiguity: "TJR defers the exact formula to a calculator; per-instrument value tables and rounding policy must be supplied."
+  counterexamples: []
+
+- id: tjr-risk-management-r05
+  teacher_statement: "If you take 100 trades in a day the account is gone in a day. Over-trading / risking more than your set amount is when you're screwed."
+  source_timestamp: "06:11"
+  proposed_machine_rule: "Cap trades per day implicitly via the 3%/day aggregate cap (e.g. at 1% each => max 3/day). Optionally add an explicit hard max-trades-per-day guard as a redundant over-trading brake."
+  status: proposed
+  ambiguity: "No explicit numeric max-trades-per-day is given beyond what the risk cap implies; an explicit cap value would need confirmation."
+  counterexamples: []

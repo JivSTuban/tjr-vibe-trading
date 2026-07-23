@@ -1,0 +1,103 @@
+# Chart examples TJR walks. These are STRUCTURAL/drawn illustrations, not trade tickets:
+# no entries, stops, targets, RR, or prices are stated. suitable_for_dataset flags whether
+# the example is concrete enough to mine as a labeled BOS/not-BOS instance.
+
+- timestamp: "03:26"
+  instrument: unspecified (drawn/illustrative chart, blue/black theme)
+  timeframe: unspecified (later zooms to 4H)
+  direction: n/a (swing-point identification)
+  setup_components:
+    - "Odd-looking high that beginners would mismark"
+    - "Move up then move down = a high; take the highest wick of the two candles"
+    - "4H zoom confirms true low is the extreme wick, not the candle open"
+  stated_outcome: "Teaches the 2-candle high/low definition and wick-extreme rule."
+  suitable_for_dataset: false
+
+- timestamp: "08:39"
+  instrument: unspecified (drawn example)
+  timeframe: unspecified
+  direction: bearish (down-BOS)
+  setup_components:
+    - "Prior miniature uptrend, most-recent low identified"
+    - "Candle body closes below the most-recent low"
+  stated_outcome: "Body close below the low starts a downtrend (lower high, lower low)."
+  suitable_for_dataset: false
+
+- timestamp: "10:03"
+  instrument: unspecified (drawn example, 'two perfect examples')
+  timeframe: unspecified
+  direction: bearish then bullish
+  setup_components:
+    - "Previously trending up; body of candle closes below a low -> trend shifts down (down-BOS)"
+    - "Then in the downtrend, a candle closes above the most-recent high -> up-BOS"
+    - "Retracement down, then higher high / higher low continuation"
+  stated_outcome: "Illustrates both a down-BOS and a subsequent up-BOS with continuation."
+  suitable_for_dataset: false
+
+- timestamp: "12:11"
+  instrument: unspecified (drawn 'prime time' counterexample)
+  timeframe: unspecified
+  direction: bullish (fake)
+  setup_components:
+    - "Wick makes a higher high than a prior high"
+    - "Body does NOT close above the high"
+  stated_outcome: "NOT a break of structure — wick-through without body close. Price falls."
+  suitable_for_dataset: true
+
+- timestamp: "19:43"
+  instrument: Gold (XAUUSD)
+  timeframe: unspecified (a trading 'week')
+  direction: none (consolidation)
+  setup_components:
+    - "Alternating highs and lows, no directional structure"
+  stated_outcome: "Pure consolidation — no trend, no BOS. 'Terrible trading week for Gold.'"
+  suitable_for_dataset: true
+
+- timestamp: "20:37"
+  instrument: unspecified (checklist walkthrough)
+  timeframe: daily (implied)
+  direction: bearish trend, awaiting up-BOS
+  setup_components:
+    - "Downtrend identified (lower lows, lower highs)"
+    - "Watching the most-recent high; forming wick/candle is not yet a high"
+    - "Turns to uptrend only on a candle close above the most-recent high"
+  stated_outcome: "Demonstrates the step-by-step checklist and 'wait for the daily close above' logic."
+  suitable_for_dataset: false
+
+- timestamp: "22:51"
+  instrument: GBPUSD ("GU")
+  timeframe: daily (with weekly context)
+  direction: bearish (down-BOS on daily)
+  setup_components:
+    - "Move down then move up = low; candle closes below that low on the daily -> market runs down"
+    - "Weekly still bullish -> daily BOS treated as a retracement, not a reversal"
+  stated_outcome: "Real daily down-BOS, but subordinate to a bullish weekly (retracement)."
+  suitable_for_dataset: true
+
+- timestamp: "23:22"
+  instrument: unspecified (weekly example, likely GU)
+  timeframe: weekly
+  direction: bearish (fake)
+  setup_components:
+    - "Most-recent low; price wicks below but does NOT close below"
+  stated_outcome: "NOT a BOS — a liquidity sweep faking a break to the downside; would be a bad low-probability entry."
+  suitable_for_dataset: true
+
+- timestamp: "25:22"
+  instrument: unspecified (drawn; references retail behavior)
+  timeframe: unspecified
+  direction: bullish (trend held)
+  setup_components:
+    - "Full black (down) candle; ~90% of retailers short 'it's going down forever'"
+    - "Repeated wicks below lows with NO close below (no break)"
+  stated_outcome: "Trend never broke — the dips were liquidity sweeps; market pushes higher."
+  suitable_for_dataset: true
+
+- timestamp: "27:41"
+  instrument: GBPJPY ("GJ") — brief reference
+  timeframe: unspecified
+  direction: bullish (continuation)
+  setup_components:
+    - "Higher highs / higher lows; a low wicked below but kept going higher (no close below)"
+  stated_outcome: "Structure never broke because there was no close below the low; used to reinforce the close-only rule."
+  suitable_for_dataset: false

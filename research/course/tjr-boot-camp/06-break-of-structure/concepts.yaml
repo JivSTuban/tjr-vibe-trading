@@ -1,0 +1,104 @@
+- name: Break of Structure (BOS) — definition
+  teacher_definition: "The simplest way that I can describe a break of structure is a shift in the trend. An uptrend moves in higher highs and higher lows; when it ends up breaking it's going to start making lower lows and lower highs, and that is what we call a break of structure — meaning we break the trend that the market is currently in and then flip market direction / flip market structure in the other direction."
+  source_timestamp: "01:27"
+  codex_interpretation: "BOS = a confirmed change in the prevailing trend's structure. Operationally it is the moment price closes through the most recent opposing swing, flipping the higher-high/higher-low (or lower-low/lower-high) sequence. It is the strategy's confirmation primitive."
+  confidence: high
+  requires_confirmation: false
+
+- name: BOS = MSS = market structure shift = trend shift (synonymy)
+  teacher_definition: "When it actually switches direction, when it breaks structure, when it gets a market structure shift… a break of structure is a shift in the trend."
+  source_timestamp: "01:15"
+  codex_interpretation: "In this lesson TJR uses 'break of structure', 'market structure shift (MSS)', 'trend shift' and 'change in direction' as SYNONYMS, always for the reversal case. He does NOT draw the SMC BOS(continuation) vs CHoCH/MSS(reversal) distinction. Treat his BOS as potentially = SMC CHoCH. Needs confirmation before coding."
+  confidence: high
+  requires_confirmation: true
+
+- name: What makes a HIGH (2-candle swing definition)
+  teacher_definition: "A high is a move up then a move down. It only takes two candles — it's a candlestick pattern. One green candle up and then a red candle down, that's a high. It doesn't have to make a perfect shape, doesn't have to look pretty."
+  source_timestamp: "02:15"
+  codex_interpretation: "Swing high = an up-candle immediately followed by a down-candle. Not a classic 3-bar pivot. The high PRICE is the highest wick across those two candles."
+  confidence: high
+  requires_confirmation: true
+
+- name: What makes a LOW (2-candle swing definition)
+  teacher_definition: "A low is a move down then a move up. One red candle down and then one green candle up, that's a low."
+  source_timestamp: "02:18"
+  codex_interpretation: "Swing low = a down-candle immediately followed by an up-candle. The low PRICE is the lowest wick across those two candles."
+  confidence: high
+  requires_confirmation: true
+
+- name: Which wick marks the swing (highest/lowest of the two candles)
+  teacher_definition: "Since a high takes two candles to form you're going to take the highest wick of whichever of those two candles it is. [For a low] if this blue candle's wick was lower than the black candle, that would be the low."
+  source_timestamp: "04:40"
+  codex_interpretation: "Swing price = extreme wick (max high wick for a high, min low wick for a low) across the two candles forming the swing. Verified by zooming into a 4H candle to confirm the true low is the wick extreme, not the candle open."
+  confidence: high
+  requires_confirmation: false
+
+- name: BOS requires a BODY CLOSE, not a wick (the anchor rule)
+  teacher_definition: "A break of structure to the upside is when we have a closure — a candle closure not a wick, a candle closure — above a high. We have to see a single candle close fully, meaning the candle body has to be above the wick of the high. We do not care about wicks going above highs or going below lows — that does not mean anything to us. We need a candle close. It is not a break of structure unless the candle closes above a high or below a low — write that down."
+  source_timestamp: "07:54"
+  codex_interpretation: "THE load-bearing confirmation rule. A BOS fires only on a candle whose CLOSE is beyond the swing extreme. Wick penetration alone is explicitly NOT a BOS. Stated, repeated, and dictated to be written down twice → highest confidence primitive in the strategy."
+  confidence: high
+  requires_confirmation: false
+
+- name: BOS to the UPSIDE (downtrend -> uptrend)
+  teacher_definition: "A break of structure to the upside means there is a downtrend currently, and it's when we get a candle closure above a high. In order for it to be a break of structure to the upside — from a downtrend into an uptrend — it has to close above the most recent high."
+  source_timestamp: "07:47"
+  codex_interpretation: "Up-BOS = candle close strictly above the most-recent swing high while in a downtrend; flips bias to bullish."
+  confidence: high
+  requires_confirmation: false
+
+- name: BOS to the DOWNSIDE (uptrend -> downtrend)
+  teacher_definition: "A break of structure to the downside is when we have an uptrend and then a low gets taken out — same exact thing just in the opposite direction. It has to close below the most recent low."
+  source_timestamp: "11:45"
+  codex_interpretation: "Down-BOS = candle close strictly below the most-recent swing low while in an uptrend; flips bias to bearish."
+  confidence: high
+  requires_confirmation: false
+
+- name: Direction-conditional watch (uptrend -> watch lows; downtrend -> watch highs)
+  teacher_definition: "If in an uptrend we are watching the lows — because if we're moving up higher and higher, we get a break of structure when the low gets taken out / closed below; we don't care about the highs. If in a downtrend we are watching highs — the only way for it to turn into an uptrend is to close above a high."
+  source_timestamp: "14:59"
+  codex_interpretation: "Deterministic state: uptrend arms the most-recent LOW for a close-below (down-BOS); downtrend arms the most-recent HIGH for a close-above (up-BOS). Clean state machine keyed on {trend, armed_swing}."
+  confidence: high
+  requires_confirmation: false
+
+- name: Most-recent swing only (discard old swings)
+  teacher_definition: "I only care about the most recent high or low that has been made. We are not caring about past lows. Who cares about this low if this new low was already made — we care about the most recent ones that were made. If the next candle that forms is down, then we'll move the high to there."
+  source_timestamp: "09:04"
+  codex_interpretation: "Only the single most-recent qualifying swing is armed for a BOS test; once a newer swing forms, older swings are dropped. A still-forming high can migrate to a later candle until confirmed."
+  confidence: high
+  requires_confirmation: false
+
+- name: BOS is timeframe-relative (HTF hierarchy; daily BOS vs weekly bias = retracement)
+  teacher_definition: "The weekly holds more power than the daily, the monthly holds more power than the weekly. If we see a break of structure to the downside on the daily but the weekly we're still bullish, it's just a retracement. We have to wait for the daily time frame to close above here."
+  source_timestamp: "22:41"
+  codex_interpretation: "A BOS is defined per timeframe. A lower-timeframe BOS against a higher-timeframe trend is a retracement, not a bias flip. HTF dominates (monthly > weekly > daily). Detector must be timeframe-scoped and ideally HTF-filtered; concrete alignment rule not given numerically."
+  confidence: medium
+  requires_confirmation: true
+
+- name: NOT a BOS — wick through swing with no body close
+  teacher_definition: "This wick goes higher than this wick, so technically this high is higher — however we do not care about wicks. Because it doesn't close above it, it is not a break of structure. If this wick went lower than this low that would not have been a break of structure."
+  source_timestamp: "12:34"
+  codex_interpretation: "Canonical negative case: a higher-high-by-wick (or lower-low-by-wick) that does not close beyond the swing is NOT a BOS. This is exactly the wick-vs-close gate stated as a counterexample."
+  confidence: high
+  requires_confirmation: false
+
+- name: NOT a BOS — liquidity sweep / fake-out
+  teacher_definition: "That just is not a break of structure — this looks like a liquidity sweep. Oftentimes market will do this a lot to fake people out who think that a wick below a previous low is actually a break of structure. Then market never breaks structure and we push higher — these were just liquidity sweeps and we will learn about that next time."
+  source_timestamp: "23:58"
+  codex_interpretation: "A wick beyond a swing that does not close beyond it = a liquidity sweep, the primary fake BOS. The body-close gate is precisely what separates a real BOS from a sweep. Explicit forward-link to Lesson 08 (liquidity). In the full playbook: sweep THEN opposite BOS = entry trigger."
+  confidence: high
+  requires_confirmation: false
+
+- name: NOT a BOS — consolidation (no trend)
+  teacher_definition: "This is just pure consolidation, there is no trend within however many days this was — this would have been a terrible trading week for Gold. There was no trend, there was no break of structure, market had no clue where it wanted to go."
+  source_timestamp: "19:43"
+  codex_interpretation: "Alternating highs/lows with no directional structure is not a trend and yields no BOS. A trend must exist before a BOS can be defined. Detector should suppress BOS signals in ranging/consolidating regimes."
+  confidence: high
+  requires_confirmation: false
+
+- name: BOS does not guarantee an indefinite run
+  teacher_definition: "I don't want you to watch this and instantly be like 'when there's a break of structure it means it's gonna go up forever' — that is not true at all, not true whatsoever."
+  source_timestamp: "22:14"
+  codex_interpretation: "A BOS confirms a directional shift but is not a promise of continuation; it is a state change, not a target. Do not treat a single BOS as a standalone hold-forever signal."
+  confidence: high
+  requires_confirmation: false

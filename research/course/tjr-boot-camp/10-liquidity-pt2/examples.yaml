@@ -1,0 +1,34 @@
+# Chart walkthroughs are illustrative (TJR flips through many quickly); most lack a full entry/SL/TP.
+# Captured as observed sweep patterns; suitable_for_dataset flagged conservatively.
+
+- timestamp: "07:48"
+  instrument: S&P 500
+  timeframe: daily
+  direction: short (reversal)
+  setup_components: [prior swing highs (BSL), price pushes up and takes out liquidity]
+  stated_outcome: "big sell-off after the highs are swept (multiple daily examples cited)"
+  suitable_for_dataset: false  # illustrative; no entry/SL/TP or MSS confirmation shown
+
+- timestamp: "08:52"
+  instrument: S&P 500
+  timeframe: monthly/yearly
+  direction: long (reversal, anticipated)
+  setup_components: [monthly low swept (SSL), visible as massive sweep on yearly TF, weak US dollar confluence]
+  stated_outcome: "expected to reverse up (forward-looking, not confirmed in video)"
+  suitable_for_dataset: false  # forward-looking prediction, unconfirmed
+
+- timestamp: "10:04"
+  instrument: unspecified (Asian session pair)
+  timeframe: intraday (Asian session)
+  direction: long (reversal)
+  setup_components: [mini downtrend, BOS to downside takes out lows, rally, BOS back to upside]
+  stated_outcome: "price pushes higher after structure shifts back up"
+  suitable_for_dataset: false  # instrument unnamed; illustrative
+
+- timestamp: "13:23"
+  instrument: unspecified
+  timeframe: monthly/weekly
+  direction: long (reversal)
+  setup_components: [monthly low sweep, break of structure to upside on weekly, rally]
+  stated_outcome: "rally after weekly BOS confirms the monthly low sweep"
+  suitable_for_dataset: false  # illustrative; instrument unnamed

@@ -1,0 +1,41 @@
+- name: Never change the strategy, only tweak
+  teacher_definition: "Don't change your strategy because you've proven it works... we're not changing our entire strategy, we're making small tweaks, small adjustments."
+  source_timestamp: "00:58"
+  codex_interpretation: "On a losing run, do not overhaul the core strategy; adjust confluences/instrument only. The strategy doesn't get 'patched'."
+  confidence: high
+  requires_confirmation: false
+
+- name: Entry-confluence requirement (sweep+BOS is not enough)
+  teacher_definition: "I was entering on a low time frame liquidity sweep break of structure and that's it, no extra confluence... now I'm only going to take liquidity sweep + break of structure + order block entry / fair value gap entry / equilibrium entry."
+  source_timestamp: "02:52"
+  codex_interpretation: "Require an additional building-block entry (OB, FVG, or equilibrium) on top of sweep+BOS before executing. Tightens the base execution gate; bare sweep+BOS rejected."
+  confidence: high
+  requires_confirmation: true
+
+- name: Journal trades to find the pattern
+  teacher_definition: "This is why it's important to journal your trades, understand why you're losing and understand a pattern that happens... analyze your losses and figure out what you're doing wrong and narrow it."
+  source_timestamp: "02:43"
+  codex_interpretation: "Mandatory per-trade logging (win and loss) with cause + improvement; feeds a feedback dataset for the scorer."
+  confidence: high
+  requires_confirmation: false
+
+- name: No revenge trading
+  teacher_definition: "The worst thing you can do on a losing streak is continuously try and make back your money, that will put you in a terrible position."
+  source_timestamp: "04:25"
+  codex_interpretation: "After a loss, do not increase frequency or size to recover. Behavioral guardrail; pair with a daily loss cap."
+  confidence: high
+  requires_confirmation: false
+
+- name: Losing streak definition
+  teacher_definition: "Two losing days is definitely not a losing streak... I'd consider two or three losing weeks a losing streak."
+  source_timestamp: "08:14"
+  codex_interpretation: "Strategy-review trigger threshold ~ 2-3 consecutive losing weeks, not individual losing days."
+  confidence: medium
+  requires_confirmation: true
+
+- name: Adapt to the market / adaptive bias
+  teacher_definition: "Market doesn't have to follow anything you say. Stop acting on what you think market should do, act on what market is giving you. If we get a break of structure to the downside on a high time frame and your bias was bullish, adapt and switch."
+  source_timestamp: "09:26"
+  codex_interpretation: "An HTF BOS against the current bias should flip/suspend the bias, not be ignored. Consistent with L36 timeframe ladder (HTF holds higher power)."
+  confidence: high
+  requires_confirmation: true

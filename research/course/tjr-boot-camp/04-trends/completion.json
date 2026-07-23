@@ -1,0 +1,12 @@
+{
+  "lesson_number": 4,
+  "video_id": "viuGHEuv0nw",
+  "slug": "trends",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 133985,
+  "concepts_count": 9,
+  "rules_count": 5,
+  "examples_count": 3,
+  "notes": "Concept lesson defining trend structure. Uptrend = higher highs + higher lows; downtrend = lower highs + lower lows; third state = consolidation/ranging. Core dependency for Lesson 06 (Break of Structure): TJR previews BOS ('surpassed this high -> broke structure -> flip direction') and explicitly defers the mechanics to the next trading video ('the next trading video will jump into break of structure ... might do two videos'). Also lays out HTF-authority multi-timeframe rule (higher timeframes hold higher power; LTF only in confluence) and the stacked entry example (4H/daily bias + 30m liquidity sweep + 5m BOS = catch top of next leg down) which foreshadows Lesson 08 liquidity model. transcript_chars = raw en-orig SRT char count (133985); deduped spoken text is ~24000 due to rolling-caption line repetition. examples.yaml written (3 illustrative chart walk-throughs on gold, none backtestable -> suitable_for_dataset:false). All 8 files written; none skipped. Session times (Asian/London/NY) named as context only, not defined. Homework: forecast-tool weekly/daily/today directional prediction on 1-2 pairs (S&P500/gold/GJ=GBPJPY/GU=GBPUSD)."
+}

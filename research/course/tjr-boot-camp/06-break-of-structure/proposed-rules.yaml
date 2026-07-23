@@ -1,0 +1,75 @@
+- id: tjr-break-of-structure-r01
+  teacher_statement: "It is not a break of structure unless the candle closes above a high or below a low — write that down. We do not care about wicks going above highs or going below lows, that does not mean anything to us. We need a candle close."
+  source_timestamp: "07:54"
+  proposed_machine_rule: "Confirm a BOS ONLY on a candle whose CLOSE is strictly beyond the target swing (close > most-recent swing high for an up-BOS; close < most-recent swing low for a down-BOS). A wick/high/low that penetrates the swing without the close beyond it does NOT qualify."
+  status: proposed
+  ambiguity: "Strict-greater vs equal at the exact swing price is unspecified. Whether 'close' means candle close on the chosen timeframe only (implied yes) — confirm. Minimum penetration distance is not defined (any close beyond seems to count)."
+  counterexamples:
+    - "Wick pokes above prior high but body closes below it -> NOT a BOS [12:34]."
+    - "Wick below a prior low with no close below -> liquidity sweep, NOT a BOS [23:58]."
+
+- id: tjr-break-of-structure-r02
+  teacher_statement: "Number one identify the trend — up trend or down trend."
+  source_timestamp: "14:11"
+  proposed_machine_rule: "Before evaluating any BOS, classify the current trend on the target timeframe as uptrend (higher highs + higher lows) or downtrend (lower lows + lower highs). If neither (consolidation), emit no BOS signal."
+  status: proposed
+  ambiguity: "Trend-classification algorithm (how many swings, what lookback) is inherited from the Trends lesson (04), not restated here. Consolidation detection threshold undefined."
+  counterexamples:
+    - "Alternating highs/lows with no direction = consolidation, no trend, no BOS [19:43]."
+
+- id: tjr-break-of-structure-r03
+  teacher_statement: "If in an uptrend we are watching the lows. When the low gets taken out / closed below we get a break of structure. We don't care about the highs."
+  source_timestamp: "14:59"
+  proposed_machine_rule: "While trend == uptrend, arm ONLY the most-recent swing low. Fire a down-BOS (bias flip to bearish) when a candle closes below that armed low. Ignore highs for BOS purposes while in an uptrend."
+  status: proposed
+  ambiguity: "Which timeframe's low. Whether the swing low is a literal 2-candle low or an eyeballed structural low. Whether a down-BOS from an uptrend should be labeled reversal/CHoCH vs BOS."
+  counterexamples: []
+
+- id: tjr-break-of-structure-r04
+  teacher_statement: "If in downtrend we are watching highs. The only way for this thing to turn into an uptrend is for it to close above a high."
+  source_timestamp: "15:22"
+  proposed_machine_rule: "While trend == downtrend, arm ONLY the most-recent swing high. Fire an up-BOS (bias flip to bullish) when a candle closes above that armed high. Ignore lows for BOS purposes while in a downtrend."
+  status: proposed
+  ambiguity: "Same as r03 (timeframe, literal vs structural swing, BOS-vs-CHoCH labeling)."
+  counterexamples: []
+
+- id: tjr-break-of-structure-r05
+  teacher_statement: "I only care about the most recent high or low that has been made. We forget about the old ones. Who cares about this low if this new low was already made."
+  source_timestamp: "09:04"
+  proposed_machine_rule: "Maintain exactly ONE armed swing (the most-recent qualifying swing in the watched direction). When a newer swing of the same type forms, replace the armed swing with it and discard the old one. Never test a close against a superseded swing."
+  status: proposed
+  ambiguity: "Definition of 'most recent' when multiple candidate swings form close together. A still-forming swing can migrate ('if the next candle is down we'll move the high to there' [21:19]) — need confirmation-of-swing logic."
+  counterexamples: []
+
+- id: tjr-break-of-structure-r06
+  teacher_statement: "A high is a move up then a move down — one green candle up then a red candle down. A low is a move down then a move up. It only takes two candles. Take the highest wick of whichever of those two candles it is."
+  source_timestamp: "02:15"
+  proposed_machine_rule: "Detect a swing high as an up-candle immediately followed by a down-candle; swing-high price = max(high wick of the two candles). Detect a swing low as a down-candle immediately followed by an up-candle; swing-low price = min(low wick of the two candles)."
+  status: proposed
+  ambiguity: "This 2-candle definition is looser than a standard 3-bar fractal and may over-generate swings. TJR's drawn examples may actually use larger structural swings, not literal 2-candle pairs. Doji / equal-open-close candle direction undefined."
+  counterexamples: []
+
+- id: tjr-break-of-structure-r07
+  teacher_statement: "The weekly holds more power than the daily, the monthly more than the weekly. If we see a break of structure to the downside on the daily but the weekly is still bullish, it's just a retracement."
+  source_timestamp: "22:41"
+  proposed_machine_rule: "Scope every BOS to a timeframe. Treat a lower-timeframe BOS that opposes the higher-timeframe trend as a retracement, not a bias flip. Prefer/require BOS alignment with the dominant HTF (monthly > weekly > daily) before treating it as a true reversal."
+  status: proposed
+  ambiguity: "Which exact HTF pair to compare, and whether HTF alignment is a hard gate or a confidence weight, is not specified. No concrete 'only trade if daily BOS agrees with weekly' rule given."
+  counterexamples:
+    - "Daily down-BOS while weekly still bullish = retracement, do not treat as reversal [22:47]."
+
+- id: tjr-break-of-structure-r08
+  teacher_statement: "A wick below a previous low that doesn't close below looks like a liquidity sweep — market does this to fake people out; the trend never was broken and we push higher."
+  source_timestamp: "23:58"
+  proposed_machine_rule: "Classify any wick beyond the armed swing WITHOUT a close beyond it as a liquidity sweep / fake-BOS, not a BOS. Do not flip bias on a sweep. (In the full playbook a sweep may PRECEDE and set up an opposite-direction BOS entry — see Lesson 08.)"
+  status: proposed
+  ambiguity: "How far a wick may exceed the swing before it is still 'just a sweep' (no cap given). Interaction with the sweep->BOS entry sequence lives in Lesson 08, not here."
+  counterexamples: []
+
+- id: tjr-break-of-structure-r09
+  teacher_statement: "I don't want you to think a break of structure means it's gonna go up forever — that is not true at all."
+  source_timestamp: "22:14"
+  proposed_machine_rule: "Treat a confirmed BOS as a state change (bias flip / trigger), NOT as a standalone position-hold or profit target. Do not extend a position indefinitely on a single BOS; combine with downstream targeting logic."
+  status: proposed
+  ambiguity: "No exit/target logic is defined in this lesson; BOS is only the confirmation event."
+  counterexamples: []

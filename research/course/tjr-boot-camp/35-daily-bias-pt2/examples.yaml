@@ -1,0 +1,57 @@
+examples:
+  - id: sp500-bias
+    instrument: "S&P 500 (ES)"
+    type: bias_walkthrough
+    source_timestamps: ["01:16", "04:06", "04:09", "04:11", "04:15", "12:58", "14:21"]
+    weekly: "bullish / overall up; breaking structure to upside on weekly, about to break monthly structure up"
+    daily: "broke structure to downside earlier (why he shorted yesterday), then recently closed back above -> broke structure back to upside -> bullish again"
+    conflict_note: "Fundamentals looked bearish and he was surprised by the bullishness [01:16][02:43]; refused to force the bearish view."
+    final_bias: bullish
+    plan: "Look for longs; 'longs on the S&P will be money.' Execute via 5m/1m building blocks (sweep -> BOS on 5m -> OB entry with BOS on 1m -> long)."
+    outcome: "not shown in this video (trade recap promised in a later upload)"
+
+  - id: sp500-execution-detail
+    instrument: "S&P 500 (ES)"
+    type: entry_model
+    source_timestamps: ["10:46", "11:01", "11:34", "12:31", "12:35", "12:38", "13:10"]
+    setup: "1h lows as liquidity; 15m order block (whole move down) + imbalance; all TFs (15m,1h,4h,D,W) in uptrend"
+    trigger: "price fills imbalance / sweeps lows -> break of structure to upside on 5m -> order block entry with BOS on 1m"
+    direction: long
+    note: "TJR won't box every level ('too many boxes') but treats the whole zone as high-confluence long area."
+
+  - id: gold-bias
+    instrument: "Gold (XAU/USD)"
+    type: bias_walkthrough
+    source_timestamps: ["08:49", "08:53", "08:56", "08:59", "09:01", "09:07", "10:23", "14:26"]
+    weekly: bearish
+    daily: "bearish, currently retracing on the daily ('even better')"
+    retracement_read: "used FVG + equilibrium; 'not yet in a discount'; a FVG sits within a discount as confluence; premium above the 50 mark"
+    final_bias: bearish
+    plan: "Wants a short; wait for liquidity above highs to be swept + imbalance filled, then scale down to LTF building blocks (sweep -> 15m BOS -> hourly/4h-type trade)."
+    uncertainty: "Unsure price will rally high enough into premium to offer the short [14:26][14:27]."
+    outcome: "not shown in this video"
+
+  - id: gu-bias
+    instrument: "GBP/USD (GU / cable)"
+    type: bias_walkthrough
+    source_timestamps: ["05:14", "10:25", "10:31", "13:56", "14:02", "14:04", "14:06", "14:10"]
+    daily: "broke structure to downside -> bearish daily bias"
+    ltf_conflict: "hourly bullish and 4h bullish (against daily-bias short)"
+    requirement: "needs AT LEAST a 15-minute break of structure (down) before taking the short, to confirm against the bullish 1h/4h"
+    final_bias: bearish
+    plan: "Ideally a GU short to fill an imbalance below then fall."
+    outcome: "candidate trade for the day; needs more time to develop"
+
+  - id: gj-skip
+    instrument: "GBP/JPY (GJ)"
+    type: exclusion
+    source_timestamps: ["10:06", "10:08"]
+    decision: "Will NOT trade — 'been trading pretty sloppily.'"
+
+  - id: prior-day-mistake
+    instrument: "(prior session, direction of a short)"
+    type: mistake_recap
+    source_timestamps: ["03:48", "03:52", "03:56", "04:00"]
+    what_happened: "Took shorts because daily liquidity was swept up high"
+    error: "Entered without lower-timeframe confirmation"
+    lesson: "'That's where I f***ed up' — require LTF confirmation before acting on an HTF sweep."

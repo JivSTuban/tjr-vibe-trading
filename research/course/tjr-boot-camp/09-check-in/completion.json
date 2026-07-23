@@ -1,0 +1,12 @@
+{
+  "lesson_number": 9,
+  "video_id": "-ga9oK2bClQ",
+  "slug": "check-in",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 12000,
+  "concepts_count": 3,
+  "rules_count": 0,
+  "examples_count": 0,
+  "notes": "Community check-in / psychology day. No charts, no trades, no homework. Skipped proposed-rules.yaml, examples.yaml, ambiguities.md, verification-questions.md (no rules or ambiguous thresholds). Yields soft behavioral guardrails (rest day, long-horizon evaluation) captured in concepts.yaml. Housekeeping: check-in cadence ~every 2 weeks; boot camp planned ~2 months."
+}

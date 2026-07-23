@@ -1,0 +1,43 @@
+examples:
+  - id: ex-01
+    type: illustrative_scenario
+    source_timestamp: "01:48"
+    instrument: null
+    direction: short
+    description: >
+      Uptrend context. Price shows a liquidity sweep (of a high) and then a
+      break of structure to the downside. TJR: "it's pretty safe to say the
+      smart money orders got filled and we're going to go in the opposite
+      direction." Illustrates the sweep→BOS confirmation logic (Model 1).
+    outcome_stated: null
+    numbers: {}
+    notes: Hypothetical teaching scenario, no chart shown.
+
+  - id: ex-02
+    type: illustrative_scenario
+    source_timestamp: "04:49"
+    instrument: null
+    direction: null
+    description: >
+      Non-simultaneous sequence: trader sees a liquidity sweep, then a break of
+      structure, MISSES the order block entry, price trends lower, then a fair
+      value gap forms which the trader enters off of. Illustrates Model 3 as a
+      fallback when the OB entry is missed.
+    outcome_stated: null
+    numbers: {}
+    notes: Hypothetical teaching scenario, no chart shown.
+
+  - id: ex-03
+    type: illustrative_scenario
+    source_timestamp: "05:15"
+    instrument: null
+    direction: long
+    description: >
+      Bullish bias. A bullish fair value gap gets filled, meaning there is a
+      lack of liquidity to the downside within that price range (against bias).
+      Trader waits for that price range to get hit and reacts off it, or simply
+      gets filled on the touch, to enter long. Illustrates Model 3 in the
+      bullish direction.
+    outcome_stated: null
+    numbers: {}
+    notes: Hypothetical teaching scenario, no chart shown.

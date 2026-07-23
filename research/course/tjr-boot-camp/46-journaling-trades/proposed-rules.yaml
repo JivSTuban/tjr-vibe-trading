@@ -1,0 +1,31 @@
+- id: tjr-journaling-trades-r01
+  teacher_statement: "Ideally it's 1 to 3%. If it's anything more, you're immediately doing something wrong. Ideally just 1% per trade."
+  source_timestamp: "04:36"
+  proposed_machine_rule: "Constrain per-trade risk to the range 1%-3% of account, default 1%; reject/flag any trade sized above 3% risk."
+  status: proposed
+  ambiguity: "Whether the % is of account equity or balance, and whether 3% is a hard cap or soft warning, not stated."
+  counterexamples: []
+
+- id: tjr-journaling-trades-r02
+  teacher_statement: "Ideally you're trading New York session or London session and not Asian session."
+  source_timestamp: "03:12"
+  proposed_machine_rule: "Permit entries only during defined New York or London session windows; suppress entries during the Asian session."
+  status: proposed
+  ambiguity: "Exact session start/end times and timezone not given in this lesson."
+  counterexamples: []
+
+- id: tjr-journaling-trades-r03
+  teacher_statement: "Last week I only took liquidity sweep + break of structure and lost every trade; this week I waited for a liquidity sweep + break of structure + order block / fair value gap entry for more confirmation."
+  source_timestamp: "09:34"
+  proposed_machine_rule: "Require a post-BOS building-block entry (order-block reaction or FVG fill) as confirmation; do not enter on liquidity sweep + break of structure alone."
+  status: proposed
+  ambiguity: "Whether OB and FVG are interchangeable confirmations and what counts as a valid 'reaction' need precise definition (partly clarified in lesson 49)."
+  counterexamples: []
+
+- id: tjr-journaling-trades-r04
+  teacher_statement: "Did you follow your plan? If you didn't, write what you didn't follow — and odds are you lost."
+  source_timestamp: "06:12"
+  proposed_machine_rule: "Record plan_followed boolean + deviation list per trade; use deviation-vs-outcome correlation as a discipline metric."
+  status: proposed
+  ambiguity: "Requires a machine-readable plan definition to check adherence against."
+  counterexamples: []

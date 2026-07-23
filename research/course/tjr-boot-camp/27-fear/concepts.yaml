@@ -1,0 +1,93 @@
+- name: No fear/doubt on demo
+  teacher_definition: >
+    On demo there is nothing to lose but ego, so there is no rational reason for fear or doubt.
+    New/unprofitable traders should encourage losses to learn. "It's demo bro, so what if you
+    lose -- learn from it for free."
+  source_timestamp: "01:56"
+  codex_interpretation: >
+    Behavioral: master execution on demo first. Not an order-flow rule.
+  confidence: high
+  requires_confirmation: false
+
+- name: Demo->live confidence gate (3 months / 10% / 1 trade / 1%)
+  teacher_definition: >
+    TJR's personal bar to go live: "at least 3 months of profitability with 10%+ gain, taking
+    one trade a day, while risking 1% a day." On live "nothing is different besides you risking
+    1% of your account."
+  source_timestamp: "06:57"
+  codex_interpretation: >
+    Risk-engine defaults (TJR-personal): risk = 1% per trade/day; frequency = 1 trade/day;
+    profitability proof = >=10% over 3 months. Confirm before hard-coding.
+  confidence: high
+  requires_confirmation: true
+
+- name: "$100 account / $1-a-day" emotion ramp
+  teacher_definition: >
+    "Start a $100 account and risk 1% (~$1 per trade). If you lose a dollar a day you won't
+    care." Trains the emotion of trading REAL money -- not excited on wins, not sad on losses --
+    with negligible stakes.
+  source_timestamp: "10:57"
+  codex_interpretation: >
+    Behavioral scaling step: prove profitability at tiny real size before increasing capital.
+    Fixed 1% risk regardless of account size.
+  confidence: high
+  requires_confirmation: false
+
+- name: Never risk money you can't afford to lose (~90% blow-up odds)
+  teacher_definition: >
+    "You should not put money in a live account you can't afford to lose." Estimates ~90% odds a
+    beginner blows the first live account because "that money gets to your head" -> overleverage/
+    overtrade. Calls out risking 50% of a $2K net worth as reckless.
+  source_timestamp: "07:45"
+  codex_interpretation: >
+    Capital guardrail: only fund accounts with loss-affordable capital; expect early blow-ups and
+    loop back to demo to re-prove.
+  confidence: high
+  requires_confirmation: false
+
+- name: Funded vs personal-capital route (10%/month funded pass)
+  teacher_definition: >
+    After 3 months live profitability: if capital >$10,000 (loss-affordable) trade your own live
+    account; otherwise take a funded/prop challenge. "Same rules pass a funded challenge -- win
+    ~10% in a month." Pass, take 1-2 payouts, fund a live account with the payouts.
+  source_timestamp: "12:43"
+  codex_interpretation: >
+    Account-state machine: demo -> $100 live @1% -> 3mo/10% proof -> funded (10%/mo) -> payouts ->
+    live. ~4 proof sources ~= 9 months to 'damn near profitable'.
+  confidence: high
+  requires_confirmation: true
+
+- name: Trading should be boring / robotic
+  teacher_definition: >
+    With a proven step-by-step strategy there is no reason to doubt entries. "Trading should be
+    boring... another day where I use risk management, take one trade a day, risk 1%, stick to my
+    plan. Be robotic with this." The mistake is chasing a NEW strategy/excitement every day.
+  source_timestamp: "18:12"
+  codex_interpretation: >
+    Core justification for a deterministic rule engine: fixed risk %, fixed max trades, fixed
+    plan, no discretionary strategy-hopping.
+  confidence: high
+  requires_confirmation: false
+
+- name: Take every VALID setup (fear = under-trading)
+  teacher_definition: >
+    Fear/doubt manifests as failing to enter when you know exactly what you're supposed to do.
+    The step-by-step strat "is what should give you the confidence to enter" because it's proven
+    probable/profitable.
+  source_timestamp: "15:39"
+  codex_interpretation: >
+    Fear-side guardrail (pairs with Day 25): the system must take every plan-conformant setup
+    within the 1-trade/day, 1%-risk envelope -- no skipping valid entries.
+  confidence: high
+  requires_confirmation: false
+
+- name: Psychology is 90% of trading / you vs you
+  teacher_definition: >
+    "Psychology is 90% of trading... no one can tell you a strategy to fix it, it's you versus
+    you." Different people struggle with different emotions (greed, overconfidence, fear).
+  source_timestamp: "19:19"
+  codex_interpretation: >
+    Not directly automatable; motivates removing discretion (automation) so emotion cannot
+    override the plan.
+  confidence: medium
+  requires_confirmation: false

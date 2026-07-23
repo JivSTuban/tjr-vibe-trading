@@ -1,0 +1,37 @@
+- timestamp: "19:00"
+  instrument: SPX (S&P 500)
+  timeframe: "bias: daily/weekly/4H/1H/15m all bullish; execution on 15m/lower"
+  direction: long
+  setup_components:
+    - "Full multi-timeframe bullish alignment (daily, weekly, 4H, 1H, 15m)"
+    - "High-impact news (prelim consumer sentiment) 30 min after open — waited for it"
+    - "Price continued up, then a liquidity sweep (deemed not enough on its own)"
+    - "Waited for a break of structure to the upside (also not entered on alone)"
+    - "Retrace back into equilibrium of the impulse"
+    - "Strong rejection candle closing strong = entry candle"
+    - "Stop placed just below the wick of the rejection area"
+  stated_outcome: >-
+    LOSS. Price rose close to TP1 but never hit it, reversed and stopped him out.
+    Down ~$9.5k on the day. Bias was ultimately correct (price later came into the
+    marked order block, filled the FVG and rallied) — TJR labels it an EXECUTION
+    error, not a bias error. Self-critique: the sweep used was lower-timeframe
+    liquidity, not his marked higher-timeframe liquidity; should have waited for
+    HTF building blocks to be hit.
+  suitable_for_dataset: true
+
+- timestamp: "06:33"
+  instrument: Gold (XAUUSD)
+  timeframe: "bias: weekly bearish / daily bullish; 1H setup; trigger 5m"
+  direction: long
+  setup_components:
+    - "Trade the daily (bullish) even though weekly is bearish"
+    - "1H break of structure to the upside"
+    - "Liquidity sweep at a London session low"
+    - "Confluence with his Forex strategy (London low)"
+    - "Waiting only on a 5-minute break of structure to trigger"
+  stated_outcome: >-
+    Not taken (news pending / preferred the SPX alignment). Later in the video
+    gold broke 5m structure up off the marked area and would have delivered at
+    least a first take-profit (~1:1). Presented as the higher-quality waiting
+    setup vs the SPX trade he took.
+  suitable_for_dataset: true

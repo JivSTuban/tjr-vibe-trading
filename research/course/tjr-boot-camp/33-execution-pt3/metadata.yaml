@@ -1,0 +1,17 @@
+course: "TJR Boot Camp"
+lesson_number: 33
+lesson_slug: execution-pt3
+title: "Boot Camp Day 33: Execution pt.3"
+video_id: K8DwhtmvAW8
+source_reference: https://youtu.be/K8DwhtmvAW8
+duration_s: 1441
+processed_at: "2026-07-23"
+primary_topic: process
+transcript_source: en-orig-asr
+builds_on:
+  - lesson_30_execution_pt1
+  - lesson_32_execution_pt2
+leads_into:
+  - daily_bias
+  - take_profits
+  - stop_losses

@@ -1,0 +1,12 @@
+{
+  "lesson_number": 17,
+  "video_id": "339amTioakE",
+  "slug": "patience",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 77604,
+  "concepts_count": 9,
+  "rules_count": 6,
+  "examples_count": 0,
+  "notes": "Psychology/discipline lesson on patience — no live trade walk-through, so examples.yaml SKIPPED. Discipline teachings converted into 6 proposed behavioral guardrail rules (all status: proposed). Concrete items captured: 'one trade a day' [10:04], 'don't place 10 trades a day' [10:04], no-trade during news [06:15], wait 1-2 candles for volume/volatility [08:18], two years to profitability [09:48], 30-min meditation homework [11:59]. The entry checklist (liquidity sweep -> BOS -> FVG fill -> reaction -> entry) [03:36] is stated WITHOUT timeframes/thresholds — every numeric parameter must be sourced from a technical lesson; see ambiguities.md and verification-questions.md. transcript_chars = raw SRT byte count (ASR triplicates lines; deduped spoken content is ~1/3 of this). Wrote metadata.yaml, lesson-summary.md, concepts.yaml, proposed-rules.yaml, ambiguities.md, verification-questions.md, completion.json."
+}

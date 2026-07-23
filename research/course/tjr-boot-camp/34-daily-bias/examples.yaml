@@ -1,0 +1,71 @@
+lesson: 34
+slug: daily-bias
+examples:
+  - id: ex-01-today-bearish-sp
+    instrument: S&P 500 (SPX/ES)
+    context: >
+      "Today" — Powell ("pal") was speaking; TJR did NOT trade. Used as a worked
+      teaching example of a no-trade / bearish-confirmation-needed day.
+    timeframe_reads:
+      weekly: bullish (up)
+      daily: bearish (breaker/BOS to the downside)
+      four_hour: bullish (uptrend); ideal would be a close below the low to break
+        structure so 4H and daily both bear
+      one_hour: "in between" / minor break structure but little to do
+    setup_sequence:
+      - high taken out (liquidity sweep)
+      - 15-minute break of structure to the downside
+      - 15-minute order block ("where orders were filled") = elite entry
+    outcome: not traded (news day); described as an ideal/elite entry retrospectively
+    source_timestamps: ["03:56", "04:01", "04:13", "06:38", "06:59", "07:07"]
+
+  - id: ex-02-bullish-daily-bos
+    instrument: S&P 500 (implied)
+    context: Daily break of structure to the upside; illustrating a bullish-bias flow.
+    timeframe_reads:
+      daily: bullish (BOS up)
+      four_hour: look for bullish confirmation; a 4H BOS down = daily retrace (good)
+    setup_sequence:
+      - price into equilibrium
+      - price into fair value gap
+      - scale lower, wait for hourly confirmation
+      - hourly break of structure to the upside
+      - order block not hit / bearish candle on hourly
+      - equilibrium + fair value gap get hit
+      - scale to 15m/5m for building-block execution (15m/5m BOS, 5m order block)
+    outcome: teaching illustration of a with-bias bullish entry during NYSE open
+    source_timestamps: ["08:42", "09:01", "09:19", "09:30", "10:07", "10:53"]
+
+  - id: ex-03-full-bearish-putting-it-together
+    instrument: S&P 500
+    context: >
+      "Putting it all together" bearish setup on the S&P; break of structure forms
+      during London session (not traded then — slow HTF trade).
+    timeframe_reads:
+      daily: bearish (breaker structure down); highs above = draw on liquidity
+      four_hour: sweep the highs
+      one_hour: highs taken out; breaker structure during London session
+    setup_sequence:
+      - liquidity sweep of the highs
+      - break of structure
+      - fair value gap + order block + equilibrium (maybe enter purely off equilibrium)
+      - precise entry on 5m -> wait for 5-minute break of structure into FVG/OB
+    targets:
+      - 4H retracement / imbalance
+      - 4H equilibrium (from the swing)
+      - the leg down that caused the move up
+    outcome: >
+      Becomes a 4H/hourly/daily-confirmed trade taken off a 5-minute execution,
+      enabling daily/hourly/4H take-profits. TJR says he might actually take it.
+    source_timestamps: ["14:40", "15:09", "15:26", "15:40", "16:04", "16:28", "16:45", "17:49"]
+
+  - id: ex-04-weekly-draws
+    instrument: S&P 500 (weekly)
+    context: Identifying weekly draws on liquidity as targets.
+    timeframe_reads:
+      weekly: strong uptrend ("fat ass uptrend"); likely draws toward equilibrium
+    notes:
+      - equilibrium marked on the weekly
+      - daily downtrend => retracing on the weekly
+      - weekly draws pointed out: fair value gap, liquidity, order block
+    source_timestamps: ["18:12", "18:19", "18:25", "18:33", "18:41", "18:50"]

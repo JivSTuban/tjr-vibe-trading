@@ -1,0 +1,88 @@
+- id: tjr-daily-bias-backtesting-9k-loss-spx-r01
+  teacher_statement: >-
+    At minimum I need the daily and the 4H in confluence before taking a trade;
+    ideally daily, 4H and 1H all agree.
+  source_timestamp: "04:29"
+  proposed_machine_rule: >-
+    Gate entries on multi-timeframe agreement: require daily_bias == fourH_bias
+    (same direction). Prefer (bonus score) when oneH_bias also agrees. If daily
+    and 4H disagree, emit no signal.
+  status: proposed
+  ambiguity: >-
+    Exact method for computing each timeframe's bias/trend label is defined in
+    the daily-bias lessons (34-36), not here. "Confluence" is directional here.
+  counterexamples: []
+
+- id: tjr-daily-bias-backtesting-9k-loss-spx-r02
+  teacher_statement: >-
+    To consider a 4H break of structure you have to get a break of structure on
+    the 1H first.
+  source_timestamp: "05:00"
+  proposed_machine_rule: >-
+    Validate a 4H BOS only if a 1H BOS in the same direction has already
+    occurred within the current leg; otherwise treat the 4H BOS as unconfirmed.
+  status: proposed
+  ambiguity: >-
+    "Within the current leg" lookback window is not specified.
+  counterexamples: []
+
+- id: tjr-daily-bias-backtesting-9k-loss-spx-r03
+  teacher_statement: >-
+    (Recap) I should have waited for the higher-timeframe building blocks I
+    marked out to get hit; I used a lower-timeframe liquidity sweep instead of my
+    HTF liquidity sweep + BOS confirmation entry.
+  source_timestamp: "21:50"
+  proposed_machine_rule: >-
+    Only trigger an entry when the liquidity sweep occurs at a pre-marked HTF
+    building block (e.g. 1H/4H order block, FVG, or named liquidity). Reject
+    entries whose sweep is of intrabar/LTF liquidity not on the marked HTF list.
+  status: proposed
+  ambiguity: >-
+    Which timeframes count as "HTF" for the sweep is not numerically defined; the
+    marked-building-block set must be provided by the bias step.
+  counterexamples: []
+
+- id: tjr-daily-bias-backtesting-9k-loss-spx-r04
+  teacher_statement: >-
+    Entry: sweep + break of structure up, then wait for retrace back into
+    equilibrium and a strong rejection closing strong; stop just below the wick.
+  source_timestamp: "19:44"
+  proposed_machine_rule: >-
+    Long trigger: (1) HTF-liquidity sweep, (2) BOS up, (3) retrace into
+    equilibrium (~50%) of the impulse, (4) bullish rejection candle closing near
+    its high. Entry on close of the rejection candle; SL just below its wick low.
+    Mirror for shorts.
+  status: proposed
+  ambiguity: >-
+    "Strong rejection" / "close strong" not quantified (body %, close location).
+    Equilibrium = 50% assumed from other lessons, not restated here.
+  counterexamples:
+    - "This exact sequence produced the $9.5k loss because the sweep was LTF, not HTF — see r03; the rule must be combined with r03."
+
+- id: tjr-daily-bias-backtesting-9k-loss-spx-r05
+  teacher_statement: >-
+    Only take trades that catch the extension in the trend direction, not the
+    retracement; retracements are unpredictable and choppy.
+  source_timestamp: "15:19"
+  proposed_machine_rule: >-
+    Require the signal direction to match the HTF trend (extension/continuation).
+    Suppress counter-trend signals that would be trading the retracement leg.
+  status: proposed
+  ambiguity: >-
+    Trend direction per timeframe must come from the bias step; "reaction" quality
+    at the building block is not quantified.
+  counterexamples: []
+
+- id: tjr-daily-bias-backtesting-9k-loss-spx-r06
+  teacher_statement: >-
+    After the $9.5k loss: no reason to add more risk; stick to the plan, no
+    second trade.
+  source_timestamp: "21:13"
+  proposed_machine_rule: >-
+    After a losing trade closes, stop generating entries for the remainder of the
+    session/day (one-setup / daily-stop guardrail).
+  status: proposed
+  ambiguity: >-
+    No numeric daily-loss limit or max-trades count is stated; the stop-after-loss
+    scope (session vs full day) is inferred.
+  counterexamples: []

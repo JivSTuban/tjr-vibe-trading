@@ -1,0 +1,12 @@
+{
+  "lesson_number": 30,
+  "video_id": "ESsy0uoFAz4",
+  "slug": "execution",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 44355,
+  "concepts_count": 12,
+  "rules_count": 5,
+  "examples_count": 3,
+  "notes": "Conceptual/notes lesson (no charts) = 'Putting the Pieces Together part one'. Defines 5 building blocks (liquidity sweep, BOS, order block, FVG, equilibrium) and stacks them into 4 ranked entry models: (1) sweep+BOS enter on break, (2) +OB retracement (SL 'above the highs'), (3) +FVG retracement, (4) +equilibrium/discount 'ultimate Confluence'. Only ONE hard number in whole lesson: SL above the highs [04:39] for the short OB entry. NO TP, R:R target, timeframe, session/kill-zone, risk %, or max-trades given. Risk ranking of the models is internally contradictory (see ambiguities.md #1) and must NOT be hard-coded. Equilibrium 50% carried from prior lessons, not restated. Chart examples promised in part two (next lesson)."
+}

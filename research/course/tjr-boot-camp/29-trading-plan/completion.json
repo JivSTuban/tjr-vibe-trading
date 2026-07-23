@@ -1,0 +1,12 @@
+{
+  "lesson_number": 29,
+  "video_id": "065lMUrD_kg",
+  "slug": "trading-plan",
+  "status": "processed",
+  "transcript_source": "en-orig-asr",
+  "transcript_chars": 93813,
+  "concepts_count": 12,
+  "rules_count": 11,
+  "examples_count": 1,
+  "notes": "Core process lesson: TJR's foolproof trading-plan checklist. Instruction starts ~[02:43] after a long comedic skit intro. Full 5-item checklist captured (pre-designated risk/lot size/trades-per-day; session timing; news rule; single instrument; entry confluences) plus the 'leave' filter (AND-chain of pre-trade gates). Many numbers are self-set/illustrative ($100/day, 5pt/5min news, 2-week backtest) and flagged in ambiguities.md. Precise confluence mechanics (liquidity sweep/BOS/FVG/OB definitions & timeframes) and daily-bias derivation are explicitly deferred to Lesson 30 'putting it all together' and were NOT inferred. Only one market illustration (S&P bullish daily -> buys only), not a completed trade; suitable_for_dataset=false. metadata.yaml from prior interrupted run was already complete and left intact."
+}
