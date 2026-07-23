@@ -19,6 +19,13 @@ class Config:
     base_timeframe: str = "5m"          # base data interval; everything derived
     setup_timeframe: str = "15m"        # sweep + BOS detection (resampled)
     bias_timeframe: str = "1D"          # daily bias (resampled)
+    confluence_timeframe: str = "4h"    # HTF confluence gate on the daily bias
+
+    # --- Bias engine ablation ---
+    # When False, ``find_trades`` returns ALL directional candidates (both
+    # long & short) with NO bias filter applied. Used by bias_sweep to run
+    # candidate detection once and then filter per bias mode.
+    apply_bias_filter: bool = True
 
     # --- Structure detection ---
     swing_length: int = 3               # pivot: 3 bars each side

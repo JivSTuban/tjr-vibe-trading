@@ -52,3 +52,26 @@ Hypothesis: TJR's edge is session-timed, so restricting entries to London/NY win
 **No preset beats the 24/7 baseline on expectancy.** NY windows raise win-rate (37–38%) but expectancy gets *worse* — small-sample R-quality drops. Conclusion: on 24/7 BTC, TJR's session concept (an FX/index liquidity+news artifact) is **not** the missing edge.
 
 **Root-cause diagnostic (all 941 setups):** median stop distance 0.53% of price, median cost 0.38R (only 4% of setups have <0.10% stops). So costs are a real drag but *not* the whole story — **gross expectancy is ~0 (33% at 2R = breakeven), i.e. the entry logic has no edge over random.** The next lever is **setup quality** (real top-down bias, discretionary building-block selection, opposite-liquidity TP), not timing. Caveat: fixed-UTC windows ignore DST (an OPEN_QUESTION).
+
+---
+
+## Iteration 2 — daily-bias engine ablation (2026-07-23)
+
+Replaced the crude bias proxy with codable encodings of TJR's real top-down method (`docs/research/BIAS_METHOD.md`, lessons 34–36/50): **A** = structure (last confirmed daily BOS/CHoCH), **B** = A gated by premium/discount, **C** = A gated by draw-on-liquidity, plus an optional **4H confluence** filter. Same candidate setups generated once (`apply_bias_filter=False`), each bias variant applied as a post-filter (`bias_sweep.py`).
+
+| mode | trades | win% | exp_R (net) | PF | net_R | maxDD_R |
+|---|--:|--:|--:|--:|--:|--:|
+| current (proxy) | 129 | 33.3% | −0.616 | 0.47 | −79.4 | −78.0 |
+| A structure | 192 | 32.8% | −0.514 | 0.51 | −98.6 | −107.8 |
+| B premium/discount | 152 | 18.4% | −0.917 | 0.23 | −139.4 | −138.8 |
+| **C draw-on-liquidity** | 139 | **41.0%** | **−0.326** | **0.67** | −45.3 | −57.6 |
+| A + 4H | 152 | 34.2% | −0.458 | 0.55 | −69.7 | −73.5 |
+| **C + 4H** | 88 | **42.0%** | −0.353 | 0.66 | **−31.1** | **−39.3** |
+
+**Findings:**
+- **C (draw-on-liquidity) is the best lever found so far** — win-rate 33%→41%, PF 0.47→0.67, net loss halved. It matches TJR's actual teaching (bias = the draw toward opposing liquidity, L50). C's net −0.326R + ~0.35R avg cost ⇒ **gross ≈ breakeven-to-slightly-positive** — the first hint of a real directional edge.
+- **B (premium/discount) actively hurts** (18% win). The logic is correct (verified: long only in discount); the culprit is the **unresolved equilibrium reference** (OPEN_QUESTIONS "#1 gap") — a bad range definition makes P/D filtering worse than none. Do not use P/D until that's resolved.
+- **4H confluence** modestly helps (A+4H > A; C+4H has the best drawdown, −39R).
+- **Still no profitable mode** — but C roughly halved the loss. Combined with cost reduction (wider R / opposite-liquidity TP), C is the candidate most likely to cross into positive expectancy.
+
+**Next:** promote C to the default bias, then iteration 3 = opposite-liquidity TP + min-stop filter (cut the ~0.35R cost tax) and re-measure C's gross vs net edge. Resolve the equilibrium reference before revisiting B.

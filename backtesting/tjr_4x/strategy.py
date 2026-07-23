@@ -334,12 +334,16 @@ def find_trades(df5m: pd.DataFrame, cfg) -> List[Trade]:
         if bos_bar in seen_bos:
             continue
 
-        # bias alignment as of the confirming 15m bar
+        # bias alignment as of the confirming 15m bar. When
+        # ``cfg.apply_bias_filter`` is False, emit ALL directional
+        # candidates (both long & short) so an external ablation can filter
+        # per bias mode; no other behavior changes.
         confirm_bar_start = setup_times[bos_bar]
         confirm_bar_close = confirm_bar_start + tf_delta
-        b = _bias_at(bias, confirm_bar_start)
-        if b != direction:
-            continue
+        if cfg.apply_bias_filter:
+            b = _bias_at(bias, confirm_bar_start)
+            if b != direction:
+                continue
 
         entry, kind, zone_known_bar = _zone_from_displacement(
             fvg, ob, bos_bar, direction, n)
