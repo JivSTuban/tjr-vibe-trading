@@ -13,10 +13,20 @@ For each trade (already causally created by ``strategy.find_trades``):
     overlaps an already-open trade is skipped.
 
 R accounting:
-    gross_R for a raw win = +rr_target, raw loss = -1.
-    Round-trip cost fraction = 2 * cost_per_side_pct of notional. In R
-    units that is cost_R = (2 * cost_per_side_pct * entry) / risk_per_R,
-    where risk_per_R = |entry - sl|. net_R = gross_R - cost_R.
+    gross_R for a raw win = +rr_target (from actual prices), raw loss = -1.
+    Cost is **outcome-aware** (iteration 4): it is computed where the
+    outcome is known, in price terms, then divided by risk = |entry - sl|.
+
+    * ``taker_only`` (conservative, iter 1-3): every leg pays taker+slippage
+      at its actual fill price ->
+          cost_R = ((taker+slip)*entry + (taker+slip)*exit_price) / risk.
+    * ``maker_taker`` (iter 4): the limit entry and the limit TP are MAKER
+      fills; the stop->market SL is a TAKER fill + slippage ->
+          entry_leg = maker*entry
+          exit_leg  = maker*tp                      if outcome == "tp"
+                      (taker+slip)*sl               if outcome == "sl"
+          cost_R = (entry_leg + exit_leg) / risk.
+    net_R = gross_R - cost_R.
 """
 
 from __future__ import annotations
@@ -75,12 +85,29 @@ class Result:
         return d
 
 
-def _cost_R(trade: Trade, cfg) -> float:
+def _cost_R(trade: Trade, cfg, outcome: str, exit_price: float) -> float:
+    """Outcome-aware round-trip cost in R units (fraction of |entry-sl|).
+
+    ``outcome`` is "tp" or "sl"; ``exit_price`` is the actual fill price of
+    the closing leg. See the module docstring for the cost model.
+    """
     risk = abs(trade.entry - trade.sl)
     if risk <= 0:
         return 0.0
-    round_trip = 2.0 * cfg.cost_per_side_pct * trade.entry
-    return round_trip / risk
+
+    entry = trade.entry
+    model = getattr(cfg, "cost_model", "maker_taker")
+    if model == "maker_taker":
+        entry_leg = cfg.maker_fee_pct * entry            # limit entry -> maker
+        if outcome == "tp":
+            exit_leg = cfg.maker_fee_pct * trade.tp      # limit TP -> maker
+        else:
+            exit_leg = (cfg.taker_fee_pct + cfg.slippage_pct) * trade.sl  # stop->market
+    else:  # taker_only: every leg pays taker+slippage at actual fill prices
+        per_side = cfg.taker_fee_pct + cfg.slippage_pct
+        entry_leg = per_side * entry
+        exit_leg = per_side * exit_price
+    return (entry_leg + exit_leg) / risk
 
 
 def _resolve_one(df5m: pd.DataFrame, trade: Trade, cfg,
@@ -111,18 +138,15 @@ def _resolve_one(df5m: pd.DataFrame, trade: Trade, cfg,
     if fill_time is None:
         return None
 
-    cost_r = _cost_R(trade, cfg)
-
-    # resolve SL/TP from the fill bar onward (fill bar can itself resolve)
+    # resolve SL/TP from the fill bar onward (fill bar can itself resolve).
+    # Cost is computed AFTER the outcome is known (outcome-aware).
     for i in range(fill_iloc, len(window)):
         lo, hi = lows[i], highs[i]
         hit_sl = (lo <= sl) if d == 1 else (hi >= sl)
         hit_tp = (hi >= tp) if d == 1 else (lo <= tp)
-        if hit_sl and hit_tp:
-            # both in same bar -> SL first (conservative)
-            return ClosedTrade(trade.entry_time, fill_time, idx[i], d, entry,
-                               sl, tp, sl, "sl", -1.0, cost_r, -1.0 - cost_r)
         if hit_sl:
+            # plain SL hit, or both-in-same-bar -> SL first (conservative).
+            cost_r = _cost_R(trade, cfg, "sl", sl)
             return ClosedTrade(trade.entry_time, fill_time, idx[i], d, entry,
                                sl, tp, sl, "sl", -1.0, cost_r, -1.0 - cost_r)
         if hit_tp:
@@ -130,9 +154,36 @@ def _resolve_one(df5m: pd.DataFrame, trade: Trade, cfg,
             # reward = |tp-entry|; for fixed 2R this is exactly 2.0.
             risk = abs(entry - sl)
             g = (abs(tp - entry) / risk) if risk > 0 else 0.0
+            cost_r = _cost_R(trade, cfg, "tp", tp)
             return ClosedTrade(trade.entry_time, fill_time, idx[i], d, entry,
                                sl, tp, tp, "tp", g, cost_r, g - cost_r)
     return None  # ran out of data -> unresolved, dropped
+
+
+def recost_trade(ct: ClosedTrade, cfg) -> ClosedTrade:
+    """Return a copy of ``ct`` with cost_R/net_R recomputed under ``cfg``.
+
+    Uses the stored entry/sl/tp/outcome/gross_R — outcome-aware, so no
+    re-walk of price data is needed. ``cfg.cost_model="gross"`` (or any
+    unknown model) yields zero cost, isolating the raw edge.
+    """
+    model = getattr(cfg, "cost_model", "maker_taker")
+    if model == "gross":
+        cost_r = 0.0
+    else:
+        # rebuild the minimal Trade view _cost_R needs (entry/sl/tp)
+        proxy = Trade(entry_time=ct.entry_time, direction=ct.direction,
+                      entry=ct.entry, sl=ct.sl, tp=ct.tp,
+                      sweep_level=ct.sl, bos_index=0, confirm_time=ct.entry_time)
+        cost_r = _cost_R(proxy, cfg, ct.outcome, ct.exit_price)
+    return ClosedTrade(ct.entry_time, ct.fill_time, ct.exit_time, ct.direction,
+                       ct.entry, ct.sl, ct.tp, ct.exit_price, ct.outcome,
+                       ct.gross_R, cost_r, ct.gross_R - cost_r)
+
+
+def metrics_from_closed(closed: List[ClosedTrade]) -> Result:
+    """Public wrapper: compute a :class:`Result` from closed trades."""
+    return _metrics(list(closed))
 
 
 def backtest(df5m: pd.DataFrame, trades: List[Trade], cfg) -> Result:
