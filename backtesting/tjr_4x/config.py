@@ -66,10 +66,31 @@ class Config:
 
     # --- Costs (per side, applied to entry AND exit) ---
     # NOTE: follows coding brief (0.05% + 0.05%), not decision-0001's 0.04%/0.02%.
-    taker_fee_pct: float = 0.0005       # 0.05% / side
-    slippage_pct: float = 0.0005        # 0.05% / side
+    taker_fee_pct: float = 0.0005       # 0.05% / side (market/stop fills)
+    maker_fee_pct: float = 0.0002       # 0.02% / side (resting limit fills)
+    slippage_pct: float = 0.0005        # 0.05% / side (adverse, taker legs only)
+
+    # --- Cost model (iteration 4) ---------------------------------------- #
+    # "taker_only"   -> every leg pays taker fee + slippage (the conservative
+    #                   iteration 1-3 model), charged per-leg at the ACTUAL
+    #                   fill prices (entry and exit_price).
+    # "maker_taker"  -> models how the setup actually executes:
+    #     * ENTRY is a LIMIT order resting at the FVG/OB edge — price must
+    #       trade INTO it to fill, so the entry leg is a MAKER fill (no
+    #       slippage; you set the price).
+    #     * TP is a LIMIT order resting beyond price ⇒ MAKER fill.
+    #     * SL is a STOP that converts to a MARKET order on trigger ⇒ TAKER
+    #       fill + adverse slippage.
+    #   So a winner pays two maker legs; a loser pays maker entry + a
+    #   taker+slippage exit (strictly more costly per unit of risk).
+    #   Funding is EXCLUDED: holds are intraday (entry->TP/SL inside the
+    #   5m walk), so no 8h funding window is crossed in the modelled path.
+    cost_model: str = "maker_taker"     # "taker_only" | "maker_taker"
 
     @property
     def cost_per_side_pct(self) -> float:
-        """Total adverse cost fraction applied on entry and on exit."""
+        """Total adverse cost fraction for a *taker* side (fee + slippage).
+
+        Retained for the ``taker_only`` model and backward compatibility.
+        """
         return self.taker_fee_pct + self.slippage_pct

@@ -144,3 +144,23 @@ The nearest opposing pool is usually **< 1R away**, so it starves (0–9 trades)
 
 ### Where the edge now lives — it's a COST problem
 Gross is positive; the last barrier is the ~0.36R/trade fee+slippage tax on tight stops. Next levers (iteration 4): **limit/maker entries** (the entry is already a limit into an FVG/OB — model maker fees, not taker), **higher R targets / partial scale-out**, and a **wider min-stop + fewer-better trades**. Then IS/OOS split to confirm the +0.23R gross edge is stable, not in-sample luck.
+
+---
+
+## Iteration 4 — realistic maker/taker cost model + IS/OOS split (2026-07-23)
+
+Made cost **outcome-aware** and executes-as-modelled: the entry is a **limit** resting at the FVG/OB edge (price must trade INTO it) ⇒ **maker**; the TP is a **limit** ⇒ maker; the SL is a **stop→market** ⇒ **taker + slippage**. `maker_fee_pct=0.02%`, `taker=0.05%`, `slip=0.05%`. Funding excluded (intraday holds). The best config (**C bias + 0.2% min-stop, fixed 2R**) is run ONCE for 137 closed trades, then the CLOSED trades are split 80/20 by entry_time (cutoff **2026-04-10**, IS=103 / OOS=34) and re-scored per window/cost-model (`cost_oos_sweep.py`).
+
+| window | cost_model | trades | win% | gross_expR | net_expR | PF | net_R |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| FULL | taker_only | 137 | 40.9% | +0.226 | −0.129 | 0.84 | −17.7 |
+| **FULL** | **maker_taker** | 137 | 40.9% | +0.226 | **+0.070** | **1.10** | **+9.6** |
+| IS | taker_only | 103 | 38.8% | +0.165 | −0.171 | 0.79 | −17.6 |
+| IS | maker_taker | 103 | 38.8% | +0.165 | +0.012 | 1.02 | +1.3 |
+| OOS | taker_only | 34 | 47.1% | +0.412 | −0.004 | 0.99 | −0.1 |
+| **OOS** | **maker_taker** | 34 | 47.1% | +0.412 | **+0.245** | **1.37** | **+8.3** |
+
+**Findings:**
+- **Under maker_taker, FULL net expectancy goes POSITIVE for the first time: +0.070R/trade (PF 1.10, +9.6R).** Charging the limit entry + limit TP as maker (not taker) roughly halves the round-trip tax versus taker_only and flips the sign — the gross edge was there; taker fees were eating it.
+- **The gross edge is stable, not overfit.** IS gross +0.165R (n=103) vs **OOS gross +0.412R (n=34)** — OOS is *stronger*, not collapsed (Δ +0.247R). No sign of in-sample luck in the entry logic itself. Both windows are net-positive under maker_taker.
+- **Biggest caveat:** the min_stop 0.2% threshold was chosen from a full-sample diagnostic (mild in-sample leakage), and **OOS n=34 is small** — a +0.41R OOS gap on 34 trades is well within sampling noise, so the honest read is "edge stable and plausibly real, magnitude uncertain." The maker-fill assumption also presumes the limit entry/TP actually rest and fill without being crossed — realistic for FVG/OB retraces but not guaranteed in fast markets. **All rules remain `proposed`; this is research, not a live green-light.**
