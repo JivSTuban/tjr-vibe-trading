@@ -97,3 +97,7 @@ research/course/**/_transcripts/
 # TJR-4X backtest run artifacts + data cache (regenerable)
 backtesting/tjr_4x/runs/
 backtesting/tjr_4x/.cache/
+
+# New backtest packages — regenerable run artifacts
+backtesting/top_gainer_fade/runs/
+backtesting/funding_carry/runs/
