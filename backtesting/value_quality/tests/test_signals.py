@@ -40,3 +40,13 @@ def test_drop_trigger_is_lookahead_safe():
     asof = idx[65]                            # decision BEFORE the crash
     # trailing window is strictly before asof and all flat -> no trigger
     assert drop_trigger(px, asof, threshold=0.75) is False
+
+def test_drop_trigger_excludes_the_asof_bar_itself():
+    # crash lands EXACTLY on asof's bar; strict `< asof` must exclude it,
+    # so the trailing window is all 100 -> no trigger. This test FAILS if the
+    # comparison is weakened from `<` to `<=`.
+    idx = pd.date_range("2020-01-01", periods=70, freq="D", tz="UTC")
+    px = pd.Series(100.0, index=idx)
+    px.iloc[65] = 50.0
+    asof = idx[65]
+    assert drop_trigger(px, asof, threshold=0.75) is False
