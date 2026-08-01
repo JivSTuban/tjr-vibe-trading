@@ -33,11 +33,21 @@ days a 20% bounce simply doesn't materialize often enough.
 
 ## The gate is not the edge (the important negative)
 
-Across all 81 cells, the "financially alive" gate **helped 12, hurt 69, mean −0.048R.** On a
-survivor-heavy large-cap basket, essentially everything is "alive enough," so the gate mostly removed
-winners rather than filtering knives. **The differentiator we built the swing skill around does not
-add value on this data.** (It may matter on a broad universe with genuine distress/delistings — which
-this bounded run cannot test.)
+Across all 81 cells, the "financially alive" gate **helped 12, hurt 69, mean −0.048R.**
+
+**The mechanism (verified):** at the headline cell, splitting events by the gate gives
+**ALIVE: 16% hit / −0.068R** vs **NOT-ALIVE: 27% hit / +0.155R.** The *lower-quality* names bounce
+**harder** — the well-known higher-beta-junk-bounces-bigger effect. So the quality gate systematically
+removes the biggest bounces. (Labeling verified correct + point-in-time: 61% of events are "alive,"
+and the same tickers appear in both legs at different dates as their fundamentals change.) **The
+differentiator we built the swing skill around is counterproductive for pure bounce-catching on this
+data.**
+
+**But do NOT flip to buying junk:** that NOT-ALIVE +0.155R is the **most survivorship-inflated number
+in the whole study** — the low-quality names that bounced are in the sample; the ones that went to
+zero (the reason the quality gate exists) are *gone from the price data entirely*. The "junk bounces
+harder" premium is largely the survivors of a distribution whose losers we can't see. It may still
+matter on a broad universe with genuine distress/delistings — which this survivor-only run cannot test.
 
 ## Why even the positives are untrustworthy
 
