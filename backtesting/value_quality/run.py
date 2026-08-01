@@ -22,6 +22,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import time
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -228,7 +229,9 @@ def _turnover_cost(prev_book: list[str], book: list[str]) -> float:
     # normalized by book size; equal-weight => weight per name = 1/len(book).
     bought = len(bs - ps)
     sold = len(ps - bs)
-    denom = max(len(bs), 1)
+    # normalize by whichever book is non-empty (new preferred; old on liquidation
+    # to cash so a full exit costs ONE round-trip on the liquidated names, not N×).
+    denom = max(len(bs) or len(ps), 1)
     turnover_frac = (bought + sold) / (2 * denom)  # 0..1 round-trip fraction
     return turnover_frac * 2.0 * (_TXN_COST_BPS / 1e4)
 
@@ -408,6 +411,12 @@ def _survivorship(panel, months, cfg, sectors, universe, base_res) -> dict:
     # in their final available month. In this validation panel every held name
     # has cached prices, so stress mainly bites names in missing_prices.txt that
     # were also in the universe.
+    # NOTE (survivorship hole): prices.fetch_prices' Stooq fallback currently
+    # returns a JS browser-challenge page (non-functional as of this run), so
+    # Yahoo is effectively the ONLY price source. Delisted/renamed tickers that
+    # Yahoo drops therefore land straight in missing_prices.txt with no second
+    # source to recover them — the true delisted-name gap is deeper than what
+    # this large-cap validation universe (0 missing) can show.
     stress_final = {t: True for t in universe if t in missing_set}
 
     out = {}
@@ -432,6 +441,9 @@ def _survivorship(panel, months, cfg, sectors, universe, base_res) -> dict:
 
 
 def _concentration(name_pnl: dict, sector_pnl: dict, total_return: float) -> dict:
+    # NOTE: attribution is ADDITIVE (sum of monthly per-name arithmetic P&L), not
+    # geometrically compounded — an approximation. It's a diagnostic to FLAG
+    # single-name/sector dominance, not an exact contribution decomposition.
     def top(d):
         if not d:
             return (None, 0.0)
@@ -472,11 +484,17 @@ def fetch_universe(universe: list[str], start, end) -> None:
     cikmap = load_ticker_cik_map()
     lut = {r.ticker: int(r.cik) for r in cikmap.itertuples()}
 
-    # prices: universe + SPY benchmark
+    # prices: universe + SPY benchmark. Pace the OUTER loop: Yahoo rate-limits a
+    # tight cold-cache burst and returns 429 for every ticker (fetch_prices's own
+    # retries aren't enough spacing). ~1.5s between distinct tickers avoids the
+    # self-429. Cache hits are instant so re-runs skip the sleep effectively.
     for t in universe + ["SPY"]:
+        cached = os.path.exists(os.path.join(_CACHE, "prices", f"{t}.csv"))
         print(f"  prices {t} ...", end=" ")
         df = fetch_prices(t, start, end, use_cache=True)
         print("ok" if df is not None else "MISSING")
+        if not cached:
+            time.sleep(1.5)
 
     # companyfacts for universe (SPY is an ETF — no companyfacts)
     for t in universe:
