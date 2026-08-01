@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import os
 import time
+from io import StringIO
 from typing import Optional
 
 import pandas as pd
@@ -89,12 +90,19 @@ def _try_yahoo(ticker: str, start, end) -> Optional[pd.DataFrame]:
                 return None
             indicators = block.get("indicators", {})
             adjclose_blocks = indicators.get("adjclose", [])
-            quote_blocks = indicators.get("quote", [{}])
-            if adjclose_blocks and adjclose_blocks[0].get("adjclose"):
-                closes = adjclose_blocks[0]["adjclose"]
+            quote_blocks = indicators.get("quote", [])
+            # Delisted tickers return "quote": [] — guard before indexing so an
+            # empty/delisted response falls straight through to Stooq/missing-log
+            # instead of burning all 4 retries via IndexError -> except.
+            quote = quote_blocks[0] if quote_blocks else {}
+            adjclose = adjclose_blocks[0] if adjclose_blocks else {}
+            if adjclose.get("adjclose"):
+                closes = adjclose["adjclose"]
             else:
-                closes = quote_blocks[0].get("close", [])
-            volumes = quote_blocks[0].get("volume", [None] * len(timestamps))
+                closes = quote.get("close", [])
+            if not closes:
+                return None
+            volumes = quote.get("volume", [None] * len(timestamps))
             idx = pd.to_datetime(timestamps, unit="s", utc=True)
             df = pd.DataFrame({"close": closes, "volume": volumes}, index=idx)
             df = df.dropna(subset=["close"])
@@ -118,7 +126,6 @@ def _try_stooq_v2(ticker: str) -> Optional[pd.DataFrame]:
                 return None
             if b"No data" in r.content or len(r.content) < 50:
                 return None
-            from io import StringIO
             raw = pd.read_csv(StringIO(r.text))
             # Stooq columns: Date, Open, High, Low, Close, Volume
             raw.columns = [c.strip().lower() for c in raw.columns]
