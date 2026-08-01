@@ -103,3 +103,6 @@ backtesting/top_gainer_fade/runs/
 backtesting/funding_carry/runs/
 backtesting/value_quality/.cache/
 backtesting/value_quality/runs/
+
+backtesting/swing_bounce/.cache/
+backtesting/swing_bounce/runs/
