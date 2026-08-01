@@ -101,3 +101,5 @@ backtesting/tjr_4x/.cache/
 # New backtest packages — regenerable run artifacts
 backtesting/top_gainer_fade/runs/
 backtesting/funding_carry/runs/
+backtesting/value_quality/.cache/
+backtesting/value_quality/runs/
