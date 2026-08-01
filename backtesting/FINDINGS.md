@@ -182,6 +182,19 @@ uv run pytest backtesting/value_quality/tests -q # 22 tests, network-free
 
 ---
 
+## Swing bounce (`swing_bounce/`) — beaten-down + "financially alive"
+
+Event-driven test of buying a sharply-dropped, solvent US stock with a stop/target over a swing
+horizon (the live idea behind `stock-scan swing` mode). **Result: edge NOT proven — do not automate.**
+On 30 large-caps 2015–2023 (642 events): the intuitive +20%/−10%/20d setup **loses** (−0.068R gated);
+the "financially alive" quality gate **hurts** on average (helps 12/81 cells, mean −0.048R); the only
+positive cells are long-horizon/wide-stop negative-R:R "pick up pennies" shapes; and it's all
+survivor-biased (0 delisted) + concentration-driven (ROKU carries the headline cell). Banked as a
+negative, like top-gainer fade / funding carry. Full write-up: `swing_bounce/FINDINGS.md`.
+Automation gate stays SHUT; `stock-scan swing` remains a discretionary idea-surfacer only.
+
+---
+
 ## Guardrails
 
 No live execution. No API keys (public data only). Zero rules approved — every strategy here is a
