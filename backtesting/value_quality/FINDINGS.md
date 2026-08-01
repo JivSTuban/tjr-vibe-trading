@@ -9,7 +9,7 @@ Nothing approved. Research only. No live execution.
 ## Hypothesis
 
 A monthly, point-in-time long-only strategy that combines:
-1. A **sector-relative value composite** (E/P, B/P, EBITDA/EV, FCF yield — top 20%)
+1. A **sector-relative value composite** (E/P, B/P, EBITDA/EV, FCF yield — top 33%)
 2. A **Piotroski F-score ≥ 7** quality gate
 3. An optional **drawdown trigger** (skip names that have already fallen hard)
 
@@ -50,7 +50,7 @@ for cheap *and* financially healthy companies and avoiding stocks in freefall.
 The full strategy (value + quality + drop trigger) **should not be judged by its 1.95% CAGR.**
 Here is what actually happened:
 
-- The compound gate (value top 20% + F-score ≥ 7 + no recent drop) fired on only
+- The compound gate (value top 33% + F-score ≥ 7 + no recent drop) fired on only
   **~3 of 71 rebalance months** with the 20-name universe.
 - The remaining ~96% of months the portfolio sat in **cash earning 0%**.
 - Virtually the entire strategy P&L traces to a **single name: AAPL** — the only

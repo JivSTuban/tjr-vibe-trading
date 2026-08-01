@@ -101,7 +101,6 @@ def pit_finyears(facts: dict, asof: pd.Timestamp):
     fields = {}
     ends_by_field = {}
     for field, tags in _TAGS.items():
-        src = dei if field == "shares" and "CommonStockSharesOutstanding" not in gaap else gaap
         pts = _annual_points(gaap, tags, asof) or _annual_points(dei, tags, asof)
         fields[field] = pts
         ends_by_field[field] = set(pts)

@@ -16,7 +16,7 @@ Stooq as a fallback — see note below).
 
 ```
 Universe filter  : market-cap ≥ $1 B, price ≥ $5, median 30-day dollar-volume ≥ $5 M
-Value composite  : sector-relative rank of (E/P, B/P, EBITDA/EV, FCF yield) — top 20%
+Value composite  : sector-relative rank of (E/P, B/P, EBITDA/EV, FCF yield) — top 33%
 Quality gate     : Piotroski F-score ≥ 7 (9 binary signals across profitability,
                    leverage/liquidity, and operating efficiency)
 Drop trigger     : skip a name if close dropped ≥ cfg.drop_threshold in the lookback
