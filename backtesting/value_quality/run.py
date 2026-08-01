@@ -541,3 +541,8 @@ if __name__ == "__main__":
     s = res["survivorship"]
     print(f"survivorship: missing={s['missing_prices_count']}/{s['universe_size']}  "
           f"base CAGR={s['base']['cagr']*100:.2f}%  stressed CAGR={s['stressed']['cagr']*100:.2f}%")
+
+    # --- HTML dashboard -------------------------------------------------------
+    from backtesting.value_quality.viz import render_dashboard
+    html_path = render_dashboard(res, res["_outdir"])
+    print(f"dashboard  : {html_path}")
