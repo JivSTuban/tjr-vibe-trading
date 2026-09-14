@@ -329,3 +329,118 @@ That is a different strategy from the one in the PDF — it keeps the spec's tim
 earnings filter, discards the late-volume rule, and adds the two causal conditions. The honest
 next step is forward paper trading, because this result was found by slicing an existing dataset
 four ways, which is exactly the process that produces convincing accidents.
+
+---
+
+# Addendum 2 — Extended universe (the spec's real screen, not just the index)
+
+The first two studies used the S&P 500 as a stand-in for the spec's §2 screen. That was a
+convenient substitution and a materially wrong one: the index **excludes most of the 2023-2026
+AI supply chain**. MP, UEC, LEU, CCJ, OKLO, BWXT, TLN, NBIS, CRDO and ALAB all clear the spec's
+$2B / $50M bar and none are members. Only VRT, VST and CEG were in the original universe.
+
+Rebuilt from the spec's actual screen across NASDAQ/NYSE/AMEX: **2,285 tickers** (784 index +
+1,501 extended), 2,136 priced (93.5%).
+
+## B1. The headline roughly doubles
+
+| | S&P 500 only | Extended |
+|---|---|---|
+| Trades | 10,154 | 12,914 |
+| Gross mean | +5.67 bps | **+11.04 bps** |
+| t-stat | 3.41 | **5.79** |
+| Breakeven | 2.83 bps/side | **5.52 bps/side** |
+| Gross Sharpe | 0.65 | **1.20** |
+| OOS dev / val / final | +3.5 / +3.9 / +16.1 | **+8.8 / +9.1 / +22.6** — all significant |
+
+The flat validation window that undermined the index-only result is gone.
+
+## B2. But nearly all of it is in the slice we cannot verify
+
+| Segment | n | Gross | t |
+|---|---|---|---|
+| EXTENDED (non-index) | 7,255 | **+17.36 bps** | 2.60 |
+| SP500_PIT (survivorship-clean) | 5,659 | +2.94 bps | — |
+
+The only point-in-time-clean slice got **worse**. The extended list is built from *today's*
+$2B+ listings, so it contains survivors only and implicitly knows which companies later grew.
+
+**The diagnostic that partly rescues it** — splitting extended names by when they first cleared
+the liquidity screen. Names already liquid in 2014-15 carry far less "we knew it would make it"
+selection:
+
+| Segment | Listing era | n | Gross |
+|---|---|---|---|
+| EXTENDED | early (liquid by 2015) | 3,215 | **+14.75 bps** (t=1.55) |
+| EXTENDED | late arrival | 4,040 | +19.42 bps (t=2.11) |
+| SP500_PIT | early | 4,242 | +1.20 bps |
+
+The effect is present in **both** sub-slices, so it is not purely a survivor artifact. The more
+likely reading is a **size effect**: mid-caps and volatile growth names mean-revert overnight
+harder than mega-caps, and the S&P 500 is mega-cap dominated — the one place the effect is
+weakest. Survivorship is *reduced, not removed* (early-liquid names that died before 2026 are
+still absent), and t=1.55 on the cleanest sub-slice is not significant alone.
+
+## B3. The causal result gets stronger and the interaction becomes decisive
+
+Wider pool, n=168,882 — gross:
+
+| | TAILWIND | HEADWIND |
+|---|---|---|
+| **PRESSURE** | **+17.97 bps** (n=23,402, t=**12.65**) | **−3.97 bps** (t=**−2.95**) |
+| **INFORMATION** | +4.80 bps (t=6.00) | +8.88 bps (t=10.61) |
+
+Chain-wide selling into a **wanted** chain pays +18 bps; the identical selling into an
+**unwanted** chain is *significantly negative*. On the index-only universe that cell was merely
+flat (−2.12, t=−1.11); with the real universe it is a confirmed sign flip. **The interaction is
+the finding**, not either axis alone.
+
+Robustness on that cell: spec-adjusted **+12.90 bps**, positive at 5 bps/side (+8.0), all 13
+leave-one-year-out means positive (min +8.18 dropping 2026), tail ratio 0.95, still +8.6 bps
+excluding the best 1% of trades. The 2022-2024 soft patch persists across both universes
+(+3.1 bps, t=1.43) and is now the single most consistent weakness in the whole study.
+
+## B4. The chains where buying dips actually pays
+
+| Theme | n | Gross | t |
+|---|---|---|---|
+| **SOXX** semis | 10,500 | **+26.63 bps** | **11.30** |
+| **URA** uranium | 1,874 | **+23.96 bps** | **4.06** |
+| **SMH** semis | 5,964 | **+21.45 bps** | **6.65** |
+| **XLU** utilities / power | 6,623 | +9.93 bps | 6.42 |
+| REMX rare earth | 1,702 | +8.66 bps | 1.24 |
+| IGV software | 27,619 | +0.23 bps | 0.17 |
+| **XLE** oil & gas | 12,597 | **−1.28 bps** | −0.74 |
+
+**This is the AI supply chain, recovered from returns alone.** Compute (SOXX, SMH), power
+(URA, XLU), materials weakly (REMX). Software — the "AI application layer" — pays nothing.
+
+And it settles the energy question raised in Addendum A2: **power yes, oil and gas no.** XLU
+(+9.93, t=6.42) and URA (+23.96, t=4.06) are real; XLE is negative and insignificant. "Energy
+rose because of AI" is only true for *electricity*, not for energy as a sector.
+
+## B5. The spec's own ranking fights the causal edge
+
+In the V1 top-5 pool the PRESSURE/TAILWIND cell drops to n=555, +14.63 bps, **t=1.69 — not
+significant** — and is beaten by INFORMATION/HEADWIND (+11.99, t=4.01). Yet in the wider pool
+the same cell is +17.97 at t=12.65.
+
+The reason: the spec's §6 score ranks by *severity* (biggest selloff, deepest drawdown, heaviest
+volume). In a universe containing volatile mid-caps, the most severe decliners are
+overwhelmingly **idiosyncratic blowups** — exactly the INFORMATION names the causal thesis says
+to avoid. **The top-5 selector systematically selects away from the edge.**
+
+Actionable: if the causal version is ever traded, rank by `common_share x theme_strength`, not
+by the spec's severity score.
+
+## B6. Revised verdict
+
+- **V1 spec as written: still reject.** Its late-volume filter is negative-value and its ranking
+  actively selects against the only cell that works.
+- **Causal version on the real universe: the strongest result in this study**, and the one worth
+  paper-trading — buy a stock that fell *with* a demand chain that is *outperforming*, in semis,
+  uranium or power; never when the chain is out of favour.
+- **Confidence is capped by data, not by the result.** The extended slice cannot be made
+  survivorship-free with free sources (FMP gates delisted symbols, Yahoo 404s them — the same
+  wall `value_quality` hit). Treat +18 bps as an upper bound and the S&P-clean +2.94 bps as a
+  lower one.

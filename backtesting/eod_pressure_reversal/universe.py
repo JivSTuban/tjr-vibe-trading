@@ -165,3 +165,107 @@ def resolve_sector_etf(sector_map: dict[str, str], ticker: str) -> str:
 @lru_cache(maxsize=1)
 def _noop_cache_guard() -> None:  # pragma: no cover - import-time network guard
     return None
+
+
+# ---------------------------------------------------------------------------
+# Extended universe — the spec's ACTUAL screen, not just the index
+# ---------------------------------------------------------------------------
+#
+# The spec (§2) asks for NYSE/NASDAQ common stocks with price >= $10, market cap
+# >= $2B and ADV20 >= $50M. The S&P 500 is a convenient stand-in but a strictly
+# smaller set, and it excludes most of the 2023-2026 AI supply chain by
+# construction: MP, UEC, LEU, CCJ, OKLO, BWXT, TLN, NBIS, CRDO and ALAB all clear
+# the spec's bar and none of them are index members. Testing only the index means
+# never seeing those trades.
+#
+# THE BIAS THIS INTRODUCES, STATED PLAINLY. Index membership is point-in-time
+# (start/end dates per ticker, delisted names retained). The extended list is NOT:
+# it is *today's* listed companies above $2B, so it contains only survivors and it
+# knows which small companies later became large. Two things keep that honest:
+#   1. Eligibility on any given date still requires price >= $10 AND ADV20 >= $50M,
+#      both computed from that date's trailing bars. A company can only trade on
+#      days it was genuinely liquid, which is most of what "was it big yet" means.
+#   2. Every candidate carries a `segment` label, so results are reported split
+#      SP500_PIT vs EXTENDED rather than blended. If the extended slice looks much
+#      better, suspect the bias rather than the strategy.
+
+_NASDAQ_SCREENER = "https://api.nasdaq.com/api/screener/stocks"
+_SCREENER_UA = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+}
+
+
+def _screener_num(value) -> float:
+    """Pure: '$1,234.56' -> 1234.56, junk -> 0.0."""
+    if not value:
+        return 0.0
+    try:
+        return float(str(value).replace("$", "").replace(",", "").replace("%", ""))
+    except ValueError:
+        return 0.0
+
+
+def parse_screener(rows: list[dict], min_cap: float = 2e9,
+                   min_price: float = 10.0) -> pd.DataFrame:
+    """Pure: Nasdaq screener rows -> tickers clearing the spec's size/price bar."""
+    import re
+
+    out = []
+    for r in rows:
+        sym = str(r.get("symbol", "")).strip().upper()
+        # Common shares only (spec §2). A dot suffix is a share class (BRK.B) and is
+        # kept as a dash for Yahoo; anything longer is a warrant/unit/right (ABC.WS,
+        # ABC.U), and single-letter W/U/R/P suffixes are those same instruments.
+        m = re.fullmatch(r"([A-Z]{1,5})(?:[.\-]([A-Z]))?", sym)
+        if not m or (m.group(2) and m.group(2) in {"W", "U", "R", "P"}):
+            continue
+        cap, px = _screener_num(r.get("marketCap")), _screener_num(r.get("lastsale"))
+        if cap >= min_cap and px >= min_price:
+            out.append({"ticker": sym.replace(".", "-"), "market_cap": cap, "price": px})
+    return pd.DataFrame(out).drop_duplicates("ticker")
+
+
+def fetch_extended(use_cache: bool = True) -> pd.DataFrame:
+    """Currently-listed NYSE/NASDAQ/AMEX names above the spec's size and price bar."""
+    path = _cache_path("extended_universe.csv")
+    if use_cache and os.path.exists(path):
+        return pd.read_csv(path)
+    rows: list[dict] = []
+    for ex in ("NASDAQ", "NYSE", "AMEX"):
+        try:
+            r = requests.get(_NASDAQ_SCREENER, params={"tableonly": "true", "limit": 10000,
+                                                       "exchange": ex},
+                             headers=_SCREENER_UA, timeout=60)
+            data = r.json().get("data", {})
+            rows += (data.get("table", {}) or {}).get("rows", []) or data.get("rows", []) or []
+        except Exception:
+            continue
+    df = parse_screener(rows)
+    df.to_csv(path, index=False)
+    return df
+
+
+def build_universe(membership: pd.DataFrame, extended: Optional[pd.DataFrame],
+                   start: str, end: str) -> pd.DataFrame:
+    """Pure: one table of [ticker, segment, start, end] for the whole study.
+
+    S&P 500 names keep their true membership window. Extended names get an open
+    window (NaT/NaT) because their eligibility is decided per-date by the liquidity
+    screen instead — see the bias note above.
+    """
+    sp = membership[
+        (membership["start"] <= pd.Timestamp(end))
+        & (membership["end"].isna() | (membership["end"] >= pd.Timestamp(start)))
+    ][["ticker", "start", "end"]].copy()
+    sp["segment"] = "SP500_PIT"
+
+    if extended is None or extended.empty:
+        return sp.reset_index(drop=True)
+
+    extra = extended.loc[~extended["ticker"].isin(set(sp["ticker"])), ["ticker"]].copy()
+    extra["start"] = pd.NaT
+    extra["end"] = pd.NaT
+    extra["segment"] = "EXTENDED"
+    return pd.concat([sp, extra], ignore_index=True)

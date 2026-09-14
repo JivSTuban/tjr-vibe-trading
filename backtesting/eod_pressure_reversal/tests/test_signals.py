@@ -237,3 +237,47 @@ def test_overnight_return_falls_back_to_raw_without_factors():
     t = pd.DataFrame({"price": [100.0], "next_open": [101.0]})
     out = strategy.simulate(t, cost_bps=0.0)
     assert out["gross_ret"].iloc[0] == pytest.approx(0.01)
+
+
+class TestExtendedUniverse:
+    """The extended universe must add names WITHOUT silently relaxing the PIT rules."""
+
+    def _uni(self):
+        from backtesting.eod_pressure_reversal import universe
+        m = pd.DataFrame({
+            "ticker": ["LIVE", "GONE"],
+            "start": pd.to_datetime(["2010-01-01", "2010-01-01"]),
+            "end": pd.to_datetime([None, "2016-06-30"]),
+        })
+        ext = pd.DataFrame({"ticker": ["LIVE", "NEWBIE"], "market_cap": [5e9, 3e9],
+                            "price": [50.0, 20.0]})
+        return universe.build_universe(m, ext, "2014-01-01", "2026-01-01")
+
+    def test_index_names_keep_their_membership_window(self):
+        u = self._uni()
+        gone = u[u["ticker"] == "GONE"].iloc[0]
+        assert gone["segment"] == "SP500_PIT"
+        assert gone["end"] == pd.Timestamp("2016-06-30")
+
+    def test_extended_names_are_added_and_labelled(self):
+        u = self._uni()
+        nb = u[u["ticker"] == "NEWBIE"].iloc[0]
+        assert nb["segment"] == "EXTENDED"
+        assert pd.isna(nb["start"]) and pd.isna(nb["end"])
+
+    def test_a_ticker_is_never_duplicated_across_segments(self):
+        u = self._uni()
+        assert u["ticker"].is_unique
+        assert u[u["ticker"] == "LIVE"].iloc[0]["segment"] == "SP500_PIT"
+
+    def test_screener_parser_drops_junk_and_enforces_the_spec_bar(self):
+        from backtesting.eod_pressure_reversal import universe
+        rows = [
+            {"symbol": "MP", "marketCap": "9020000000", "lastsale": "$55.10"},
+            {"symbol": "MRAM", "marketCap": "350000000", "lastsale": "$16.00"},   # too small
+            {"symbol": "CHEAP", "marketCap": "9000000000", "lastsale": "$4.00"},  # sub-$10
+            {"symbol": "ABC.WS", "marketCap": "9e9", "lastsale": "$50"},          # warrant
+            {"symbol": "", "marketCap": "9e9", "lastsale": "$50"},
+        ]
+        out = universe.parse_screener(rows)
+        assert out["ticker"].tolist() == ["MP"]

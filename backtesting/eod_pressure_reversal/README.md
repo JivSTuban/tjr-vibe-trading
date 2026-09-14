@@ -23,7 +23,9 @@ First run fetches ~780 tickers of daily bars plus ~3,200 days of earnings calend
 
 ## Pieces
 
-- `universe.py` — point-in-time S&P 500 membership + GICS sector -> sector-ETF map.
+- `universe.py` — point-in-time S&P 500 membership, the extended $2B/$10 screen across
+  NASDAQ/NYSE/AMEX, and the GICS sector -> sector-ETF map. `UNIVERSE_MODE` in `run.py`
+  switches between `sp500` (survivorship-clean) and `extended` (adds the AI supply chain).
 - `prices.py` — daily OHLCV (Yahoo primary, FMP rescue), split/spin detection, missing-log.
 - `earnings.py` — spec filter F via Nasdaq's calendar, BMO/AMC aware.
 - `signals.py` — spec §4 conditions + §6 composite percentile score.
@@ -73,7 +75,11 @@ the intraday quantities they stand in for.
 
 - **Entry-at-close is optimistic** vs the spec's 3:55 PM entry, because a name still being sold
   into the bell is cheaper at 4:00 than at 3:55. Quantified by `calibrate.py`, not hand-waved.
-- **Survivorship: materially reduced, not eliminated.** Membership is point-in-time from
+- **The EXTENDED universe slice is survivorship-dirty.** It is built from *today's* $2B+
+  listings, so it holds survivors only and implicitly knows which companies later grew. Every
+  trade carries a `segment` and `era` label and results are reported split, never blended —
+  see FINDINGS Addendum 2. The `SP500_PIT` slice remains the clean lower bound.
+- **Survivorship (index slice): materially reduced, not eliminated.** Membership is point-in-time from
   `fja05680/sp500`, which retains names that later failed (SIVB, FRC) or were acquired (TWTR) —
   this is the first backtest in this repo with a PIT universe. But Yahoo serves no prices for a
   minority of removed names, and those sessions drop out. The count is in the run manifest and

@@ -24,6 +24,13 @@ from . import earnings, metrics, prices, signals, strategy, universe, viz
 START = "2014-01-01"
 END = "2026-09-10"
 
+# "sp500"    — point-in-time index members only (survivorship-clean).
+# "extended" — adds every currently-listed US name clearing the spec's $2B/$10 bar.
+#              Captures the AI supply chain (MP, UEC, LEU, CCJ, OKLO, BWXT, TLN,
+#              NBIS, CRDO, ALAB), none of which are index members. Carries a
+#              survivor bias on the added slice, so results are reported per segment.
+UNIVERSE_MODE = "extended"
+
 # Spec §11 out-of-sample design.
 SPLITS = {
     "development 2014-2021": ("2014-01-01", "2021-12-31"),
@@ -60,8 +67,16 @@ def load_everything(use_cache: bool = True) -> dict:
     """Fetch membership, sectors, benchmarks, prices, earnings. Returns a bundle."""
     log("membership (point-in-time S&P 500)")
     membership = universe.fetch_membership(use_cache=use_cache)
-    tickers = universe.universe_tickers(membership, START, END)
-    log(f"  {len(tickers)} tickers were index members at some point in {START[:4]}-{END[:4]}")
+
+    extended = None
+    if UNIVERSE_MODE == "extended":
+        log("extended universe (spec §2 screen on all listed US names)")
+        extended = universe.fetch_extended(use_cache=use_cache)
+        log(f"  {len(extended)} currently-listed names clear $2B / $10")
+    uni = universe.build_universe(membership, extended, START, END)
+    tickers = sorted(uni["ticker"].unique())
+    segs = uni.groupby("segment")["ticker"].nunique().to_dict()
+    log(f"  universe: {len(tickers)} tickers {segs}")
 
     log("sector map (Wikipedia GICS)")
     sectors = universe.fetch_sectors(use_cache=use_cache)
@@ -93,6 +108,7 @@ def load_everything(use_cache: bool = True) -> dict:
 
     return {
         "membership": membership, "tickers": tickers, "sector_map": sector_map,
+        "uni": uni,
         "frames": frames, "missing": missing, "bench": bench_frames,
         "sessions": sessions, "earn_idx": earn_idx,
     }
@@ -104,19 +120,26 @@ def build_candidate_table(bundle: dict) -> pd.DataFrame:
     membership, frames = bundle["membership"], bundle["frames"]
 
     features, memb_mask, action_mask = {}, {}, {}
-    starts = dict(zip(membership["ticker"], membership["start"]))
-    ends = dict(zip(membership["ticker"], membership["end"]))
+    uni = bundle["uni"]
+    seg_of = dict(zip(uni["ticker"], uni["segment"]))
+    sp = uni[uni["segment"] == "SP500_PIT"]
+    starts = dict(zip(sp["ticker"], sp["start"]))
+    ends = dict(zip(sp["ticker"], sp["end"]))
 
     for tkr, df in frames.items():
         etf = universe.resolve_sector_etf(bundle["sector_map"], tkr)
         b = bench_ret.get(etf, bench_ret["SPY"])
         features[tkr] = signals.compute_features(df, b)
-        s, e = starts.get(tkr), ends.get(tkr)
+        # Index members trade only inside their true membership window. Extended
+        # names have no such window; their eligibility is the per-date liquidity
+        # screen in signals.liquid, which is point-in-time.
         m = pd.Series(True, index=df.index)
-        if s is not None and pd.notna(s):
-            m &= df.index >= s
-        if e is not None and pd.notna(e):
-            m &= df.index <= e
+        if seg_of.get(tkr) == "SP500_PIT":
+            s, e = starts.get(tkr), ends.get(tkr)
+            if s is not None and pd.notna(s):
+                m &= df.index >= s
+            if e is not None and pd.notna(e):
+                m &= df.index <= e
         memb_mask[tkr] = m
         # Drop the signal day AND the day before a corporate action: the overnight
         # leg straddles t -> t+1, so an ex-date on t+1 contaminates a signal on t.
@@ -126,6 +149,18 @@ def build_candidate_table(bundle: dict) -> pd.DataFrame:
     cands = strategy.build_candidates(
         features, membership_mask=memb_mask, action_mask=action_mask
     )
+    cands["segment"] = cands["ticker"].map(seg_of)
+
+    # Survivor-bias diagnostic. The EXTENDED slice is built from TODAY's $2B+ listings,
+    # so it implicitly knows which companies later grew into that bar. Names that were
+    # ALREADY liquid at the start of the sample carry far less of that "we knew it would
+    # make it" selection than names that only cleared the screen years later. If the
+    # effect survives in the early-liquid sub-slice, it is more likely real; if it lives
+    # entirely in the late arrivals, it is the bias.
+    first_liquid = cands.groupby("ticker")["date"].min()
+    cutoff = pd.Timestamp("2015-12-31")
+    era = first_liquid.le(cutoff).map({True: "early (liquid by 2015)", False: "late arrival"})
+    cands["era"] = cands["ticker"].map(era)
     return cands
 
 
@@ -201,6 +236,16 @@ def run() -> dict:
         {f"pf_{k}": v for k, v in metrics.portfolio_metrics(daily, n_sessions).items()}
     )
     results["oos"] = metrics.by_period(baseline, SPLITS).to_dict("records")
+    results["by_segment"] = [
+        {"segment": str(seg), **metrics.trade_metrics(grp),
+         "gross_mean_bps": float(grp["gross_ret"].mean() * 1e4)}
+        for seg, grp in baseline.groupby("segment")
+    ]
+    results["by_segment_era"] = [
+        {"segment": str(seg), "era": str(era), **metrics.trade_metrics(grp),
+         "gross_mean_bps": float(grp["gross_ret"].mean() * 1e4)}
+        for (seg, era), grp in baseline.groupby(["segment", "era"])
+    ]
     results["by_year"] = metrics.by_year(baseline).to_dict("records")
     results["regime_vix"] = metrics.regime_table(tagged, "vix_bucket").to_dict("records")
     results["regime_spy"] = metrics.regime_table(tagged, "spy_bucket").to_dict("records")
@@ -228,6 +273,7 @@ def run() -> dict:
     results["benchmark"] = _benchmark_context(spy, gross, cands, blocked)
 
     results["coverage"] = {
+        "universe_mode": UNIVERSE_MODE,
         "pit_tickers": len(bundle["tickers"]),
         "priced": len(bundle["frames"]),
         "missing": len(bundle["missing"]),
