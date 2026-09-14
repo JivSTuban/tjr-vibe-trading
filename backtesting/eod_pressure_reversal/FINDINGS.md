@@ -192,3 +192,140 @@ survive realistic fills, costs, and overnight tail risk. It does not.
   retroactively); unmapped names fall back to SPY, which makes filter D harder to pass, not easier.
 - **The intraday leg is 60 days / 109 trades.** It calibrates bias well and decides nothing.
 - **No borrow, impact, or partial fills** are modelled; all three make the real result worse.
+
+---
+
+# Addendum — Causality + catalyst overlay
+
+**This changes the verdict conditionally.** The V1 spec as written is still rejected. But
+splitting its trades by *why* the stock fell and *whether its demand chain was wanted*
+isolates a subset with a real, cost-surviving, tail-favourable edge.
+
+Run: `run_causality.py`, same universe and window, causal features on 93.2% of rows.
+
+## A1. The question
+
+The base result said the spec's signature filter is backwards — abnormal late volume costs
+2.19 bps, because heavy volume marks **information**, and information does not reverse. The
+natural fix is the one §16 already lists: separate temporary pressure from new information.
+
+For each (stock, date), with a beta fitted only on data **before** the signal day:
+
+```
+day_ret = beta x theme_ret + residual
+          \___ common ___/   \_ idio _/
+```
+
+- **PRESSURE** (`common_share >= 0.5`) — the whole chain fell and the stock was carried.
+  Nothing was learned about the company.
+- **INFORMATION** — the chain held up and this name broke on its own.
+
+Crossed with whether that chain was **in demand**: trailing 60-day relative strength vs SPY,
+also lagged.
+
+## A2. Avoiding the hindsight trap
+
+Knowing in 2026 that AI is the dominant theme, and that memory, rare earths, copper, uranium
+and power are its supply chain, is *hindsight*. Hard-coding that basket back to 2014 would
+manufacture an edge from knowledge we did not have.
+
+So **no theme is ever named or dated in the code.** Themes are 15 real ETFs gated by their true
+inception dates; a stock is assigned to one by trailing correlation; demand is trailing relative
+strength. The AI narrative becomes a *prediction to test*, not an input.
+
+**It validated itself.** The chains the model found in demand, from relative strength alone:
+
+| Year | Top chains vs SPY |
+|---|---|
+| 2023 | SMH +7.8%, SOXX +6.2%, IGV +5.5% |
+| 2024 | SMH +5.5% |
+| 2025 | **URA +11.4%, REMX +10.7%, XME +8.7%** |
+| 2026 | SOXX +22.5%, SMH +16.8% |
+
+Compute in 2023-24, **power and materials in 2025** (uranium, rare earths, mining), semis again
+in 2026 — the AI supply-chain rotation, recovered without the code knowing what AI is.
+
+**One correction to the narrative:** broad **energy did not participate.** XLE was among the
+*worst* chains in 2024 (−5.3%) and 2025 (−3.9%), and XLE names were the second-worst theme to
+buy dips in (−14.2 bps, n=773). The AI power trade went to **uranium and nuclear**, not oil and
+gas. "Energy rose because of AI" is not supported at the sector level.
+
+## A3. The result (gross)
+
+Wider pool, n=74,386 — the statistically powerful read:
+
+| | TAILWIND | HEADWIND |
+|---|---|---|
+| **PRESSURE** | **+18.30 bps** (n=10,213, t=**9.37**) | −2.12 bps (t=−1.11) |
+| **INFORMATION** | +3.82 bps (t=3.91) | +5.04 bps (t=4.74) |
+
+V1 top-5 pool, n=10,154 — the decision-relevant read:
+
+| | TAILWIND | HEADWIND |
+|---|---|---|
+| **PRESSURE** | **+27.76 bps** (n=588, t=3.36) | +15.81 bps (t=1.70) |
+| **INFORMATION** | +4.57 bps (t=2.27) | +3.00 bps (t=1.04) |
+
+Against +5.67 bps for the strategy overall, the best cell pays **~5x**.
+
+**Two things the data insists on, which sharpen the original intuition:**
+
+1. **Demand matters more than causality.** The tailwind/headwind axis splits +8.35 vs +2.61 bps
+   (t=9.18, n=32,666). The pressure/information axis splits only +7.02 vs +4.46. *Whether the
+   chain is wanted* is the stronger signal.
+2. **It is an interaction, not two additive effects.** Chain-wide selling is only good inside a
+   wanted chain; in an out-of-favour chain it is **negative** (−2.12 bps). A dip in something the
+   market needs gets bought. The identical dip in something it does not need keeps falling.
+
+## A4. Does it survive the checks the base strategy failed?
+
+For `PRESSURE / TAILWIND` in the V1 pool (n=588):
+
+| Check | Base V1 strategy | This cell |
+|---|---|---|
+| Gross mean | +5.67 bps | **+27.76 bps** |
+| Adjusted to 3:55 entry / 9:35 exit | +0.60 bps | **+22.69 bps** |
+| Net at 5 bps/side | −4.33 | **+17.76** |
+| Net at 10 bps/side | −14.33 | **+7.76** |
+| Worst trade | −40.3% | **−9.1%** |
+| Worst 1% / best 1% | 1.24 (bad tail bigger) | **0.84** (good tail bigger) |
+| Mean excluding best 1% | −11.6 bps | **+19.73 bps** |
+| Years positive | 7 of 13 | **9 of 13** |
+| Leave-one-year-out | — | **all 13 positive**, min +15.80 |
+
+**Every failure mode of the base strategy is reversed.** It survives realistic costs, the left
+tail is *favourable* rather than fat, and the edge is not a handful of lottery tickets — removing
+the best 1% of trades still leaves +19.7 bps. Dropping 2026, the most influential year, still
+leaves +15.80 bps (wider pool: +12.46).
+
+## A5. Why this is still not a green light
+
+- **The validation period is flat.** In the wider pool, 2022-2024 pays +2.89 bps (t=0.96) between
+  a strong development period (+20.07, t=7.68) and a strong final one (+40.79, t=6.58). A real
+  mechanism should not go quiet for three years.
+- **The continuous version is not monotonic.** Common-share quintiles run Q5 +12.5, Q1 +8.0,
+  Q3 +7.9, Q2 +5.9, **Q4 −3.6**. Only the top bucket separates cleanly; the binary cut works
+  better than the variable underneath it, which is a signature of partial noise.
+- **Thin in the tradable pool.** 588 trades over 12.7 years is ~46/year, roughly one every
+  eleven sessions.
+- **Multiple comparisons.** Four cells were examined and the best reported. The wider pool's
+  t = 9.37 is reassuring but is a superset of the same trades, not independent evidence.
+- **Untested intraday.** The 60-day exact-spec window was negative overall; the cell has too few
+  trades there to check, so the entry/exit correction is applied from population constants rather
+  than measured on these trades.
+
+## A6. Revised verdict
+
+**The V1 spec: still reject.** Its own filters do not produce the edge, and its signature
+late-volume rule actively subtracts.
+
+**The causal overlay: promising enough to paper-trade, not to fund.** What actually works is not
+"buy heavy late-session losers." It is:
+
+> **Buy a stock that fell *with its whole demand chain*, when that chain is *outperforming the
+> market*. Skip it when the stock fell alone, and skip it when the chain is out of favour.**
+
+That is a different strategy from the one in the PDF — it keeps the spec's timing and its
+earnings filter, discards the late-volume rule, and adds the two causal conditions. The honest
+next step is forward paper trading, because this result was found by slicing an existing dataset
+four ways, which is exactly the process that produces convincing accidents.

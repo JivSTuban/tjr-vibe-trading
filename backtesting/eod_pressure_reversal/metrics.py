@@ -159,6 +159,32 @@ def by_year(trades: pd.DataFrame, ret_col: str = "net_ret") -> pd.DataFrame:
     return df[[c for c in cols if c in df]].sort_values("year").reset_index(drop=True)
 
 
+def jackknife_years(trades: pd.DataFrame, ret_col: str = "net_ret") -> dict:
+    """Pure: leave-one-year-out means — does any single year carry the result?
+
+    The honest test of a result with one standout year. If dropping the best year
+    leaves the mean comfortably positive, the effect is not that year. If it collapses,
+    it is, and the headline is a story about one regime.
+    """
+    if trades.empty:
+        return {}
+    t = trades.copy()
+    t["year"] = pd.DatetimeIndex(t["date"]).year
+    full = float(t[ret_col].mean())
+    rows = {}
+    for y in sorted(t["year"].unique()):
+        kept = t[t["year"] != y][ret_col]
+        rows[int(y)] = float(kept.mean()) if len(kept) else np.nan
+    worst_y = min(rows, key=lambda k: rows[k])
+    return {
+        "full_mean_bps": full * 1e4,
+        "leave_one_out_bps": {y: v * 1e4 for y, v in rows.items()},
+        "min_loo_bps": rows[worst_y] * 1e4,
+        "most_influential_year": worst_y,
+        "survives_dropping_best_year": bool(rows[worst_y] > 0),
+    }
+
+
 def by_period(trades: pd.DataFrame, splits: dict[str, tuple[str, str]], ret_col: str = "net_ret") -> pd.DataFrame:
     """Pure: §11 out-of-sample split summary (dev / validation / final)."""
     rows = []

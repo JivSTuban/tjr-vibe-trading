@@ -4,14 +4,18 @@ Tests the **EOD Pressure Reversal Strategy V1** spec: abnormal late-session sell
 temporary price pressure that partially reverses overnight. Buy the most distressed names near
 the close, sell the next morning, hold nothing over a second night.
 
-**Result:** see `FINDINGS.md`.
+**Result:** see `FINDINGS.md`. Short version — the spec as written is **rejected** (the gross edge
+is +5.67 bps/trade and breaks even at 2.83 bps per side, and most of it is just the market-wide
+overnight drift). The **causality addendum** finds the one subset that does survive costs: stocks
+that fell *with their whole demand chain* while that chain was *outperforming the market*.
 
 ## Run
 
 ```bash
-PYTHONPATH=. uv run python -m backtesting.eod_pressure_reversal.run        # full history, daily bars
-PYTHONPATH=. uv run python -m backtesting.eod_pressure_reversal.calibrate  # 60-day exact-spec intraday
-PYTHONPATH=. uv run pytest backtesting/eod_pressure_reversal/tests -q      # pure logic, network-free
+PYTHONPATH=. uv run python -m backtesting.eod_pressure_reversal.run            # full history, daily bars
+PYTHONPATH=. uv run python -m backtesting.eod_pressure_reversal.calibrate      # 60-day exact-spec intraday
+PYTHONPATH=. uv run python -m backtesting.eod_pressure_reversal.run_causality  # causality + catalyst overlay
+PYTHONPATH=. uv run pytest backtesting/eod_pressure_reversal/tests -q          # pure logic, network-free
 ```
 
 First run fetches ~780 tickers of daily bars plus ~3,200 days of earnings calendar and takes
@@ -27,6 +31,8 @@ First run fetches ~780 tickers of daily bars plus ~3,200 days of earnings calend
 - `metrics.py` — spec §12 metrics, §13 regimes, §14 left tail, §11 OOS splits.
 - `intraday.py` — 5m bar loader + exact 15:30/15:50/15:55 feature computation.
 - `calibrate.py` — runs the unmodified spec on the 60-day intraday window.
+- `causality.py` — PRESSURE vs INFORMATION decomposition + point-in-time demand-chain themes.
+- `run_causality.py` — the causal/catalyst study (see FINDINGS addendum).
 - `run.py` / `viz.py` — driver and offline HTML dashboard.
 
 ## The data problem, and what we did about it
