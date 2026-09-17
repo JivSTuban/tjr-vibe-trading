@@ -33,6 +33,13 @@ log = logging.getLogger(__name__)
 
 WSOL_MINT = "So11111111111111111111111111111111111111112"
 MAX_BATCH = 30
+
+# How many unresolved mints from one batch are worth an individual retry.
+# The batch endpoint truncates its flat `pairs` array, so misses are normal and
+# recoverable; but a batch of 30 brand-new launches legitimately has no pairs at
+# all, and retrying every one of those would triple the request count each tick
+# for no information. 10 covers real truncation without that.
+RESCUE_LIMIT = 10
 # Leave headroom under the documented 300/min so a burst of enrichment never
 # trips a 429 that would delay a sub-minute alert.
 REQUESTS_PER_MIN = 240
@@ -173,25 +180,56 @@ class DexScreenerClient:
             return None
 
     async def token_states(self, mints: list[str]) -> dict[str, PairState]:
-        """Fetch state for up to 30 mints per request, batched automatically."""
+        """Fetch state for many mints, batched, with a single-address rescue pass.
+
+        The batch endpoint returns ONE flat `pairs` array for all requested
+        addresses and caps its length, so a batch asking about many liquid
+        tokens silently loses the tail. Measured 2026-09-17 against 14 live
+        tokens: **11 resolved when asked one at a time, only 8 in a single
+        batch** — LOTTO, STONKLANA and JEV each resolved alone and vanished in
+        the batch.
+
+        That mattered because callers treat an unresolved mint as "no market
+        data" and fail closed, so a truncated batch reads exactly like a dead
+        token. Anything missing after a chunk therefore gets one individual
+        retry before being reported as absent.
+        """
         out: dict[str, PairState] = {}
         unique = [m for m in dict.fromkeys(mints) if m]
         for i in range(0, len(unique), MAX_BATCH):
             chunk = unique[i : i + MAX_BATCH]
-            data = await self._get("/latest/dex/tokens/" + ",".join(chunk))
-            pairs = (data or {}).get("pairs") or []
-            by_mint: dict[str, list[dict[str, Any]]] = {}
-            for p in pairs:
-                addr = str(((p.get("baseToken") or {}).get("address")) or "")
-                if addr:
-                    by_mint.setdefault(addr, []).append(p)
-            for mint in chunk:
-                primary = pick_primary(by_mint.get(mint, []))
-                if primary is not None:
-                    state = parse_pair(primary)
-                    state.mint = mint
-                    out[mint] = state
+            await self._resolve_into(out, chunk)
+
+            missing = [m for m in chunk if m not in out]
+            if not missing or len(chunk) == 1:
+                continue
+            # Rescue pass. Capped so a genuinely dead batch cannot turn into
+            # MAX_BATCH extra requests every enrichment tick.
+            if len(missing) > RESCUE_LIMIT:
+                log.warning(
+                    "dexscreener: %d/%d unresolved in batch, rescuing first %d",
+                    len(missing), len(chunk), RESCUE_LIMIT,
+                )
+                missing = missing[:RESCUE_LIMIT]
+            for mint in missing:
+                await self._resolve_into(out, [mint])
         return out
+
+    async def _resolve_into(self, out: dict[str, PairState], chunk: list[str]) -> None:
+        """Resolve one request's worth of mints, writing hits into `out`."""
+        data = await self._get("/latest/dex/tokens/" + ",".join(chunk))
+        pairs = (data or {}).get("pairs") or []
+        by_mint: dict[str, list[dict[str, Any]]] = {}
+        for p in pairs:
+            addr = str(((p.get("baseToken") or {}).get("address")) or "")
+            if addr:
+                by_mint.setdefault(addr, []).append(p)
+        for mint in chunk:
+            primary = pick_primary(by_mint.get(mint, []))
+            if primary is not None:
+                state = parse_pair(primary)
+                state.mint = mint
+                out[mint] = state
 
     async def sol_price_usd(self, max_age_s: float = 120.0) -> float:
         """SOL/USD, cached.

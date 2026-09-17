@@ -39,7 +39,7 @@ from datetime import datetime, timedelta, timezone
 from memecoin_radar.sources.dexscreener import DexScreenerClient
 
 from .api import FomoAPI
-from .config import FomoConfig, load_config
+from .config import SOLANA_NETWORK_ID, FomoConfig, load_config
 from .conviction import build_cluster
 from .discord_sink import FomoDiscordSink
 from .session import AuthError, FomoSession, RateLimited
@@ -201,6 +201,19 @@ class FomoRadar:
         # Cheap exit before spending a DexScreener call: no conviction author
         # means no alert regardless of what the market looks like.
         if cluster.count < 1:
+            return
+
+        # The feed is multi-chain and our liquidity source is not. Verified
+        # 2026-09-17: tokens on network 4663 (ASTEROID, HOTDOG, JEV) return no
+        # DexScreener pair even when queried individually, so they can never
+        # satisfy the liquidity gate. Left implicit, they look like tokens with
+        # a dead market forever; said out loud, they are a coverage gap.
+        if item.network_id != SOLANA_NETWORK_ID:
+            log.info(
+                "skip $%s — %d conviction author(s) but network %d is outside "
+                "our price coverage (Solana only)",
+                item.ticker, cluster.count, item.network_id,
+            )
             return
 
         liquidity = await self._liquidity(item.token_address)
