@@ -152,6 +152,49 @@ python3 -m backtesting.funding_carry.run         # carry: always-on / timed / ga
 
 Each writes a self-contained HTML dashboard under its package's `runs/`. Tests: `pytest backtesting/`.
 
+## Value + Quality + Drop — Equity Backtest (2026-08-01)
+
+A new research track in [`value_quality/`](value_quality/) — a monthly, point-in-time long-only
+equity strategy combining a sector-relative value composite (E/P, B/P, EBITDA/EV, FCF yield),
+a Piotroski F-score ≥ 7 quality gate, and an optional drawdown trigger. Fundamentals come from
+the free SEC EDGAR API; prices from Yahoo Finance.
+
+**Status: validation milestone — not an edge verdict.**
+
+The bounded run (2015–2020, 20 large-cap names, 71 rebalances, 100% EDGAR coverage) validated
+the full pipeline end-to-end with PIT discipline and 15 bps/side costs. The strategy leg
+(+1.95% CAGR / 0.58 Sharpe) is uninformative: the compound gate fires only ~3/71 months on
+20 names, leaving ~96% of months in cash. The entire P&L is AAPL alone — correct machinery,
+undersized universe. Cheap-only (value gate only) achieved +13.89% CAGR / 0.72 Sharpe vs SPY's
++13.33% / 0.89, but on a 20-name survivor sample.
+
+**No verdict is possible yet.** Two blockers must be resolved first: (1) scale to a full S&P 500
+universe so the compound gate can form a diversified book, and (2) close the survivorship hole —
+Yahoo drops delisted names and Stooq is non-functional, so results are optimistically biased
+until a delisted-price source (Polygon $29/mo is the lever) is added.
+
+Full detail: [`value_quality/FINDINGS.md`](value_quality/FINDINGS.md)
+
+```bash
+uv run python -m backtesting.value_quality.run   # fetch + backtest + dashboard
+uv run pytest backtesting/value_quality/tests -q # 22 tests, network-free
+```
+
+---
+
+## Swing bounce (`swing_bounce/`) — beaten-down + "financially alive"
+
+Event-driven test of buying a sharply-dropped, solvent US stock with a stop/target over a swing
+horizon (the live idea behind `stock-scan swing` mode). **Result: edge NOT proven — do not automate.**
+On 30 large-caps 2015–2023 (642 events): the intuitive +20%/−10%/20d setup **loses** (−0.068R gated);
+the "financially alive" quality gate **hurts** on average (helps 12/81 cells, mean −0.048R); the only
+positive cells are long-horizon/wide-stop negative-R:R "pick up pennies" shapes; and it's all
+survivor-biased (0 delisted) + concentration-driven (ROKU carries the headline cell). Banked as a
+negative, like top-gainer fade / funding carry. Full write-up: `swing_bounce/FINDINGS.md`.
+Automation gate stays SHUT; `stock-scan swing` remains a discretionary idea-surfacer only.
+
+---
+
 ## Guardrails
 
 No live execution. No API keys (public data only). Zero rules approved — every strategy here is a

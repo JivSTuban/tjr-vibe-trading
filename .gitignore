@@ -101,3 +101,30 @@ backtesting/tjr_4x/.cache/
 # New backtest packages — regenerable run artifacts
 backtesting/top_gainer_fade/runs/
 backtesting/funding_carry/runs/
+backtesting/value_quality/.cache/
+backtesting/value_quality/runs/
+
+backtesting/swing_bounce/.cache/
+backtesting/swing_bounce/runs/
+
+backtesting/insider_cluster/.cache/
+backtesting/insider_cluster/runs/
+
+backtesting/eod_pressure_reversal/.cache/
+backtesting/eod_pressure_reversal/runs/
+
+# stock-scan daily outputs (discretionary records, not code)
+stock-scan/setups/
+stock-scan/insider-setups/
+stock-scan/prespike-setups/
+
+# Meme Coin Alpha Radar: collected dataset, not source
+memecoin_radar/data/
+
+# Playwright MCP scratch output (screenshots, network dumps, page snapshots)
+.playwright-mcp/
+
+# fomo research: raw harvest holds ~20k real users' handles and live positions.
+# The aggregates that the findings rest on are in FINDINGS.md; the raw pull is
+# reproducible from the harvester and is deliberately not published here.
+research/fomo/*.json
