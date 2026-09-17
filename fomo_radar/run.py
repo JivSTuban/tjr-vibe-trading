@@ -49,6 +49,9 @@ LEADERBOARD_WINDOWS = ("24h", "7d", "30d")
 # 14 days covers any meme-coin lifespan with room to spare.
 BACKFILL_DAYS = 14
 
+# How often the loop says it is alive even when nothing new arrived.
+HEARTBEAT_S = 300.0
+
 
 class FomoRadar:
     def __init__(self, cfg: FomoConfig) -> None:
@@ -57,6 +60,9 @@ class FomoRadar:
         self._backfilled: set[tuple[str, int]] = set()
         self._lb_handles: set[str] = set()
         self._last_leaderboard = 0.0
+        self._last_beat = 0.0
+        self._polls = 0
+        self._items_since_beat = 0
         self._stop = asyncio.Event()
 
     def request_stop(self) -> None:
@@ -122,6 +128,23 @@ class FomoRadar:
 
         fresh = self.store.record_items(items)
         new_theses = [i for i in fresh if i.is_thesis]
+        self._polls += 1
+        self._items_since_beat += len(fresh)
+
+        # Heartbeat. Without it the loop logs nothing at all while the feed is
+        # quiet, so a healthy idle harvester and a stalled one look identical
+        # from the log — the false-green shape this project keeps hitting. The
+        # feed genuinely does go quiet (25 items can span ~an hour), so silence
+        # is normal and must still be distinguishable from death.
+        if time.monotonic() - self._last_beat >= HEARTBEAT_S:
+            log.info(
+                "heartbeat: %d polls, %d new items since last beat, %d tokens tracked",
+                self._polls, self._items_since_beat, self.store.stats()["tokens"],
+            )
+            self._last_beat = time.monotonic()
+            self._polls = 0
+            self._items_since_beat = 0
+
         if not new_theses:
             return
         log.info("%d new feed items (%d theses)", len(fresh), len(new_theses))
