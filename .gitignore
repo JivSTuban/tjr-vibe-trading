@@ -120,3 +120,11 @@ stock-scan/prespike-setups/
 
 # Meme Coin Alpha Radar: collected dataset, not source
 memecoin_radar/data/
+
+# Playwright MCP scratch output (screenshots, network dumps, page snapshots)
+.playwright-mcp/
+
+# fomo research: raw harvest holds ~20k real users' handles and live positions.
+# The aggregates that the findings rest on are in FINDINGS.md; the raw pull is
+# reproducible from the harvester and is deliberately not published here.
+research/fomo/*.json
