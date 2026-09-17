@@ -1,30 +1,55 @@
-"""The social-conviction signal, v2.
+"""The social signal, v3 — entry-clean earliness.
 
-v1 is preserved in git history. It gated on *thesis earliness* — the first ~10
-theses a token ever received — which is a real, monotonic effect but one we
-cannot act on: the harvester joins a token's timeline at rank ~500. Over 17
-hours it watched ALLINU take on positions of $328k/$206k/$202k at
-+742%/+606%/+593% and alerted nothing, because every thesis was past rank 10.
-An unreachable gate looks exactly like a quiet market.
+Read the history before changing anything here, because two previous versions
+failed in opposite directions.
 
-v2 keeps earliness but moves it inside the author: a conviction author is one
-whose FIRST thesis landed early in the token's timeline and who has kept posting
-since. That is computable from the backfilled history no matter when we arrive.
-See `conviction.py` for the measured table this is built from.
+v1 gated on absolute thesis rank (a token inside its first ~10 theses ever).
+**That rule was correct** and it fired zero alerts anyway, because the global
+activity feed only ever shows us tokens at rank 70-500. A right gate starved of
+the right input.
 
-Two things v1 got wrong, both now reversed:
+v2 replaced it with "conviction cadence": an author with >=6 theses on a token
+whose first landed in its early half. It fired, and the alerts were trophies.
+Jiv caught it from a single $CATE alert — @PoorGoat_ up +1735% on a $67M token
+after 436 theses over 333 hours. The signal was describing a winner, not finding
+one, and the reason is that **both v2 features need information from the
+future**:
 
-* It discounted repeated posting by one handle as "not confirmation". Per
-  (author, token) pair it is the strongest at-post-time feature there is:
-  1 thesis 53.5% win -> 12+ theses 67.2%, and cross-tabbed with an early first
-  post, 78% win / +99% median.
-* It had no concept of whether the token is actually being traded. That is why
-  the sibling radar kept surfacing coins nobody was buying. `LiquidityState` is
-  now a HARD gate: no live market, no alert, whatever the social score says.
+  * thesis COUNT accumulates after entry. At PoorGoat_'s thesis #1 you could not
+    know he would post 435 more. By the time a cluster reaches 6, the run is
+    often over.
+  * `first_pct` = first_rank / total_theses, and the denominator is the token's
+    EVENTUAL thesis count. Unknowable when the thesis is posted.
 
-Deliberately NOT modelled: thesis text semantics (no evidence content predicts
-anything; the one content feature tested turned out to be a size proxy) and the
-dev flag (7 dev theses in 20,337, median -40.1%, zero winners).
+Stripping every look-ahead feature made the measurement BETTER, not worse
+(per author-token pair, outcome = that author's eventual PnL):
+
+    gate                                   clean?        n   median    win   >100%
+    baseline                                    -     2361   +10.9%  57.1%   28.0%
+    v2 shipped gate                    LOOK-AHEAD      319   +68.3%  72.4%   45.5%
+    entry-only: first 20 theses             clean      189  +164.6%  81.0%   56.1%
+    entry-only: anyone in first 5           clean       53  +194.3%  81.1%   60.4%
+    entry-only: literally first             clean       11  +715.6%  90.9%       -
+
+Absolute `first_rank` is the strongest clean feature (rho=-0.223). The
+look-ahead features are POSITIVELY correlated with outcome (thesis count +0.082,
+eventual total +0.171) — they are outcome proxies, which is exactly why they
+looked so good.
+
+**Leaderboard membership is worth nothing here** (rho=-0.057). Controlling for
+earliness it is if anything negative: unknown authors arriving in a token's
+first 20 theses median +170.2% / 81.3% win, against +88.8% / 78.3% for top-150
+traders arriving in the same window. It is displayed as context and scores zero.
+Consistent with the follower-count result (200k+ follower authors: -8.0% median,
+45.0% win) — fame is not edge, and a famous account's followers are the exit
+liquidity.
+
+So v3 = v1's rule, plus the two things v1 lacked: a liquidity gate, and a
+discovery path that can actually reach an early token (see `discovery.py`, which
+joins the sibling radar's pump.fun launch stream against fomo thesis history).
+
+Deliberately NOT modelled: thesis text semantics, the dev flag (7 dev theses in
+20,337, median -40.1%, zero winners), and author fame.
 """
 
 from __future__ import annotations
@@ -41,14 +66,13 @@ TIER_CONVICTION = "CONVICTION"
 # Priority for the shared Discord rate budget: higher number sheds first.
 TIER_PRIORITY = {TIER_CONVICTION: 1, TIER_HOT: 2, TIER_WATCH: 3}
 
-# The lowest score a token clearing every hard gate can possibly reach:
-# one conviction author past the cadence floor (+24), whose first thesis is in
-# the early half but no earlier (+10), at the minimum position size (+3).
-# v1 shipped a floor of 50 above a reachable minimum of 47, so a token could
-# pass every gate and alert nothing — a dead band found by replaying real
-# theses. `test_no_dead_band_above_the_gates` derives this value from the
-# scorer and fails if the two ever drift apart again.
-WATCH_FLOOR = 37.0
+# The lowest score a token clearing every hard gate can possibly reach: arriving
+# at the very edge of the early window (+20) with the minimum qualifying
+# position (+3). v1 shipped a WATCH floor of 50 above a reachable minimum of 47,
+# so a token could pass every gate and alert nothing — a dead band found by
+# replaying real theses. `test_no_dead_band_above_the_gates` derives this value
+# from the scorer and fails if the two ever drift apart.
+WATCH_FLOOR = 23.0
 
 
 @dataclass(slots=True)
@@ -79,6 +103,11 @@ class TokenSignal:
     ticker: str
     cluster: ConvictionCluster
     liquidity: LiquidityState
+    thesis_rank: int
+    """Theses that existed on this token before the one that triggered us.
+
+    The load-bearing number, and the only strong feature knowable at post time.
+    """
     distinct_authors: int
     leaderboard_authors: int
     total_usd: float
@@ -88,8 +117,6 @@ class TokenSignal:
     blocked_by: list[str] = field(default_factory=list)
     """Hard gates this token failed. Empty when it alerted."""
 
-    # Kept for the alerts table / backwards compatibility with the store.
-    thesis_rank: int = 0
     qualified_count: int = 0
     max_usd: float = 0.0
     minutes_since_first: float = 0.0
@@ -101,16 +128,22 @@ def evaluate(
     token_address: str,
     network_id: int,
     ticker: str,
+    thesis_rank: int,
     cluster: ConvictionCluster,
     liquidity: LiquidityState,
+    largest_usd: float = 0.0,
     total_usd: float = 0.0,
     cfg: SignalConfig | None = None,
 ) -> TokenSignal:
-    """Score a token's conviction cluster and assign a tier (or None).
+    """Score a token on entry-clean features only, and assign a tier (or None).
 
-    Returning `tier=None` is a normal outcome, but unlike v1 it should now be a
-    *minority* outcome for tokens that reach this function, because the caller
-    only calls it on tokens carrying at least one qualifying author.
+    `thesis_rank` is 0-based and ABSOLUTE: the number of theses that already
+    existed on this token. No normalisation by the eventual total, because that
+    total is future information.
+
+    `cluster` is passed through for display — who is in, and how big — but
+    contributes nothing to the score. Everything about it (author cadence,
+    position PnL) is measured after the fact.
     """
     cfg = cfg or SignalConfig()
 
@@ -119,8 +152,6 @@ def evaluate(
     score = 0.0
 
     # --- hard gate 1: someone is actually trading this ----------------------
-    # The direct fix for alerting on coins with no buyers. Ordered first so the
-    # reason a token was rejected is the real one.
     if not liquidity.known:
         blocked.append("no market data")
     else:
@@ -135,128 +166,79 @@ def evaluate(
         if liquidity.txns_m5 < cfg.min_txns_m5:
             blocked.append(f"{liquidity.txns_m5} txns in 5m — not being traded")
 
-    # --- hard gate 2: a conviction cluster exists ---------------------------
-    if cluster.count < 1:
-        blocked.append("no conviction author")
-
-    # --- conviction cadence: a GATE, not a dial -----------------------------
-    # Rank-correlated against the author's own PnL *within the already-qualified
-    # population*, thesis count scores rho=-0.002 — i.e. once an author has
-    # cleared the cadence floor, posting more is not further evidence. The first
-    # v2 draft gave 45/36/30 by cadence and was wrong to; the floor does the
-    # work. A small step is kept for the extreme tail (30+ theses medians
-    # +299.2% / 88.2% win, n=17) and nothing more is read into it.
-    top = cluster.top
-    if top is not None:
-        score += 24.0
-        if top.theses >= 30:
-            score += 6.0
-        reasons.append(f"@{top.handle} posted {top.theses} theses on this token")
-
-        # --- earliness of that author's first commitment --------------------
-        # This is the real differentiator and carries the most weight:
-        # rho=-0.189 against PnL, and by bucket, earliest 10% medians +166.6%
-        # (85.0% win) vs 10-30% +82.1% (71.9%) vs 30-50% +68.3% (75.5%).
-        if top.first_pct <= 0.05:
-            score += 34.0
-            reasons.append("their first thesis was in the token's earliest 5%")
-        elif top.first_pct <= 0.10:
-            score += 28.0
-            reasons.append("their first thesis was in the earliest 10%")
-        elif top.first_pct <= 0.30:
-            score += 18.0
-            reasons.append("their first thesis was in the earliest 30%")
-        else:
-            score += 10.0
-            reasons.append("their first thesis was in the early half")
-
-        # --- size floor (evidence, not prediction) --------------------------
-        # rho=+0.227, but position VALUE rises with price, so this is mostly
-        # post-hoc. Deliberately the smallest component.
-        if top.position_usd >= 100_000:
-            score += 10.0
-        elif top.position_usd >= 25_000:
-            score += 7.0
-        elif top.position_usd >= 5_000:
-            score += 5.0
-        else:
-            score += 3.0
-        reasons.append(f"position ${top.position_usd:,.0f} held at {top.pnl_pct:+.0f}%")
-
-    # --- independent confirmation: more conviction authors ------------------
-    # Checked specifically for the "crowding is lagging" worry that sank the
-    # leaderboard-holdings idea. It does NOT apply here: per (author, token)
-    # pair, cluster size rank-correlates +0.283 with the author's own PnL and
-    # the 8+ bucket medians +143.4% at 85.2% win (n=203). More operators
-    # committing early is real confirmation, not late crowding.
-    if cluster.count >= 8:
-        score += 18.0
-        reasons.append(f"{cluster.count} independent conviction authors")
-    elif cluster.count >= 4:
-        score += 13.0
-        reasons.append(f"{cluster.count} independent conviction authors")
-    elif cluster.count >= 2:
-        score += 8.0
-        reasons.append(f"{cluster.count} independent conviction authors")
-
-    # --- leaderboard overlay (lift, never a requirement) --------------------
-    # rho=+0.225; 2+ top-150 authors in the cluster medians +120.4% at 80.9%
-    # win vs +66.3% / 74.1% with none. Still never a gate: starcatcher444 ran
-    # the worked example while absent from the 24h top-150, because that board
-    # ranks REALIZED PnL and a conviction holder has not sold.
-    if cluster.leaderboard_count >= 3:
-        score += 16.0
-        reasons.append(f"{cluster.leaderboard_count} top-150 traders among them")
-    elif cluster.leaderboard_count >= 1:
-        score += 9.0
-        reasons.append(
-            f"{cluster.leaderboard_count} top-150 trader"
-            f"{'s' if cluster.leaderboard_count > 1 else ''} among them"
+    # --- hard gate 2: we are EARLY in the social timeline -------------------
+    # The whole signal. Past this window the measured edge decays to the base
+    # rate: ranks 100-299 median +7.3% and 300+ median +0.1%, against a +10.9%
+    # baseline. An alert on a token at rank 400 is a report, not a signal —
+    # which is precisely what the $CATE alert was.
+    if thesis_rank >= cfg.max_thesis_rank:
+        blocked.append(
+            f"thesis #{thesis_rank + 1} — past the early window "
+            f"(max {cfg.max_thesis_rank})"
         )
 
-    # --- combined conviction capital ---------------------------------------
-    # rho=+0.281. The $2M+ bucket is the standout (98.6% win, n=73) but that is
-    # plainly entangled with appreciation, so it is weighted like the size term.
-    if cluster.capital_usd >= 2_000_000:
-        score += 10.0
-        reasons.append(f"${cluster.capital_usd:,.0f} of conviction capital")
-    elif cluster.capital_usd >= 500_000:
-        score += 7.0
-        reasons.append(f"${cluster.capital_usd:,.0f} of conviction capital")
-    elif cluster.capital_usd >= 100_000:
-        score += 4.0
-        reasons.append(f"${cluster.capital_usd:,.0f} of conviction capital")
+    # --- earliness, the only strongly-scored component ----------------------
+    # Weights follow the measured decay by absolute rank.
+    if thesis_rank == 0:
+        score += 60.0
+        reasons.append("FIRST thesis on this token")
+    elif thesis_rank < 5:
+        score += 45.0
+        reasons.append(f"thesis #{thesis_rank + 1} — inside the first 5")
+    elif thesis_rank < 20:
+        score += 30.0
+        reasons.append(f"thesis #{thesis_rank + 1} — inside the first 20")
+    else:
+        score += 20.0
+        reasons.append(f"thesis #{thesis_rank + 1}")
+
+    # --- size of the largest position behind it ----------------------------
+    # Small weight. Position VALUE rises with price, so it is partly post-hoc;
+    # it earns its place as evidence that real money is here, not as prediction.
+    largest = largest_usd or (cluster.max_theses and 0.0) or 0.0
+    if cluster.authors:
+        largest = max(largest, max(a.position_usd for a in cluster.authors))
+    if largest >= 100_000:
+        score += 12.0
+    elif largest >= 25_000:
+        score += 9.0
+    elif largest >= 5_000:
+        score += 6.0
+    else:
+        score += 3.0
+    if largest:
+        reasons.append(f"largest position ${largest:,.0f}")
+
+    # --- independent authors, at this early stage ---------------------------
+    # Distinct authors arriving while the token is still socially young is
+    # confirmation. Note this is NOT v2's conviction cadence: it counts PEOPLE
+    # present now, not how many times anyone has posted, so it carries no
+    # information from the future.
+    if cluster.considered >= 5:
+        score += 14.0
+        reasons.append(f"{cluster.considered} authors already in")
+    elif cluster.considered >= 2:
+        score += 8.0
+        reasons.append(f"{cluster.considered} authors already in")
+
+    # --- leaderboard: displayed, deliberately unscored ----------------------
+    # rho=-0.057, and negative once earliness is controlled for. Kept visible
+    # because Jiv asked for it and it is useful colour, but it must never move
+    # the score or a tier. See the module docstring.
+    if cluster.leaderboard_count:
+        reasons.append(
+            f"{cluster.leaderboard_count} top-150 trader"
+            f"{'s' if cluster.leaderboard_count > 1 else ''} in (not scored)"
+        )
 
     tier: str | None = None
     if not blocked:
-        # TIERS RANK EVIDENCE, NOT EXPECTED RETURN. Read this before tuning.
-        #
-        # Replaying the 50-token harvest: the GATE separates well — tokens that
-        # alerted median +71.6% on the outcome proxy against -16.2% for the
-        # silent ones. But WITHIN the 29 that alerted, the score does not rank
-        # the outcome at all: rho=-0.146, and the top half by score medianed
-        # +51% against +121% for the bottom half. Earliness inverts at token
-        # level too (+51% early-half vs +118% late-half) even though it clearly
-        # works per (author, token) pair, because the token-level proxy is a
-        # median over all sized positions and mature tokens carry more late
-        # entrants. n=29 either way, so this is weak evidence rather than proof
-        # of inversion — but it is nowhere near enough to claim a higher tier
-        # earns more, and saying so would be inventing precision.
-        #
-        # So a tier answers "how much independent evidence is behind this call",
-        # which is defensible from the components, and it drives Discord
-        # priority and how much attention a line deserves. It is NOT a
-        # predicted-return ordering. Settling that needs the forward log with
-        # labelled outcomes; until then the alert footer says so.
-        #
-        # CONVICTION additionally requires an early lead author and a second
-        # independent one, so the top tier cannot be bought with size alone.
-        # Verified reachable with ZERO leaderboard authors (Index, score 91) —
-        # the leaderboard must never gate a tier.
-        early_lead = top is not None and top.first_pct <= 0.10
-        if score >= 88 and early_lead and cluster.count >= 2:
+        # Tiers are set by EARLINESS, the one feature with measured support, so
+        # a higher tier means "we are further to the front" rather than a claim
+        # about return. Nothing here is validated: zero labelled outcomes.
+        if thesis_rank == 0:
             tier = TIER_CONVICTION
-        elif score >= 60:
+        elif thesis_rank < 5:
             tier = TIER_HOT
         elif score >= WATCH_FLOOR:
             tier = TIER_WATCH
@@ -267,6 +249,7 @@ def evaluate(
         ticker=ticker,
         cluster=cluster,
         liquidity=liquidity,
+        thesis_rank=thesis_rank,
         distinct_authors=cluster.considered,
         leaderboard_authors=cluster.leaderboard_count,
         total_usd=total_usd or cluster.capital_usd,
@@ -274,8 +257,7 @@ def evaluate(
         score=round(score, 1),
         reasons=reasons,
         blocked_by=blocked,
-        thesis_rank=top.first_rank if top else 0,
         qualified_count=cluster.count,
-        max_usd=max((a.position_usd for a in cluster.authors), default=0.0),
+        max_usd=largest,
         has_x_link=False,
     )

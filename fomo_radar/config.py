@@ -47,25 +47,30 @@ class SignalConfig:
     # "X link edge" is that size difference.
     min_thesis_usd: float = 1000.0
 
-    # --- conviction cadence, the v2 core -----------------------------------
-    # Theses by ONE author on ONE token. Per (author, token) pair this is the
-    # strongest at-post-time feature measured: >=6 theses whose first landed in
-    # the token's early half gives +68.3% median / 71.6% win (n=299) against a
-    # +10.9% / 57.1% baseline. v1 discounted repeat posting as "not
-    # confirmation", which was backwards.
-    min_author_theses: int = 6
+    # --- earliness: the only entry-clean feature with measured support ----
+    # ABSOLUTE thesis rank. A token is a candidate only while fewer than this
+    # many theses exist on it. Measured per (author, token) pair, outcome being
+    # that author's eventual PnL:
+    #
+    #     rank 0 (first ever)  n=  11  med +715.6%  win 90.9%
+    #     ranks 1-4            n=  42  med +151.2%  win 78.6%
+    #     ranks 5-19           n= 136  med +122.9%  win 80.9%
+    #     ranks 20-99          n= 431  med  +50.3%  win 68.4%
+    #     ranks 100-299        n= 905  med   +7.3%  win 52.9%
+    #     ranks 300+           n= 836  med   +0.1%  win 50.2%
+    #
+    # against a +10.9% / 57.1% baseline. The edge is gone by rank 100, which is
+    # why the $CATE alert at rank ~400 was a trophy rather than a signal.
+    #
+    # NOT normalised by the token's eventual thesis count. v2 used
+    # first_rank/total, and `total` is future information — one of the two
+    # look-ahead features that made v2 describe winners instead of finding them.
+    max_thesis_rank: int = 20
 
-    # Leaderboard authors clear on a lower count because >=3 theses from one
-    # already reaches 73.6% win — above what an off-board author reaches at 6.
-    # The lift is priced in here rather than stacked on top of the full floor.
-    min_author_theses_leaderboard: int = 3
-
-    # The author's FIRST thesis must land in this share of the token's timeline.
-    # This is where v1's earliness survives: it is a property of the author's
-    # entry, not of our arrival, so it is computable from backfilled history no
-    # matter how late we start watching. Measured by decile of first post:
-    # d1-2 +72.4%/72.8% win, d3-5 +18.9%/59.0%, d6-8 -3.9%/47.7%, d9-10 -0.7%/49.0%.
-    max_first_thesis_pct: float = 0.5
+    # Deliberately absent: any gate on how MANY theses one author has posted.
+    # v2 gated on >=6 and it was circular — cadence accumulates only because the
+    # token ran, and within the qualified population it carried rho=-0.002
+    # against the author's own PnL. See signal.py's docstring.
 
     # --- liquidity: the "is anyone actually buying this" gate --------------
     # New in v2 and the direct fix for alerting on coins with no buyers. For

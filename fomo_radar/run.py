@@ -8,23 +8,29 @@ What it does each cycle
 1. Poll the global feed (`/feed/tradingActivity`, 25 items, no pagination) and
    persist every item — theses AND plain swaps. The swaps are the base rate; a
    thesis hit-rate with nothing to beat is not a result.
-2. For any token that just received a NEW thesis, backfill that token's real
-   thesis history once, so author cadence and first-thesis earliness are
-   measured against what actually happened rather than against the moment we
-   started watching.
-3. Build the author conviction profiles, check there is a live market in the
-   token, score, and alert — re-alerting only on a genuine tier upgrade.
-4. Every few hours, snapshot all four leaderboard windows. This also populates
-   the radar's `wallets` table with Solana addresses — the free smart-money
-   source PRD Phase 2 was blocked on.
+2. For any token that just received a NEW thesis, backfill its real thesis
+   history once so the ABSOLUTE rank of that thesis is correct rather than
+   relative to when we started watching.
+3. If we are early (rank under `max_thesis_rank`) and the token has a live
+   market, alert. Everything else is dropped, loudly enough to audit.
+4. Record forward prices for alerted tokens so outcomes can be labelled. Until
+   that table has rows, NOTHING here is validated.
+5. Every few hours, snapshot all four leaderboard windows. This also populates
+   the radar's `wallets` table with Solana addresses.
 
-Step 3 is where v2 differs from v1. v1 required a token to be inside its first
-10 theses ever, which no established token can satisfy once we join its
-timeline at rank ~500 — over 17 hours it watched ALLINU take positions of
-$328k/$206k/$202k at +742%/+606%/+593% and alerted nothing. v2 asks instead
-whether any individual author committed EARLY and has kept posting since, which
-is answerable from backfilled history at any arrival time, and it refuses to
-alert on a token with no live market.
+Step 3 is v1's rule, restored. v2 replaced it with author "conviction cadence"
+and produced trophies: a $CATE alert on a $67M token whose lead author was
+already +1735% after 436 theses over 333 hours. Both v2 features needed
+information from the future — thesis count accumulates only because the token
+ran, and `first_rank/total` needs the eventual total. Stripping them made the
+measurement better (first 20 theses: +164.6% median / 81.0% win, against
++68.3% / 72.4% for the v2 gate and a +10.9% / 57.1% baseline).
+
+v1's real defect was never the gate, it was the INPUT: the global feed shows
+tokens at rank 70-500 regardless of `threshold` (verified at 0/10/100/1000), so
+an early-rank gate starves. `discovery.py` is the fix — it joins the sibling
+radar's pump.fun launch stream against fomo thesis history, which reaches tokens
+at rank 1-20 by construction.
 """
 
 from __future__ import annotations
@@ -42,11 +48,21 @@ from .api import FomoAPI
 from .config import SOLANA_NETWORK_ID, FomoConfig, load_config
 from .conviction import build_cluster
 from .discord_sink import FomoDiscordSink
+from .discovery import MAX_CHECKS_PER_SWEEP, RECHECK_S, liquid_launches
 from .session import AuthError, FomoSession, RateLimited
 from .signal import TIER_PRIORITY, LiquidityState, evaluate
 from .store import FomoStore
 
 log = logging.getLogger("fomo_radar.run")
+
+
+def _parse_iso(ts: str) -> datetime | None:
+    """Tolerant ISO parse; a malformed timestamp must not kill the loop."""
+    try:
+        return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return None
+
 
 # Verified live: only these three exist on /v2/leaderboard/{window}. The UI's
 # "ALL" tab is served by something else — `all`, `alltime`, `all-time`,
@@ -67,6 +83,27 @@ HEARTBEAT_S = 300.0
 # the rate budget for no new information.
 LIQUIDITY_TTL_S = 90.0
 
+# Ages, measured from the FIRST delivered alert, at which an alerted token's
+# price is recorded so the outcome can be labelled later.
+#
+# This is the missing half of the project. Every gate in `signal.py` is a
+# measured *ordering* on a survivorship-biased sample; none of it is a validated
+# hit rate until alerts are tracked forward. The spacing is longer than the
+# sibling radar's because a conviction thesis plays out over hours to days, not
+# over the first five minutes of a launch. The 1h/6h/24h/7d marks line up with
+# `memecoin_radar.backtest.RETURN_WINDOWS` so its labeller reads these directly.
+OUTCOME_AGES_S = (
+    300.0, 900.0, 3600.0, 21_600.0, 86_400.0, 259_200.0, 604_800.0,
+)
+
+# How often the loop checks whether any alerted token is due a price reading.
+OUTCOME_TICK_S = 120.0
+
+# How often to sweep the sibling radar's launch stream for socially-young
+# tokens. Social footprint grows over minutes to hours, so this is deliberately
+# slower than the feed poll.
+DISCOVERY_TICK_S = 180.0
+
 
 class FomoRadar:
     def __init__(self, cfg: FomoConfig) -> None:
@@ -79,6 +116,9 @@ class FomoRadar:
         self._last_beat = 0.0
         self._polls = 0
         self._items_since_beat = 0
+        self._last_outcome_tick = 0.0
+        self._last_discovery = 0.0
+        self._discovery_seen: dict[str, float] = {}
         self._stop = asyncio.Event()
 
     def request_stop(self) -> None:
@@ -135,6 +175,14 @@ class FomoRadar:
         if time.monotonic() - self._last_leaderboard > self.cfg.leaderboard_interval_s:
             await self._snapshot_leaderboard(api)
 
+        if time.monotonic() - self._last_outcome_tick > OUTCOME_TICK_S:
+            await self._track_outcomes()
+            self._last_outcome_tick = time.monotonic()
+
+        if time.monotonic() - self._last_discovery > DISCOVERY_TICK_S:
+            await self._discover_early(api, sink)
+            self._last_discovery = time.monotonic()
+
         items = await api.trading_activity(threshold=self.cfg.signal.min_thesis_usd)
         if not items:
             # Zero rows from a live feed is a source failure, never a quiet
@@ -186,22 +234,31 @@ class FomoRadar:
         if not stats:
             return
 
-        # Author cadence and first-thesis earliness are computed from the FULL
-        # backfilled history, so they do not depend on when we started watching.
+        # ABSOLUTE thesis rank: how many theses existed before this one. This is
+        # the signal, and it is recomputed post-backfill because the rank stamped
+        # at write time was relative to what we had seen. Not normalised by the
+        # token's eventual thesis count — that is future information, and using
+        # it is what made v2 alert on tokens that had already run.
+        row = self.store.conn.execute(
+            """SELECT COUNT(*) AS n FROM fomo_feed_items
+               WHERE token_address=? AND network_id=? AND item_type='thesis'
+                 AND created_at < ?""",
+            (item.token_address, item.network_id, item.created_at),
+        ).fetchone()
+        thesis_rank = int(row["n"])
+
+        # Cheap exit before spending a DexScreener call. Most feed items are on
+        # tokens with hundreds of theses; those are reports, not signals.
+        if thesis_rank >= self.cfg.signal.max_thesis_rank:
+            return
+
+        # Cluster is for DISPLAY only now — who is in and how big. Every one of
+        # its features is measured after the fact, so none of them score.
         profiles = self.store.author_profiles(
             item.token_address, item.network_id, self._lb_handles
         )
-        cluster = build_cluster(
-            profiles,
-            min_theses=self.cfg.signal.min_author_theses,
-            min_theses_leaderboard=self.cfg.signal.min_author_theses_leaderboard,
-            max_first_pct=self.cfg.signal.max_first_thesis_pct,
-            min_position_usd=self.cfg.signal.min_thesis_usd,
-        )
-        # Cheap exit before spending a DexScreener call: no conviction author
-        # means no alert regardless of what the market looks like.
-        if cluster.count < 1:
-            return
+        cluster = build_cluster(profiles, min_position_usd=0.0, max_first_pct=1.0,
+                               min_theses=1, min_theses_leaderboard=1)
 
         # The feed is multi-chain and our liquidity source is not. Verified
         # 2026-09-17: tokens on network 4663 (ASTEROID, HOTDOG, JEV) return no
@@ -210,9 +267,9 @@ class FomoRadar:
         # a dead market forever; said out loud, they are a coverage gap.
         if item.network_id != SOLANA_NETWORK_ID:
             log.info(
-                "skip $%s — %d conviction author(s) but network %d is outside "
-                "our price coverage (Solana only)",
-                item.ticker, cluster.count, item.network_id,
+                "skip $%s at thesis #%d — network %d is outside our price "
+                "coverage (Solana only)",
+                item.ticker, thesis_rank + 1, item.network_id,
             )
             return
 
@@ -222,19 +279,21 @@ class FomoRadar:
             token_address=item.token_address,
             network_id=item.network_id,
             ticker=item.ticker,
+            thesis_rank=thesis_rank,
             cluster=cluster,
             liquidity=liquidity,
+            largest_usd=float(stats.get("max_usd") or 0.0),
             total_usd=float(stats.get("total_usd") or 0.0),
             cfg=self.cfg.signal,
         )
         if sig.tier is None:
             if sig.blocked_by:
-                # Logged, not silent: "a conviction cluster existed but the
-                # token failed a hard gate" is the single most useful line for
-                # telling a working filter apart from a broken one.
+                # Logged, not silent: "we were early but the token failed a hard
+                # gate" is the single most useful line for telling a working
+                # filter apart from a broken one.
                 log.info(
-                    "skip $%s — %d conviction author(s) but blocked: %s",
-                    item.ticker, cluster.count, "; ".join(sig.blocked_by),
+                    "skip $%s at thesis #%d — blocked: %s",
+                    item.ticker, thesis_rank + 1, "; ".join(sig.blocked_by),
                 )
             return
 
@@ -267,6 +326,128 @@ class FomoRadar:
             sig.tier, sig.ticker, sig.score, sig.thesis_rank,
             sig.distinct_authors, sig.leaderboard_authors, delivered,
         )
+
+    async def _discover_early(self, api: FomoAPI, sink: FomoDiscordSink) -> None:
+        """Find socially-young tokens via the sibling radar's launch stream.
+
+        This is the input fix that makes an early-rank gate able to fire at all.
+        The global feed cannot reach rank<=20 at any threshold, but a pump.fun
+        launch that just developed a market has almost no social footprint by
+        construction. See `discovery.py` for the measurement.
+        """
+        candidates = liquid_launches(self.store.conn)
+        if not candidates:
+            return
+
+        now = time.monotonic()
+        checked = 0
+        early = 0
+        for cand in candidates:
+            last = self._discovery_seen.get(cand.mint, 0.0)
+            if last and now - last < RECHECK_S:
+                continue
+            self._discovery_seen[cand.mint] = now
+            checked += 1
+            if checked > MAX_CHECKS_PER_SWEEP:
+                # Budgeted per sweep: 60 calls in one burst tripped a real
+                # Cloudflare 429, and a backoff stalls the feed poll as well.
+                log.info(
+                    "discovery: hit the %d-call sweep budget, %d candidates "
+                    "deferred to the next sweep",
+                    MAX_CHECKS_PER_SWEEP, len(candidates) - checked,
+                )
+                break
+
+            history = await self._thesis_history(api, cand.mint, SOLANA_NETWORK_ID)
+            if not history:
+                continue
+            # Persist regardless: these rows are the base rate, and they make
+            # the rank correct for every later evaluation.
+            self.store.record_items(history)
+            if len(history) >= self.cfg.signal.max_thesis_rank:
+                continue
+            early += 1
+            # Evaluate on the newest thesis, which is the one that just told us
+            # the token has social traction while still being early.
+            newest = max(history, key=lambda h: h.created_at)
+            await self._consider(api, sink, newest)
+
+        if checked:
+            log.info(
+                "discovery: checked %d liquid launches, %d were socially early "
+                "(<%d theses)",
+                checked, early, self.cfg.signal.max_thesis_rank,
+            )
+
+    async def _thesis_history(self, api: FomoAPI, mint: str, network_id: int):
+        now = datetime.now(timezone.utc)
+        after = int((now - timedelta(days=BACKFILL_DAYS)).timestamp() * 1000)
+        before = int(now.timestamp() * 1000)
+        try:
+            return await api.token_thesis_history(
+                mint, network_id, after_ms=after, before_ms=before,
+                limit=500, threshold=0.0,
+            )
+        except Exception as exc:  # noqa: BLE001
+            log.warning("thesis history failed for %s: %s", mint[:10], exc)
+            return []
+
+    async def _track_outcomes(self) -> None:
+        """Record forward prices for alerted tokens that are due a reading.
+
+        Without this the radar can never be validated: it would keep producing
+        alerts that are never scored against what happened next, which is the
+        state both radars have been in since they shipped (zero labelled
+        outcomes). Reads are batched into one DexScreener call.
+        """
+        now = datetime.now(timezone.utc)
+        due: list[tuple[dict, float]] = []
+        for tok in self.store.alerted_tokens():
+            first = _parse_iso(str(tok["first_alert"]))
+            if first is None:
+                continue
+            age = (now - first).total_seconds()
+            recorded = self.store.recorded_ages(
+                str(tok["token_address"]), int(tok["network_id"])  # type: ignore[arg-type]
+            )
+            # The oldest unrecorded mark this token has already passed. One
+            # reading per tick per token keeps the request count bounded.
+            pending = [a for a in OUTCOME_AGES_S if age >= a and a not in recorded]
+            if pending:
+                due.append((tok, min(pending)))
+
+        if not due:
+            return
+
+        addrs = [str(t["token_address"]) for t, _ in due]
+        try:
+            async with DexScreenerClient() as dex:
+                states = await dex.token_states(addrs)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("outcome tracking lookup failed: %s", exc)
+            return
+
+        wrote = 0
+        for tok, target_age in due:
+            st = states.get(str(tok["token_address"]))
+            if st is None:
+                # Do NOT write a zero row. An unpriceable token must stay a gap
+                # in the series, not a fabricated crash to zero.
+                continue
+            self.store.record_price_snapshot(
+                token_address=str(tok["token_address"]),
+                network_id=int(tok["network_id"]),  # type: ignore[arg-type]
+                age_seconds=target_age,
+                price_usd=st.price_usd,
+                market_cap_usd=st.market_cap_usd,
+                liquidity_usd=st.liquidity_usd,
+                volume_h1_usd=st.volume_h1_usd,
+                buys_m5=st.buys_m5,
+                sells_m5=st.sells_m5,
+            )
+            wrote += 1
+        if wrote:
+            log.info("outcome tracking: recorded %d price snapshots", wrote)
 
     async def _liquidity(self, token_address: str) -> LiquidityState:
         """Current market state for one token, via the sibling radar's client.

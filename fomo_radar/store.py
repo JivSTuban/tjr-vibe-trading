@@ -132,6 +132,60 @@ CREATE TABLE IF NOT EXISTS fomo_alerts (
 );
 CREATE INDEX IF NOT EXISTS idx_fomo_alerts_token ON fomo_alerts(token_address);
 
+-- Forward price series for tokens we alerted on. This is the missing half of
+-- the whole project: every threshold in `signal.py` is a measured ORDERING on a
+-- survivorship-biased sample, and none of it is a validated hit rate until
+-- alerts are tracked forward and labelled.
+--
+-- Shaped so `memecoin_radar.backtest.label_one` can consume it unchanged: it
+-- wants `mint`, `age_seconds`, `market_cap_usd` and `liquidity_usd`, and it is
+-- already generic over a list of dicts. `age_seconds` here is measured from the
+-- ALERT, not from the token's launch, which is the only clock that answers
+-- "what would have happened if you acted on this".
+CREATE TABLE IF NOT EXISTS fomo_price_snapshots (
+    token_address   TEXT NOT NULL,
+    network_id      INTEGER NOT NULL,
+    ts              TEXT NOT NULL,
+    age_seconds     REAL NOT NULL,
+    price_usd       REAL,
+    market_cap_usd  REAL,
+    liquidity_usd   REAL,
+    volume_h1_usd   REAL,
+    buys_m5         INTEGER,
+    sells_m5        INTEGER,
+    PRIMARY KEY (token_address, network_id, age_seconds)
+);
+CREATE INDEX IF NOT EXISTS idx_fomo_px_token
+    ON fomo_price_snapshots(token_address, age_seconds);
+
+-- One labelled outcome per alerted token. Mirrors `outcomes` in the sibling
+-- radar, kept separate because the entry clock differs: there, age is measured
+-- from launch; here, from the alert.
+CREATE TABLE IF NOT EXISTS fomo_outcomes (
+    token_address   TEXT NOT NULL,
+    network_id      INTEGER NOT NULL,
+    ticker          TEXT,
+    tier            TEXT,
+    score           REAL,
+    alerted_at      TEXT,
+    labeled_at      TEXT,
+    entry_mcap_usd  REAL,
+    entry_liquidity_usd REAL,
+    max_return_1h   REAL,
+    max_return_6h   REAL,
+    max_return_24h  REAL,
+    max_return_7d   REAL,
+    max_drawdown    REAL,
+    rugged          INTEGER,
+    t_2x            REAL,
+    t_5x            REAL,
+    t_10x           REAL,
+    t_20x           REAL,
+    t_50x           REAL,
+    t_100x          REAL,
+    PRIMARY KEY (token_address, network_id)
+);
+
 -- Mirrors `memecoin_radar.store`'s definition verbatim. Repeated here, not
 -- imported, because either package may be the one that creates the shared
 -- database file and `CREATE TABLE IF NOT EXISTS` is idempotent. If the radar's
@@ -343,6 +397,145 @@ class FomoStore:
             (token_address, network_id),
         ).fetchone()
         return bool(row and row["alerted_at"])
+
+    # ------------------------------------------------- forward outcome tracking
+
+    def alerted_tokens(self) -> list[dict[str, object]]:
+        """Every token we have delivered an alert for, with its first alert time.
+
+        The first delivered alert is the entry clock: that is the moment Jiv
+        could have acted. Re-alerts on a tier upgrade must not move it, or the
+        strategy gets credited with an entry it could not have taken.
+        """
+        rows = self.conn.execute(
+            """SELECT a.token_address, a.network_id,
+                      MIN(a.ts)  AS first_alert,
+                      MAX(a.score) AS score,
+                      MAX(a.ticker) AS ticker
+               FROM fomo_alerts a
+               WHERE a.delivered = 1
+               GROUP BY a.token_address, a.network_id"""
+        ).fetchall()
+        out = []
+        for r in rows:
+            tier = self.best_tier_so_far(r["token_address"], r["network_id"])
+            out.append(
+                {
+                    "token_address": r["token_address"],
+                    "network_id": r["network_id"],
+                    "first_alert": r["first_alert"],
+                    "score": r["score"],
+                    "ticker": r["ticker"],
+                    "tier": tier,
+                }
+            )
+        return out
+
+    def record_price_snapshot(
+        self,
+        *,
+        token_address: str,
+        network_id: int,
+        age_seconds: float,
+        price_usd: float,
+        market_cap_usd: float,
+        liquidity_usd: float,
+        volume_h1_usd: float,
+        buys_m5: int,
+        sells_m5: int,
+    ) -> None:
+        """Store one forward price reading. Idempotent per (token, age)."""
+        self.conn.execute(
+            """INSERT OR IGNORE INTO fomo_price_snapshots
+               (token_address,network_id,ts,age_seconds,price_usd,market_cap_usd,
+                liquidity_usd,volume_h1_usd,buys_m5,sells_m5)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (token_address, network_id, _now(), age_seconds, price_usd,
+             market_cap_usd, liquidity_usd, volume_h1_usd, buys_m5, sells_m5),
+        )
+        self.conn.commit()
+
+    def price_series(self, token_address: str, network_id: int) -> list[dict[str, object]]:
+        """The forward series, shaped for `memecoin_radar.backtest.label_one`.
+
+        That function is already generic over a list of dicts, so the only work
+        here is naming the keys it reads (`mint`, `age_seconds`,
+        `market_cap_usd`, `liquidity_usd`) rather than reimplementing labelling.
+        """
+        rows = self.conn.execute(
+            """SELECT age_seconds, price_usd, market_cap_usd, liquidity_usd
+               FROM fomo_price_snapshots
+               WHERE token_address = ? AND network_id = ?
+               ORDER BY age_seconds""",
+            (token_address, network_id),
+        ).fetchall()
+        return [
+            {
+                "mint": token_address,
+                "age_seconds": r["age_seconds"],
+                "price_usd": r["price_usd"],
+                "market_cap_usd": r["market_cap_usd"],
+                "liquidity_usd": r["liquidity_usd"],
+            }
+            for r in rows
+        ]
+
+    def recorded_ages(self, token_address: str, network_id: int) -> set[float]:
+        rows = self.conn.execute(
+            """SELECT age_seconds FROM fomo_price_snapshots
+               WHERE token_address = ? AND network_id = ?""",
+            (token_address, network_id),
+        ).fetchall()
+        return {float(r["age_seconds"]) for r in rows}
+
+    def record_outcome(
+        self,
+        *,
+        token_address: str,
+        network_id: int,
+        ticker: str,
+        tier: str | None,
+        score: float,
+        alerted_at: str,
+        entry_mcap_usd: float,
+        entry_liquidity_usd: float,
+        returns: dict[str, float | None],
+        max_drawdown: float,
+        rugged: bool,
+        times: dict[str, float | None],
+    ) -> None:
+        self.conn.execute(
+            """INSERT INTO fomo_outcomes
+               (token_address,network_id,ticker,tier,score,alerted_at,labeled_at,
+                entry_mcap_usd,entry_liquidity_usd,
+                max_return_1h,max_return_6h,max_return_24h,max_return_7d,
+                max_drawdown,rugged,t_2x,t_5x,t_10x,t_20x,t_50x,t_100x)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+               ON CONFLICT(token_address,network_id) DO UPDATE SET
+                 labeled_at=excluded.labeled_at,
+                 tier=excluded.tier,
+                 score=excluded.score,
+                 entry_mcap_usd=excluded.entry_mcap_usd,
+                 entry_liquidity_usd=excluded.entry_liquidity_usd,
+                 max_return_1h=excluded.max_return_1h,
+                 max_return_6h=excluded.max_return_6h,
+                 max_return_24h=excluded.max_return_24h,
+                 max_return_7d=excluded.max_return_7d,
+                 max_drawdown=excluded.max_drawdown,
+                 rugged=excluded.rugged,
+                 t_2x=excluded.t_2x, t_5x=excluded.t_5x, t_10x=excluded.t_10x,
+                 t_20x=excluded.t_20x, t_50x=excluded.t_50x, t_100x=excluded.t_100x""",
+            (
+                token_address, network_id, ticker, tier, score, alerted_at, _now(),
+                entry_mcap_usd, entry_liquidity_usd,
+                returns.get("max_return_1h"), returns.get("max_return_6h"),
+                returns.get("max_return_24h"), returns.get("max_return_7d"),
+                max_drawdown, int(rugged),
+                times.get("t_2x"), times.get("t_5x"), times.get("t_10x"),
+                times.get("t_20x"), times.get("t_50x"), times.get("t_100x"),
+            ),
+        )
+        self.conn.commit()
 
     def best_tier_so_far(self, token_address: str, network_id: int) -> str | None:
         """The strongest tier already delivered for this token, if any.
