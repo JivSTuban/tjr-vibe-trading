@@ -117,3 +117,6 @@ backtesting/eod_pressure_reversal/runs/
 stock-scan/setups/
 stock-scan/insider-setups/
 stock-scan/prespike-setups/
+
+# Meme Coin Alpha Radar: collected dataset, not source
+memecoin_radar/data/
