@@ -32,7 +32,7 @@ from datetime import datetime, timedelta, timezone
 from .api import FomoAPI
 from .config import FomoConfig, load_config
 from .discord_sink import FomoDiscordSink
-from .session import AuthError, FomoSession
+from .session import AuthError, FomoSession, RateLimited
 from .signal import evaluate
 from .store import FomoStore
 
@@ -73,11 +73,19 @@ class FomoRadar:
                 dry_run=self.cfg.dry_run,
             ) as sink:
                 self._lb_handles = self.store.leaderboard_handles()
+                backoff = 0.0
                 while not self._stop.is_set():
                     try:
                         await self._cycle(api, sink)
+                        backoff = 0.0
                     except AuthError:
                         raise  # dead credentials must stop the daemon loudly
+                    except RateLimited as exc:
+                        # Exponential backoff, capped. Polling into a Cloudflare
+                        # block just extends it, and every missed window is data
+                        # we can never recover.
+                        backoff = min(max(backoff * 2, 60.0), 900.0)
+                        log.warning("%s — backing off %.0fs", exc, backoff)
                     except Exception as exc:  # noqa: BLE001
                         # A transient API blip must not kill an always-on job,
                         # but it must be visible: a silent empty feed is the
@@ -88,7 +96,8 @@ class FomoRadar:
                         break
                     try:
                         await asyncio.wait_for(
-                            self._stop.wait(), timeout=self.cfg.poll_interval_s
+                            self._stop.wait(),
+                            timeout=backoff or self.cfg.poll_interval_s,
                         )
                     except asyncio.TimeoutError:
                         pass

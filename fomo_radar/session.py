@@ -49,6 +49,18 @@ class AuthError(RuntimeError):
     """Raised when the stored refresh token no longer mints access tokens."""
 
 
+class RateLimited(RuntimeError):
+    """Raised on a 429 from fomo's Cloudflare edge.
+
+    Tripped for real on 2026-09-17 by running a second session alongside the
+    daemon and issuing four threshold probes back to back. The response is a
+    Cloudflare "Access denied" HTML page, not JSON, so without this the caller
+    sees a generic parse failure and keeps polling into the block. The feed is a
+    25-item window with no pagination, so polling through a rate limit silently
+    loses everything that scrolls past.
+    """
+
+
 # Executed inside the page. Returns the parsed body plus the HTTP status so the
 # caller can distinguish "fomo said no" from "the fetch never completed".
 _FETCH_JS = """
@@ -218,6 +230,11 @@ class FomoSession:
                 },
             )
             status = res.get("status")
+        if status == 429:
+            raise RateLimited(
+                f"fomo {method} {path} -> 429 (Cloudflare). Back off; do not "
+                "keep polling into the block."
+            )
         if status != 200:
             raise RuntimeError(
                 f"fomo {method} {path} -> {status}: {res.get('text')}. "
