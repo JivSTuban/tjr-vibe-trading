@@ -137,3 +137,102 @@ no free source**. fomo unblocks it, but not in the way the PRD assumed.
   the GoTrade internal API — read-only, your own account, but it is their private API
   behind a bot shield. Your call.
 - If yes: harvest on the Mini next to `memecoin_radar`, or keep it local-only?
+
+---
+
+# Addendum, 2026-09-17 evening — the conviction formula (v2)
+
+Written after Jiv reported the live radars were surfacing coins nobody was
+buying, and asked for the leaderboard's own method, citing starcatcher444's
+ALLINU thesis (a dozen posts over five days, accumulating through drawdown,
+"consider my supply locked").
+
+## What was broken
+
+`fomo_radar` v1 gated on **thesis earliness**: a token had to be inside its
+first ~10 theses ever. That effect is real and monotonic (above), but it is
+**operationally unreachable** — we join a token's social timeline at rank ~500.
+
+Proof, from the live database: between 01:13 and 10:38 UTC the harvester
+recorded ALLINU theses carrying positions of **$328k, $206k, $202k and $111k at
++742%, +606%, +593% and +1483%** on a token with a deep market. It fired
+**zero alerts**, because every one of those theses was past rank 10.
+4,177 items, 13 tokens, 0 alerts. This is instance **7** of the
+unreachable-signal bug class.
+
+Separately, `memecoin_radar` was the source of the untradeable coins: across its
+44 upside alerts, **peak liquidity medianed $3,257** (p75 $3,419) — the
+bonding-curve floor. All 44 passed the flow-evidence check, median peak buy
+count 82. Buys are not a market.
+
+## The formula, measured
+
+Re-cut the same 20,337-thesis harvest with **one row per (author, token) pair**
+instead of per thesis. That de-duplication is essential: fomo attaches the
+author's *current* position and PnL to every one of their historical theses, so
+a handle with 34 theses contributed 34 identical outcomes and inflated n by
+~3.4x. The per-thesis version of the headline read +209.9%; per pair it is
++63.4%.
+
+Restricted to features knowable when a thesis is posted:
+
+| gate | n | median | win | p25 | >+100% |
+|---|---|---|---|---|---|
+| baseline (all pairs) | 2,361 | +10.9% | 57.1% | −23.7% | 28.0% |
+| conviction ≥3 theses | 797 | +30.8% | 63.0% | −18.5% | 35.6% |
+| conviction ≥3 + early half | 622 | +52.6% | 67.4% | −16.0% | 41.0% |
+| **conviction ≥6 + early half** | 299 | **+68.3%** | **71.6%** | −9.0% | 45.2% |
+| conviction ≥12 + early half | 112 | +79.4% | 73.2% | −8.4% | 46.4% |
+| conviction ≥6 + early + leaderboard | 45 | +57.6% | **75.6%** | **−1.9%** | 40.0% |
+
+Cross-tabbed, the strongest cell is **12+ theses whose first landed in the
+token's early deciles: +99% median, 78% win, n=91**. That is the starcatcher
+pattern, and it is the thing to copy.
+
+## Four things that overturn earlier choices
+
+1. **Repeat posting by one handle is the signal, not noise.** v1 explicitly
+   discounted it ("one handle three times in four minutes is not
+   confirmation"). Per pair: 1 thesis 53.5% win → 12+ 67.2%.
+2. **Cadence is a GATE, not a dial.** Within the already-qualified population,
+   thesis count rank-correlates **rho=−0.002** with the author's own PnL. Past
+   the floor, posting more is not further evidence. Earliness is the real
+   differentiator (**rho=−0.189**; earliest 10% +166.6%/85.0% win vs 30–50%
+   +68.3%/75.5%).
+3. **Crowding is NOT lagging here** — checked specifically, because that is what
+   sank the leaderboard-holdings idea. Cluster size rank-correlates **+0.283**
+   with the author's own PnL, capital **+0.281**, leaderboard count **+0.225**.
+   An apparent tier inversion in the first replay was n=2 and n=4 buckets.
+4. **"Developer backed" has no support.** Seven dev theses exist in 20,337
+   (three author-token pairs), median **−40.1%**, zero winners. Not modelled.
+   Jiv asked for it; the data cannot carry it.
+
+**The leaderboard lifts, it must never gate.** On-leaderboard authors median
++53.6% / 73.0% win vs +9.4% / 56.2% off it — a real effect. But
+**starcatcher444 was not in the 24h top-150** while running the ALLINU thesis,
+because that board ranks *realized* PnL and a conviction holder has not sold.
+Requiring leaderboard membership would have missed the archetype that prompted
+the work.
+
+## Replay of the v2 gate over all 50 harvested tokens
+
+29 of 50 alert (14 CONVICTION / 11 HOT / 4 WATCH). On the outcome proxy:
+
+* **alerted tokens: +71.6% median · silent tokens: −16.2%** — the gate separates.
+* **Within the alerted set the score does NOT rank outcome**: rho=−0.146, and
+  the top half by score medianed +51% against +121% for the bottom half.
+
+So tiers rank **evidence, not expected return**, and the code and the alert
+footer both say so. A higher tier means more independent conviction behind the
+call; it is not a claim that it pays more. Settling that needs the forward log
+with labelled outcomes. n=29, so this is weak evidence rather than proof of
+inversion — but nowhere near enough to sell a tier as a return ranking.
+
+## Still not validated
+
+**Zero labelled outcomes.** Every number here is measured on a
+survivorship-biased sample (trending tokens only), where the baseline itself is
++10.9% median / 57% win — a level no random token pool reaches. And reverse
+causality is live: people post more when a position is winning, so cadence is
+partly an *effect* of the run. Requiring the author's first thesis to be early
+constrains that; it does not remove it.

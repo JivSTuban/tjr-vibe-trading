@@ -74,6 +74,41 @@ def _has_flow_evidence(cand: Candidate) -> bool:
     return any(k in cand.moon.components for k in FLOW_COMPONENTS)
 
 
+def peak_liquidity(cand: Candidate) -> float:
+    """Best liquidity in USD observed across the snapshot series.
+
+    The PEAK rather than the latest reading, because a token is judged on
+    whether it ever became tradeable at all and one stale snapshot should not
+    veto a name that is actively filling out.
+    """
+    if not cand.snapshots:
+        return 0.0
+    return max((s.liquidity_usd or 0.0) for s in cand.snapshots)
+
+
+def _is_tradeable(cand: Candidate, th: Thresholds) -> tuple[bool, str]:
+    """Could a human actually take and exit a position in this token?
+
+    Added 2026-09-17 after auditing what this radar had delivered. Across its
+    44 upside alerts, peak liquidity medianed **$3,257** with a p75 of $3,419 —
+    the bonding-curve floor, i.e. no market. All of them passed
+    `_has_flow_evidence` (median peak buy count 82), because buys are not the
+    same thing as a market: at $3k liquidity there is no exit at any size worth
+    taking. The distribution has a sharp gap — 37 of 44 never left ~$3.3k while
+    7 developed real markets — and the floor sits inside it.
+
+    `_has_flow_evidence` asks whether anyone traded. This asks whether the
+    result is a market. Both are required.
+
+    Liquidity only, deliberately: Moon scores early entry, so it REWARDS a low
+    market cap, and gating on cap would fight this radar's own premise.
+    """
+    liq = peak_liquidity(cand)
+    if liq < th.min_alert_liquidity_usd:
+        return False, f"peak liquidity ${liq:,.0f} < ${th.min_alert_liquidity_usd:,.0f}"
+    return True, ""
+
+
 def decide(cand: Candidate, th: Thresholds) -> list[Alert]:
     """Return the alerts this candidate should fire right now, possibly none."""
     if cand.moon is None or cand.rug is None:
@@ -123,9 +158,16 @@ def decide(cand: Candidate, th: Thresholds) -> list[Alert]:
         fire("SMART_MONEY", [f"{len(cand.smart_wallets)} tracked wallets entered"])
 
     # Upside tiers, loudest first so one pass cannot fire both HOT and ULTRA.
-    # Both preconditions apply to every tier including WATCH: enough of the
-    # intended evidence was measurable, and some of it was actual buying.
+    # Three preconditions apply to every tier including WATCH: enough of the
+    # intended evidence was measurable, some of it was actual buying, and the
+    # token is liquid enough that a position could be exited. The third was
+    # missing until 2026-09-17 and is why 40 of 44 upside alerts were on tokens
+    # that never passed $50k market cap.
     if moon.coverage < th.min_coverage_alert or not _has_flow_evidence(cand):
+        return out
+    tradeable, why = _is_tradeable(cand, th)
+    if not tradeable:
+        cand.suppressed_reason = why
         return out
 
     if (

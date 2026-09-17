@@ -78,8 +78,21 @@ def candidate(launch):
     return Candidate(launch=launch)
 
 
-def make_snapshots(mint: str, series: list[tuple[int, float, int, int]]) -> list[MarketSnapshot]:
-    """Build a snapshot series from (age_s, volume_usd, buys, sells) tuples."""
+def make_snapshots(
+    mint: str,
+    series: list[tuple[int, float, int, int]],
+    *,
+    market_cap_usd: float = 120_000.0,
+    liquidity_usd: float = 40_000.0,
+) -> list[MarketSnapshot]:
+    """Build a snapshot series from (age_s, volume_usd, buys, sells) tuples.
+
+    Defaults describe a token with a REAL market, because since 2026-09-17 the
+    upside tiers require one (`alerts._is_tradeable`). The previous defaults of
+    $15k cap / $12k liquidity sat below that floor, which would have made every
+    tier-reachability test fail for a reason unrelated to what it tests. Pass
+    the kwargs explicitly to exercise the tradeability gate itself.
+    """
     base = utcnow()
     return [
         MarketSnapshot(
@@ -89,8 +102,8 @@ def make_snapshots(mint: str, series: list[tuple[int, float, int, int]]) -> list
             volume_usd=vol,
             buys=buys,
             sells=sells,
-            market_cap_usd=15_000.0,
-            liquidity_usd=12_000.0,
+            market_cap_usd=market_cap_usd,
+            liquidity_usd=liquidity_usd,
         )
         for age, vol, buys, sells in series
     ]

@@ -9,15 +9,22 @@ What it does each cycle
    persist every item — theses AND plain swaps. The swaps are the base rate; a
    thesis hit-rate with nothing to beat is not a result.
 2. For any token that just received a NEW thesis, backfill that token's real
-   thesis history once, so its rank is measured against what actually happened
-   rather than against the moment we started watching.
-3. Score and, if it clears the gates, alert exactly once per token.
+   thesis history once, so author cadence and first-thesis earliness are
+   measured against what actually happened rather than against the moment we
+   started watching.
+3. Build the author conviction profiles, check there is a live market in the
+   token, score, and alert — re-alerting only on a genuine tier upgrade.
 4. Every few hours, snapshot all four leaderboard windows. This also populates
    the radar's `wallets` table with Solana addresses — the free smart-money
    source PRD Phase 2 was blocked on.
 
-The loop is deliberately conservative about alerting: most tokens never qualify,
-and a quiet channel is the expected steady state, not a malfunction.
+Step 3 is where v2 differs from v1. v1 required a token to be inside its first
+10 theses ever, which no established token can satisfy once we join its
+timeline at rank ~500 — over 17 hours it watched ALLINU take positions of
+$328k/$206k/$202k at +742%/+606%/+593% and alerted nothing. v2 asks instead
+whether any individual author committed EARLY and has kept posting since, which
+is answerable from backfilled history at any arrival time, and it refuses to
+alert on a token with no live market.
 """
 
 from __future__ import annotations
@@ -29,11 +36,14 @@ import signal as os_signal
 import time
 from datetime import datetime, timedelta, timezone
 
+from memecoin_radar.sources.dexscreener import DexScreenerClient
+
 from .api import FomoAPI
 from .config import FomoConfig, load_config
+from .conviction import build_cluster
 from .discord_sink import FomoDiscordSink
 from .session import AuthError, FomoSession, RateLimited
-from .signal import evaluate
+from .signal import TIER_PRIORITY, LiquidityState, evaluate
 from .store import FomoStore
 
 log = logging.getLogger("fomo_radar.run")
@@ -52,12 +62,18 @@ BACKFILL_DAYS = 14
 # How often the loop says it is alive even when nothing new arrived.
 HEARTBEAT_S = 300.0
 
+# How long a DexScreener market snapshot stays usable. One token can take
+# several theses a minute during a run, and re-fetching per thesis would burn
+# the rate budget for no new information.
+LIQUIDITY_TTL_S = 90.0
+
 
 class FomoRadar:
     def __init__(self, cfg: FomoConfig) -> None:
         self.cfg = cfg
         self.store = FomoStore(cfg.db_path)
         self._backfilled: set[tuple[str, int]] = set()
+        self._liq_cache: dict[str, tuple[float, LiquidityState]] = {}
         self._lb_handles: set[str] = set()
         self._last_leaderboard = 0.0
         self._last_beat = 0.0
@@ -159,8 +175,6 @@ class FomoRadar:
 
     async def _consider(self, api: FomoAPI, sink: FomoDiscordSink, item) -> None:
         key = (item.token_address, item.network_id)
-        if self.store.already_alerted(*key):
-            return
 
         if key not in self._backfilled:
             await self._backfill(api, item.token_address, item.network_id)
@@ -172,28 +186,53 @@ class FomoRadar:
         if not stats:
             return
 
-        # Rank is recomputed post-backfill: the rank stamped at write time was
-        # relative to what we had seen, which is optimistic for a token we
-        # joined mid-life.
-        row = self.store.conn.execute(
-            """SELECT COUNT(*) AS n FROM fomo_feed_items
-               WHERE token_address=? AND network_id=? AND item_type='thesis'
-                 AND created_at < ?""",
-            (item.token_address, item.network_id, item.created_at),
-        ).fetchone()
-        true_rank = int(row["n"])
+        # Author cadence and first-thesis earliness are computed from the FULL
+        # backfilled history, so they do not depend on when we started watching.
+        profiles = self.store.author_profiles(
+            item.token_address, item.network_id, self._lb_handles
+        )
+        cluster = build_cluster(
+            profiles,
+            min_theses=self.cfg.signal.min_author_theses,
+            min_theses_leaderboard=self.cfg.signal.min_author_theses_leaderboard,
+            max_first_pct=self.cfg.signal.max_first_thesis_pct,
+            min_position_usd=self.cfg.signal.min_thesis_usd,
+        )
+        # Cheap exit before spending a DexScreener call: no conviction author
+        # means no alert regardless of what the market looks like.
+        if cluster.count < 1:
+            return
+
+        liquidity = await self._liquidity(item.token_address)
 
         sig = evaluate(
             token_address=item.token_address,
             network_id=item.network_id,
             ticker=item.ticker,
-            stats=stats,
-            thesis_rank=true_rank,
-            has_x_link=any("x.com" in l or "twitter.com" in l for l in item.links),
+            cluster=cluster,
+            liquidity=liquidity,
+            total_usd=float(stats.get("total_usd") or 0.0),
             cfg=self.cfg.signal,
         )
         if sig.tier is None:
+            if sig.blocked_by:
+                # Logged, not silent: "a conviction cluster existed but the
+                # token failed a hard gate" is the single most useful line for
+                # telling a working filter apart from a broken one.
+                log.info(
+                    "skip $%s — %d conviction author(s) but blocked: %s",
+                    item.ticker, cluster.count, "; ".join(sig.blocked_by),
+                )
             return
+
+        # Alert once per tier, and again only on a real upgrade.
+        prior = self.store.best_tier_so_far(*key)
+        if prior is not None:
+            if not self.cfg.signal.realert_on_upgrade:
+                return
+            if TIER_PRIORITY[sig.tier] >= TIER_PRIORITY[prior]:
+                return
+            log.info("$%s upgrading %s -> %s", item.ticker, prior, sig.tier)
 
         delivered = await sink.send(sig)
         self.store.record_alert(
@@ -215,6 +254,44 @@ class FomoRadar:
             sig.tier, sig.ticker, sig.score, sig.thesis_rank,
             sig.distinct_authors, sig.leaderboard_authors, delivered,
         )
+
+    async def _liquidity(self, token_address: str) -> LiquidityState:
+        """Current market state for one token, via the sibling radar's client.
+
+        Reuses `memecoin_radar.sources.dexscreener` rather than adding a second
+        DexScreener implementation — it already carries the rate limiter, the
+        30-address batching and the primary-pair selection.
+
+        A failed or empty lookup returns `known=False`, which FAILS the
+        liquidity gate. Scoring an unknown token as zero-liquidity would be a
+        silent penalty; scoring it as fine would be exactly the bug being fixed.
+        Cached briefly because one token can receive several theses a minute.
+        """
+        now = time.monotonic()
+        hit = self._liq_cache.get(token_address)
+        if hit and now - hit[0] < LIQUIDITY_TTL_S:
+            return hit[1]
+        try:
+            async with DexScreenerClient() as dex:
+                states = await dex.token_states([token_address])
+        except Exception as exc:  # noqa: BLE001
+            log.warning("liquidity lookup failed for %s: %s", token_address[:10], exc)
+            return LiquidityState(known=False)
+        st = states.get(token_address)
+        state = (
+            LiquidityState(
+                known=True,
+                liquidity_usd=st.liquidity_usd,
+                volume_h1_usd=st.volume_h1_usd,
+                market_cap_usd=st.market_cap_usd,
+                buys_m5=st.buys_m5,
+                sells_m5=st.sells_m5,
+            )
+            if st is not None
+            else LiquidityState(known=False)
+        )
+        self._liq_cache[token_address] = (now, state)
+        return state
 
     async def _backfill(self, api: FomoAPI, token_address: str, network_id: int) -> None:
         now = datetime.now(timezone.utc)

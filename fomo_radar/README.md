@@ -22,25 +22,57 @@ A **thesis** on fomo is a comment welded to a real executed trade. The API
 returns the author's live position alongside it, so conviction is money-backed by
 construction and the size is public.
 
-Measured over 20,337 theses on 2026-09-17:
+The signal looks for a **conviction cluster**: one or more authors who committed
+EARLY to a token and have kept posting theses on it since, on a token that has a
+live market. Measured over 20,337 theses, re-cut as **one row per (author,
+token) pair** (see `conviction.py` and `research/fomo/FINDINGS.md`):
 
-- **Earliness is the edge.** Median unrealized PnL decays monotonically across
-  all ten deciles of thesis order on a token: **+192% for the earliest 10%, +21%
-  for the latest 10%.** The literal first thesis medians **+716%**.
-- **Size, not the X link.** X-linked theses look far better raw (57.1% win vs
-  46.0%) but are **7.8× larger**; gate both at ≥$5k and it inverts. `has_x_link`
-  is stored and displayed as context and contributes **zero** to the score.
-- **Distinct authors, not post count.** One handle posting three times in four
-  minutes was common and is not confirmation.
-- **The leaderboard lags.** Its top-consensus holdings are already-won positions
-  ($56M aggregate PnL on the most-held name) and only 19 of 153 were trending.
-  It raises a candidate's tier; it can never create one.
+| gate (all knowable at post time) | n | median | win | p25 |
+|---|---|---|---|---|
+| baseline (all pairs) | 2,361 | +10.9% | 57.1% | −23.7% |
+| conviction ≥3 theses + early half | 622 | +52.6% | 67.4% | −16.0% |
+| **conviction ≥6 + early half** | 299 | **+68.3%** | **71.6%** | −9.0% |
+| conviction ≥6 + early + leaderboard | 45 | +57.6% | **75.6%** | **−1.9%** |
+
+The strongest cell is 12+ theses whose first landed in the token's early
+deciles: **+99% median, 78% win**.
+
+- **Conviction cadence is a GATE, not a dial.** Past the floor, thesis count
+  rank-correlates **rho=−0.002** with the author's own PnL. Only the extreme
+  tail (30+) gets a step.
+- **Earliness is the differentiator**, and it is *relative to the token's own
+  timeline*, not to when we started watching — which is what makes v2 able to
+  fire at all. rho=−0.189; earliest 10% medians +166.6% (85.0% win).
+- **A live market is a hard gate.** No liquidity, no 1h volume, no recent
+  trades, no alert — whatever the social score says. Absent market data fails
+  the gate rather than being scored as zero.
+- **The leaderboard lifts, never gates.** On-board authors median +53.6% / 73.0%
+  win vs +9.4% / 56.2%. But starcatcher444 ran the ALLINU thesis this design is
+  built from while *absent* from the 24h top-150, because that board ranks
+  realized PnL and a conviction holder has not sold.
+- **Not modelled: the dev flag.** 7 dev theses in 20,337, median −40.1%, zero
+  winners.
+- **Tiers rank EVIDENCE, not expected return.** Replaying all 50 tokens, the
+  gate separates cleanly (+71.6% alerted vs −16.2% silent) but within the
+  alerted set the score does not order the outcome (rho=−0.146, n=29). A higher
+  tier means more independent conviction behind the call, nothing more.
+
+### What v1 got wrong
+
+v1 gated on *absolute* thesis rank (inside a token's first ~10 theses ever).
+Real and monotonic, but unreachable: we join a timeline at rank ~500. It watched
+ALLINU take positions of $328k/$206k/$202k at +742%/+606%/+593% over 17 hours
+and alerted **nothing** — 4,177 items, 13 tokens, 0 alerts. It also discounted
+repeat posting by one handle as "not confirmation", which is backwards, and had
+no concept of whether the token was tradeable.
 
 > ⚠️ The research sample is 50 **trending** tokens, so those PnL *levels* are
-> survivorship-biased and meaningless in absolute terms. What survives is the
-> *ordering*, because both sides of every comparison share the bias. That is why
-> this harvester records every candidate including the ones that die — the
-> rejects are the base rate.
+> survivorship-biased and meaningless in absolute terms — the baseline alone is
+> +10.9% median / 57% win. What survives is the *ordering*, because both sides of
+> every comparison share the bias. Reverse causality is also live: people post
+> more when winning, so cadence is partly an effect of the run. That is why this
+> harvester records every candidate including the ones that die — the rejects are
+> the base rate. **Zero outcomes are labelled yet.**
 
 ## No LLM, on purpose
 
@@ -112,18 +144,33 @@ leaderboard, which is what PRD Phase 2 reads.
 
 ## Expected volume
 
-Very quiet. Replaying 2,374 real harvested theses, **3 cleared the hard gates**
-(~0.1%). Most tokens never qualify and a silent channel is the designed steady
-state. `fomo_alerts` plus the `delivered` flag is how you tell "nothing
-qualified" from "delivery broke".
+Replaying all 50 harvested tokens through v2, **29 alert** — 14 CONVICTION,
+11 HOT, 4 WATCH. The 21 silent ones are mostly "no conviction author" (200-300
+authors posted, none committed early and stayed), with a few blocked on
+liquidity.
+
+Live, the harvester sees on the order of 13 new tokens a day in its feed window,
+and each token can alert at most once per tier, so expect a handful of alerts a
+day rather than a silent channel. That is a deliberate change from v1, which
+alerted **zero** times in 17 hours while real money was piling into a token it
+was watching.
+
+`fomo_alerts` plus the `delivered` flag is still how you tell "nothing
+qualified" from "delivery broke", and a conviction cluster blocked by a hard gate
+is logged with its reason rather than dropped silently.
 
 ## Known gaps
 
 - **Nothing is validated yet.** There are no labelled outcomes, so no tier has
   been shown to beat the base rate. The harvest is the prerequisite, not the
   proof.
-- The `CONVICTION` tier has never fired on real data — it is reachable by
-  construction (`test_all_tiers_reachable`) but unobserved. Treat its rate as
-  unknown until it fires.
+- **Tiers are not a return ranking.** The gate separates (+71.6% alerted vs
+  −16.2% silent on the outcome proxy) but the score does not order outcomes
+  within the alerted set (rho=−0.146, n=29). Do not read CONVICTION as
+  "this one pays more".
+- **Reverse causality is unresolved.** Cadence is knowable at post time, but
+  people post more when a position is already winning. The early-first-thesis
+  requirement constrains this without eliminating it; only labelled forward
+  outcomes settle it.
 - Solana is the only chain the radar cares about, but the feed is multi-chain and
   everything is recorded. Filter downstream.

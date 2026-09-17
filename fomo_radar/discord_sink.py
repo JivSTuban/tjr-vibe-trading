@@ -34,41 +34,85 @@ def token_url(sig: TokenSignal) -> str:
     return f"https://fomo.family/tokens/{slug}/{sig.token_address}"
 
 
+def _trim(text: str, limit: int = 300) -> str:
+    """Discord field values cap at 1024 chars; keep well inside and tidy."""
+    clean = " ".join((text or "").split())
+    return clean if len(clean) <= limit else clean[: limit - 1].rstrip() + "…"
+
+
 def build_embed(sig: TokenSignal) -> dict[str, Any]:
+    """The alert. Names the actual traders and quotes the live thesis.
+
+    The point of the embed is that the claim is checkable: which handle, how
+    many theses, how early they committed, how much is on the line, and what
+    they last said. A score with no author behind it is not auditable.
+    """
     ticker = sig.ticker or sig.token_address[:8]
-    fields = [
-        {
-            "name": "Earliness",
-            "value": f"thesis #{sig.thesis_rank + 1} · {sig.minutes_since_first:.0f}m since first",
-            "inline": True,
-        },
-        {
-            "name": "Conviction",
-            "value": f"{sig.distinct_authors} authors · ${sig.total_usd:,.0f} total",
-            "inline": True,
-        },
-        {
-            "name": "Largest position",
-            "value": f"${sig.max_usd:,.0f}",
-            "inline": True,
-        },
-    ]
-    if sig.leaderboard_authors:
+    c = sig.cluster
+    top = c.top
+
+    fields: list[dict[str, Any]] = []
+
+    if top is not None:
+        lb = " · top-150" if top.is_leaderboard else ""
         fields.append(
             {
-                "name": "Leaderboard traders",
+                "name": "Lead conviction",
                 "value": (
-                    f"{sig.leaderboard_authors} in "
-                    "(lagging quality marker, not discovery)"
+                    f"**@{top.handle}**{lb}\n"
+                    f"{top.theses} theses over {top.span_hours:.0f}h · "
+                    f"first at #{top.first_rank + 1} of "
+                    f"{top.total_theses_on_token} ({top.first_pct * 100:.0f}% in)\n"
+                    f"${top.position_usd:,.0f} held at {top.pnl_pct:+.0f}%"
                 ),
-                "inline": True,
+                "inline": False,
             }
         )
-    if sig.has_x_link:
-        # Shown as context only. Measured to be a size proxy that inverts above
-        # $5k, so it must not read as part of the score.
+
+    others = [a for a in c.authors[1:4]]
+    if others:
         fields.append(
-            {"name": "Source", "value": "X link in thesis (not scored)", "inline": True}
+            {
+                "name": f"Also holding ({c.count} conviction authors total)",
+                "value": "\n".join(
+                    f"@{a.handle}{' · top-150' if a.is_leaderboard else ''} — "
+                    f"{a.theses} theses · ${a.position_usd:,.0f} at {a.pnl_pct:+.0f}%"
+                    for a in others
+                ),
+                "inline": False,
+            }
+        )
+
+    liq = sig.liquidity
+    fields.append(
+        {
+            "name": "Market",
+            "value": (
+                f"liq ${liq.liquidity_usd:,.0f} · 1h vol ${liq.volume_h1_usd:,.0f}\n"
+                f"mc ${liq.market_cap_usd:,.0f} · "
+                f"{liq.buys_m5}B/{liq.sells_m5}S in 5m"
+            ),
+            "inline": True,
+        }
+    )
+    fields.append(
+        {
+            "name": "Cluster",
+            "value": (
+                f"${c.capital_usd:,.0f} conviction capital\n"
+                f"{c.leaderboard_count} top-150 · {c.considered} authors seen"
+            ),
+            "inline": True,
+        }
+    )
+
+    if top is not None and top.last_text:
+        fields.append(
+            {
+                "name": f"@{top.handle}'s latest thesis",
+                "value": _trim(top.last_text),
+                "inline": False,
+            }
         )
 
     return {
@@ -79,8 +123,8 @@ def build_embed(sig: TokenSignal) -> dict[str, Any]:
         "fields": fields,
         "footer": {
             "text": (
-                f"fomo social · score {sig.score:.0f} · "
-                f"{sig.token_address[:10]}…"
+                f"fomo conviction · score {sig.score:.0f} · "
+                f"{sig.token_address[:10]}… · not validated, no hit rate yet"
             )
         },
     }

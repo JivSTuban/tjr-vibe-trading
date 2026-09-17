@@ -47,26 +47,58 @@ class SignalConfig:
     # "X link edge" is that size difference.
     min_thesis_usd: float = 1000.0
 
-    # Earliness is the signal that survived. Median unrealized PnL decays
-    # monotonically across all ten deciles of thesis order on a token, +192% for
-    # the earliest 10% down to +21% for the latest 10%. We alert only inside the
-    # front of that curve.
-    max_thesis_rank: int = 10
+    # --- conviction cadence, the v2 core -----------------------------------
+    # Theses by ONE author on ONE token. Per (author, token) pair this is the
+    # strongest at-post-time feature measured: >=6 theses whose first landed in
+    # the token's early half gives +68.3% median / 71.6% win (n=299) against a
+    # +10.9% / 57.1% baseline. v1 discounted repeat posting as "not
+    # confirmation", which was backwards.
+    min_author_theses: int = 6
 
-    # A single author can post repeatedly on one token (observed: the same
-    # handle three times in four minutes). Distinct authors is the real
-    # confirmation, so alerting requires more than one.
-    min_distinct_authors: int = 2
+    # Leaderboard authors clear on a lower count because >=3 theses from one
+    # already reaches 73.6% win — above what an off-board author reaches at 6.
+    # The lift is priced in here rather than stacked on top of the full floor.
+    min_author_theses_leaderboard: int = 3
+
+    # The author's FIRST thesis must land in this share of the token's timeline.
+    # This is where v1's earliness survives: it is a property of the author's
+    # entry, not of our arrival, so it is computable from backfilled history no
+    # matter how late we start watching. Measured by decile of first post:
+    # d1-2 +72.4%/72.8% win, d3-5 +18.9%/59.0%, d6-8 -3.9%/47.7%, d9-10 -0.7%/49.0%.
+    max_first_thesis_pct: float = 0.5
+
+    # --- liquidity: the "is anyone actually buying this" gate --------------
+    # New in v2 and the direct fix for alerting on coins with no buyers. For
+    # scale, the 50 trending tokens in the sample had a MINIMUM of $280k 24h
+    # volume and 260 holders; these floors sit far below that, so they reject
+    # dead tokens without pruning the real universe. Absent data fails the gate
+    # rather than scoring as zero.
+    min_liquidity_usd: float = 20_000.0
+    min_volume_h1_usd: float = 10_000.0
+    min_txns_m5: int = 1
 
     # A leaderboard author is a quality marker, not a discovery one: the
     # leaderboard's own top-consensus holdings are already-won positions, so
     # this raises a candidate's tier but can never create one on its own.
+    # Verified the hard way: starcatcher444 was running the ALLINU thesis that
+    # motivated this whole redesign and was NOT in the 24h top-150, because that
+    # board ranks REALIZED PnL and a conviction holder has not sold.
     leaderboard_bonus_tier: bool = True
+
+    # Re-alert on a genuine tier upgrade (WATCH -> HOT -> CONVICTION) rather
+    # than once per token forever. A cluster that doubles is new information;
+    # v1's alert-once rule meant the strongest version of a signal was the one
+    # we were guaranteed to suppress.
+    realert_on_upgrade: bool = True
 
     # Deliberately NOT a gate: the presence of an x.com link. It reads as a
     # strong filter raw (win 57.1% vs 46.0%) but that is a size proxy, and above
     # $5k it inverts (X +108.7% vs no-link +117.9%). Stored, never scored.
     # See FINDINGS.md "The X link is not the signal".
+    #
+    # Also deliberately NOT a gate: the dev flag. Seven dev theses exist in the
+    # 20,337-thesis sample, median -40.1%, zero winners. There is no evidence
+    # for "developer backed" as a positive, and n=7 cannot support one.
 
 
 @dataclass

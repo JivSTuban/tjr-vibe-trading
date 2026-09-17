@@ -90,6 +90,26 @@ class Thresholds:
     trend_echo_min_buys: int = 5
     trend_echo_min_volume_usd: float = 300.0
 
+    # --- tradeability: can a position actually be taken and exited? --------
+    # Added 2026-09-17 from an audit of what this radar had delivered: across
+    # its 44 upside alerts, peak liquidity had a median of $3,257 and a p75 of
+    # $3,419 — the bonding-curve floor, i.e. no market at all. Every one passed
+    # the flow-evidence check (median peak buy count 82), because buys are not
+    # the same thing as a market: at $3k liquidity there is no exit at any size
+    # worth taking. That is the "coins nobody is buying" complaint, precisely.
+    #
+    # The distribution has a sharp natural gap: 37 of 44 never left ~$3.3k,
+    # while 7 developed real markets (top: $271k liquidity, $10.6M cap). A $15k
+    # floor sits inside that gap and keeps exactly those 7.
+    #
+    # There is deliberately NO market-cap floor. Moon REWARDS a low market cap
+    # (early entry is a scored component), so a cap floor would fight this
+    # radar's own premise — a new pump.fun launch is a micro-cap by
+    # construction. Liquidity is the right instrument because the scorer does
+    # not want it low. RUG_WARNING stays exempt: a danger flag on an illiquid
+    # token still matters.
+    min_alert_liquidity_usd: float = 15_000.0
+
     # A score built from very little measurable evidence is not comparable to a
     # fully covered one, so low-coverage candidates cannot reach the loud tiers.
     #
@@ -125,6 +145,17 @@ class RadarConfig:
     # staying well under both leaves headroom and keeps the channel readable.
     max_alerts_per_min: int = 6
     max_alerts_per_hour: int = 40
+
+    # Post structural-danger alerts to Discord, or only record them?
+    #
+    # Default OFF as of 2026-09-17. Rug warnings were 76 of this radar's ~120
+    # alerts — most of the channel was warnings about tokens nobody was going
+    # to buy, which drowns the signal it exists to deliver. They are still
+    # written to the `alerts` table either way, so nothing is lost for
+    # labelling or for checking a specific token by hand; they simply stop
+    # competing for attention with actionable alerts. Set
+    # RADAR_POST_RUG_WARNINGS=1 to restore them.
+    post_rug_warnings: bool = False
 
     # Candidates are dropped from memory once they age past the last enrichment
     # window, so the tracker does not grow without bound on a 34k/day stream.
@@ -168,9 +199,13 @@ def load_config(dry_run: bool = False) -> RadarConfig:
     )
     helius = os.environ.get("HELIUS_API_KEY", "") or _keychain("radar-helius", "api-key")
     db = Path(os.environ.get("RADAR_DB_PATH", str(DEFAULT_DB_PATH)))
+    post_rug = os.environ.get("RADAR_POST_RUG_WARNINGS", "").strip().lower() in (
+        "1", "true", "yes", "on",
+    )
     return RadarConfig(
         discord_webhook_url=webhook.strip(),
         helius_api_key=helius.strip(),
         db_path=db,
         dry_run=dry_run,
+        post_rug_warnings=post_rug,
     )

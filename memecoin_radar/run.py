@@ -82,6 +82,7 @@ class Radar:
         self._smart_wallets: dict[str, float] = {}
         self._launches_seen = 0
         self._alerts_sent = 0
+        self._rug_suppressed = 0
         self._started = time.monotonic()
         self._stop = asyncio.Event()
         self._bg_tasks: set[asyncio.Task] = set()
@@ -182,7 +183,15 @@ class Radar:
                 to_send.append((alert, cand))
 
         for alert, cand in to_send:
+            # Recorded unconditionally — the rejects ARE the base rate, and the
+            # outcome labeller reads this table.
             alert_id = self.store.record_alert(alert)  # type: ignore[arg-type]
+            if not self.cfg.post_rug_warnings and alert.alert_type == "RUG_WARNING":
+                # Still stored above, just not posted. Rug warnings were 76 of
+                # this radar's ~120 alerts, i.e. most of the channel was
+                # warnings about tokens nobody was going to buy.
+                self._rug_suppressed += 1
+                continue
             delivered = await sink.send(alert, cand)  # type: ignore[arg-type]
             if delivered:
                 self._alerts_sent += 1
@@ -345,6 +354,11 @@ class Radar:
             f"{self._launches_seen} launches ({rate:.0f}/min) · "
             f"{len(self.candidates)} tracked · {len(self.trends)} trends · "
             f"{self._alerts_sent} alerts sent"
+            + (
+                f" · {self._rug_suppressed} rug warnings recorded not posted"
+                if self._rug_suppressed
+                else ""
+            )
         )
 
     # ------------------------------------------------------------------- run

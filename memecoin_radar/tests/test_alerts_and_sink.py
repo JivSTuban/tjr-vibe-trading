@@ -30,9 +30,13 @@ def _scored(cand: Candidate, moon: float, rug: float, relation: float = 0.0,
             coverage: float = 1.0) -> Candidate:
     """Score a candidate for TIERING tests.
 
-    Always includes a flow component, because upside alerts now require observed
-    buying. The evidence floor itself is tested in test_evidence_floor.py.
+    Always includes a flow component AND a tradeable snapshot series, because
+    upside alerts now require both observed buying and a real market. The
+    evidence floor is tested in test_evidence_floor.py and the tradeability
+    floor in test_tradeability.py; neither should be re-litigated here.
     """
+    if not cand.snapshots:
+        cand.snapshots = make_snapshots(cand.mint, [(60, 5_000.0, 40, 3)])
     cand.moon = ScoreBreakdown(
         score=moon,
         coverage=coverage,

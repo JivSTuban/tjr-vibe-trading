@@ -20,9 +20,12 @@ from __future__ import annotations
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 from .api import LeaderboardTrader, ThesisItem, dumps_links
+
+if TYPE_CHECKING:  # avoids a circular import at runtime
+    from .conviction import AuthorProfile
 
 SCHEMA = """
 PRAGMA journal_mode=WAL;
@@ -151,7 +154,7 @@ def _now() -> str:
 
 
 def _has_x_link(item: ThesisItem) -> bool:
-    return any("x.com" in l or "twitter.com" in l for l in item.links)
+    return any("x.com" in url or "twitter.com" in url for url in item.links)
 
 
 class FomoStore:
@@ -276,12 +279,90 @@ class FomoStore:
         self.conn.commit()
         return stats
 
+    def author_profiles(
+        self, token_address: str, network_id: int, leaderboard_handles: set[str]
+    ) -> list["AuthorProfile"]:
+        """One profile per author who has ever posted a thesis on this token.
+
+        This is the v2 signal's input. It reads the FULL backfilled history, so
+        an author's conviction cadence and the earliness of their first thesis
+        are both correct regardless of when the harvester started watching —
+        the defect that made v1 unable to alert on any established token.
+
+        Position size and PnL are the author's live values (fomo reports the
+        same figures on every one of their historical theses), so they are taken
+        from the most recent row rather than aggregated.
+        """
+        from .conviction import AuthorProfile
+
+        rows = self.conn.execute(
+            """SELECT handle, created_at, usd_value, unrealized_pnl_pct, likes,
+                      is_dev, text
+               FROM fomo_feed_items
+               WHERE token_address = ? AND network_id = ? AND item_type = 'thesis'
+               ORDER BY created_at""",
+            (token_address, network_id),
+        ).fetchall()
+        if not rows:
+            return []
+
+        total = len(rows)
+        order: dict[str, int] = {}
+        grouped: dict[str, list] = {}
+        for i, r in enumerate(rows):
+            h = r["handle"] or ""
+            if not h:
+                continue
+            order.setdefault(h, i)
+            grouped.setdefault(h, []).append(r)
+
+        out: list[AuthorProfile] = []
+        for h, items in grouped.items():
+            last = items[-1]
+            out.append(
+                AuthorProfile(
+                    handle=h,
+                    theses=len(items),
+                    first_rank=order[h],
+                    total_theses_on_token=total,
+                    position_usd=float(last["usd_value"] or 0.0),
+                    pnl_pct=float(last["unrealized_pnl_pct"] or 0.0),
+                    is_leaderboard=h in leaderboard_handles,
+                    is_dev=any(bool(r["is_dev"]) for r in items),
+                    first_at=items[0]["created_at"],
+                    last_at=last["created_at"],
+                    last_text=str(last["text"] or ""),
+                    max_likes=max(int(r["likes"] or 0) for r in items),
+                )
+            )
+        return out
+
     def already_alerted(self, token_address: str, network_id: int) -> bool:
         row = self.conn.execute(
             "SELECT alerted_at FROM fomo_tokens WHERE token_address=? AND network_id=?",
             (token_address, network_id),
         ).fetchone()
         return bool(row and row["alerted_at"])
+
+    def best_tier_so_far(self, token_address: str, network_id: int) -> str | None:
+        """The strongest tier already delivered for this token, if any.
+
+        Supports re-alerting on a genuine upgrade. v1 marked a token alerted
+        once and never spoke about it again, which meant the strongest version
+        of a signal — the cluster after it had doubled — was the one guaranteed
+        to be suppressed.
+        """
+        from .signal import TIER_PRIORITY
+
+        rows = self.conn.execute(
+            """SELECT tier FROM fomo_alerts
+               WHERE token_address=? AND network_id=? AND delivered=1""",
+            (token_address, network_id),
+        ).fetchall()
+        tiers = [r["tier"] for r in rows if r["tier"] in TIER_PRIORITY]
+        if not tiers:
+            return None
+        return min(tiers, key=lambda t: TIER_PRIORITY[t])
 
     def mark_alerted(self, token_address: str, network_id: int) -> None:
         self.conn.execute(

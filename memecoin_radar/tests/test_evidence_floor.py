@@ -65,6 +65,9 @@ def test_no_flow_evidence_blocks_upside_alerts(candidate):
 
 
 def test_flow_evidence_permits_the_alert(candidate):
+    # A tradeable market, so this isolates the flow-evidence rule from the
+    # liquidity floor added 2026-09-17.
+    candidate.snapshots = make_snapshots(candidate.mint, [(60, 5_000.0, 40, 3)])
     candidate.moon = ScoreBreakdown(
         score=95.0,
         coverage=0.50,

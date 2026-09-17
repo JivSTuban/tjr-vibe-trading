@@ -162,6 +162,13 @@ class Candidate:
     trend: ScoreBreakdown | None = None
     related_trend: TrendReference | None = None
     alerts_fired: set[str] = field(default_factory=set)
+    suppressed_reason: str = ""
+    """Why an otherwise-qualifying upside alert was withheld.
+
+    Set by the tradeability gate so a suppressed candidate can be logged rather
+    than vanishing. A filter that drops names silently is indistinguishable
+    from a broken one.
+    """
 
     @property
     def mint(self) -> str:

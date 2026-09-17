@@ -8,6 +8,35 @@ compares it against a live trend set, and posts the survivors to Discord.
 transaction. PRD section 10 keeps execution out of V1 until the signal is validated against
 recorded outcomes, and that is the right call given what the numbers below say.
 
+## What this radar is FOR (read before treating its alerts as buy ideas)
+
+This watches **brand-new launches**, so its candidates are pre-market micro-caps
+by construction — and Moon actively *rewards* a low market cap, because early
+entry is a scored component. Its real value is the dataset: it records every
+launch including the rejects, which is the only way any threshold here ever gets
+validated.
+
+For "which coin has smart money actually accumulating", the sibling package
+`fomo_radar` is the right instrument. It works from social conviction on tokens
+that already have a market.
+
+Two changes on 2026-09-17, both from auditing what this radar had actually
+delivered rather than from theory:
+
+- **A tradeability floor on upside alerts** (`alerts._is_tradeable`). Across its
+  44 upside alerts, peak liquidity medianed **$3,257** with a p75 of $3,419 —
+  the bonding-curve floor. All 44 had passed the flow-evidence check (median
+  peak buy count 82), because buys are not the same thing as a market: at $3k
+  liquidity there is no exit. The distribution has a sharp gap (37 of 44 never
+  left ~$3.3k; 7 developed real markets, the best at $271k liquidity / $10.6M
+  cap) and the floor sits inside it at **$15k liquidity**. There is deliberately
+  **no market-cap floor** — that would fight Moon's own early-entry premise.
+- **Rug warnings are recorded but no longer posted** (`post_rug_warnings`,
+  default off). They were **76 of ~120 alerts**, so most of the channel was
+  warnings about tokens nobody was going to buy. Set
+  `RADAR_POST_RUG_WARNINGS=1` to restore them; they land in the `alerts` table
+  either way.
+
 ## Run it
 
 ```bash
