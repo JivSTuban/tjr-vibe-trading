@@ -1,0 +1,16 @@
+EOD 1% PREVIOUS-LOW REVERSAL — BACKTEST RESULTS
+Spec: EOD_1Percent_Codex_Skill_Automation_Design.pdf v1.0
+
+VERDICT: REJECT as specified.
+
+1. LONG HISTORY 2014-2026: 3,190 sessions, 1,599,140 liquid ticker-sessions
+   L0_all                 n=1,549,730 hit=0.474 gross=   5.17 net@5=  -4.83
+   L1_prevlow             n=  543,517 hit=0.428 gross=   5.61 net@5=  -4.39
+   L2_red                 n=  181,628 hit=0.501 gross=   5.64 net@5=  -4.36
+   L4_cloc-late           n=  128,307 hit=0.491 gross=   5.72 net@5=  -4.28
+   L5_range-late          n=  102,052 hit=0.529 gross=   5.69 net@5=  -4.31
+   L6_sector-late         n=   76,560 hit=0.527 gross=    6.0 net@5=   -4.0
+
+2. LATE GATE ON MINUTE BARS: 598 sessions 2016-2026, 144,076 ticker-sessions
+
+Full write-up: backtesting/eod_1pct_reversal/FINDINGS.md
