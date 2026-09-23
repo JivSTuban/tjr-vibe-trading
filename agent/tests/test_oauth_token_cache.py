@@ -264,7 +264,10 @@ def test_cache_expiry_surfaces_reauth_no_silent_stale_call() -> None:
     from src.tools.mcp import MCPServerAdapter
 
     # 401 Unauthorized → an auth failure the provider could not silently refresh.
-    auth_error = McpError(
+    # fastmcp 4 changed McpError.__init__ to (code, message, data); from_error_data is the
+    # supported way to build one from an ErrorData, and keeps the `.error` attribute the
+    # adapter's envelope check reads (src/tools/mcp.py:1032).
+    auth_error = McpError.from_error_data(
         mcp_types.ErrorData(code=-32001, message="401 Unauthorized: token expired, re-auth required")
     )
 
