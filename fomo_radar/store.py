@@ -17,7 +17,9 @@ scores off the text today — but throwing it away would foreclose the question.
 
 from __future__ import annotations
 
+import logging
 import sqlite3
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Iterable
@@ -26,6 +28,36 @@ from .api import LeaderboardTrader, ThesisItem, dumps_links
 
 if TYPE_CHECKING:  # avoids a circular import at runtime
     from .conviction import AuthorProfile
+
+log = logging.getLogger("fomo_radar.store")
+
+
+@dataclass(slots=True)
+class CopyEvent:
+    """A leaderboard trader's position quantity changed, so they transacted.
+
+    This is the only free trade tape available: `value` in the holdings payload
+    moves with price on every poll, but `human_amount` moves only when someone
+    actually buys or sells. `delta_pct` is signed, so positive is a buy.
+    """
+
+    handle: str
+    token_address: str
+    network_id: int | None
+    ticker: str | None
+    prev_amount: float
+    new_amount: float
+    price_usd: float | None
+
+    @property
+    def is_buy(self) -> bool:
+        return self.new_amount > self.prev_amount
+
+    @property
+    def delta_pct(self) -> float:
+        if self.prev_amount <= 0:
+            return 0.0
+        return self.new_amount / self.prev_amount - 1.0
 
 SCHEMA = """
 PRAGMA journal_mode=WAL;
@@ -128,7 +160,12 @@ CREATE TABLE IF NOT EXISTS fomo_alerts (
     leaderboard_authors INTEGER,
     total_usd       REAL,
     reason          TEXT,
-    delivered       INTEGER DEFAULT 0
+    delivered       INTEGER DEFAULT 0,
+    -- Why this alert was NOT notified. NULL means it was an ENTER NOW and went
+    -- out. Kept rather than dropped because the suppressed rows are the control
+    -- group: without them there is no way to find out the entry gate is too
+    -- strict, which is this project's most repeated failure.
+    suppressed_reason TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_fomo_alerts_token ON fomo_alerts(token_address);
 
@@ -203,8 +240,26 @@ CREATE TABLE IF NOT EXISTS wallets (
 """
 
 
+# A leaderboard position's reported quantity must move by more than this to
+# count as a trade rather than rounding in the payload.
+HOLDINGS_TRADE_EPS = 0.01
+
+# Even when nobody trades, force one holdings row per position per interval so
+# the table retains a coarse price series to measure outcomes against.
+HOLDINGS_HEARTBEAT_S = 900.0
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def _parse_ts(ts: str) -> datetime | None:
+    """Tolerant ISO parse. A malformed stored timestamp must not kill a write."""
+    try:
+        out = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return None
+    return out if out.tzinfo else out.replace(tzinfo=timezone.utc)
 
 
 def _has_x_link(item: ThesisItem) -> bool:
@@ -218,7 +273,30 @@ class FomoStore:
         self.conn = sqlite3.connect(str(path), timeout=30.0)
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self) -> None:
+        """Add columns to tables that predate them.
+
+        `CREATE TABLE IF NOT EXISTS` is a no-op on an existing table, so a new
+        column never reaches a live database without this. Additive only: no
+        drops, no rewrites, no type changes, so it is safe to run on every open
+        and safe to run against a database an older build is still writing.
+        """
+        additions = {
+            "fomo_alerts": {"suppressed_reason": "TEXT"},
+        }
+        for table, columns in additions.items():
+            existing = {
+                row["name"]
+                for row in self.conn.execute(f"PRAGMA table_info({table})").fetchall()
+            }
+            if not existing:
+                continue  # Table absent entirely; SCHEMA above owns creating it.
+            for name, decl in columns.items():
+                if name not in existing:
+                    self.conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {decl}")
 
     def close(self) -> None:
         self.conn.close()
@@ -400,20 +478,36 @@ class FomoStore:
 
     # ------------------------------------------------- forward outcome tracking
 
-    def alerted_tokens(self) -> list[dict[str, object]]:
+    def alerted_tokens(self, *, include_suppressed: bool = False) -> list[dict[str, object]]:
         """Every token we have delivered an alert for, with its first alert time.
 
         The first delivered alert is the entry clock: that is the moment Jiv
         could have acted. Re-alerts on a tier upgrade must not move it, or the
         strategy gets credited with an entry it could not have taken.
+
+        `include_suppressed` also returns the alerts the entry gate refused to
+        notify. Forward prices MUST be tracked for those too: they are the
+        control group, and without them there is no way to discover that the
+        gate is throwing away winners. A gate nobody can measure is how this
+        project has repeatedly shipped a signal that cannot fire.
+
+        Rows with `delivered = 0` and no suppression reason are delivery
+        FAILURES, and are excluded either way. Nothing reached anyone, so there
+        is no honest entry clock for them.
         """
+        where = (
+            "a.delivered = 1 OR a.suppressed_reason IS NOT NULL"
+            if include_suppressed
+            else "a.delivered = 1"
+        )
         rows = self.conn.execute(
-            """SELECT a.token_address, a.network_id,
+            f"""SELECT a.token_address, a.network_id,
                       MIN(a.ts)  AS first_alert,
                       MAX(a.score) AS score,
-                      MAX(a.ticker) AS ticker
+                      MAX(a.ticker) AS ticker,
+                      MAX(CASE WHEN a.delivered = 1 THEN 1 ELSE 0 END) AS entered
                FROM fomo_alerts a
-               WHERE a.delivered = 1
+               WHERE {where}
                GROUP BY a.token_address, a.network_id"""
         ).fetchall()
         out = []
@@ -427,9 +521,84 @@ class FomoStore:
                     "score": r["score"],
                     "ticker": r["ticker"],
                     "tier": tier,
+                    "entered": bool(r["entered"]),
                 }
             )
         return out
+
+    def tokens_for_outcome_tracking(self, *, limit: int = 0) -> list[dict[str, object]]:
+        """Every token worth recording forward prices for, alerted or not.
+
+        `alerted_tokens` answers "how did our picks do". It cannot answer "were
+        they better than what we passed on", because a token that never scored
+        a tier never enters it, so the population it returns is exactly the
+        population the signal already liked. Grading a classifier on its own
+        selections is not a measurement, and it is why the earliness term that
+        carries 60 of the signal's ~86 points has never been checked: on
+        2026-09-18 the feed held 16,713 ranked theses across 205 tokens while
+        forward prices existed for 33, every one of them alerted or suppressed.
+
+        So the tracked set widens to every token that has received a thesis.
+        The ones that never alerted are the base rate, and without a base rate
+        "rank 1 beats rank 50" cannot be told apart from "tokens people talk
+        about go up".
+
+        The clock differs by cohort and `cohort` says which:
+
+        - `alerted` — clock is the first delivered/suppressed alert, unchanged
+          from `alerted_tokens`, because that is the moment Jiv could have
+          acted and existing `fomo_price_snapshots` rows are already keyed off
+          it. Moving it would silently re-date every row already recorded.
+        - `thesis` — clock is `first_thesis_at`, when the token entered the
+          social universe at all.
+
+        Those are near but not identical events, so the cohorts are comparable
+        only up to that difference. Any analysis pooling them without saying so
+        overstates its own precision; `cohort` exists so the split is always
+        available.
+
+        `limit` caps the set (newest clock first) to bound DexScreener usage.
+        0 means no cap.
+        """
+        # A UNION, not a scan of `fomo_tokens`. A COPY PROBE alerts on a
+        # leaderboard position change and never has a thesis row, so selecting
+        # from `fomo_tokens` alone would silently drop tokens this method is
+        # replacing `alerted_tokens` for -- measured on the live DB: 31 alerted
+        # tokens survived the token-table join against 38 from
+        # `alerted_tokens`. Widening the population must never narrow it.
+        out: list[dict[str, object]] = []
+        seen: set[tuple[str, int]] = set()
+
+        for r in self.alerted_tokens(include_suppressed=True):
+            key = (str(r["token_address"]), int(r["network_id"]))  # type: ignore[arg-type]
+            seen.add(key)
+            out.append({**r, "cohort": "alerted"})
+
+        for r in self.conn.execute(
+            """SELECT token_address, network_id, ticker, first_thesis_at
+                 FROM fomo_tokens
+                WHERE first_thesis_at IS NOT NULL"""
+        ).fetchall():
+            key = (str(r["token_address"]), int(r["network_id"]))
+            if key in seen:
+                continue
+            out.append(
+                {
+                    "token_address": r["token_address"],
+                    "network_id": r["network_id"],
+                    "ticker": r["ticker"],
+                    "first_alert": r["first_thesis_at"],
+                    "cohort": "thesis",
+                    "tier": None,
+                    "entered": False,
+                }
+            )
+
+        # Newest clock first. A token whose clock just started still has every
+        # age mark ahead of it; one from last week has already missed the early
+        # marks that matter most, and those can never be backfilled.
+        out.sort(key=lambda d: str(d["first_alert"]), reverse=True)
+        return out[:limit] if limit > 0 else out
 
     def record_price_snapshot(
         self,
@@ -488,6 +657,23 @@ class FomoStore:
         ).fetchall()
         return {float(r["age_seconds"]) for r in rows}
 
+    def delete_outcome(self, token_address: str, network_id: int) -> int:
+        """Remove a labelled outcome. Returns the number of rows deleted.
+
+        Needed because labelling is a re-runnable projection of the price rows,
+        and a row written before a data defect was detectable must not survive
+        the fix. The concrete case: `fomo_outcomes` was first populated before
+        the pair-flip screen existed, so it held a fabricated +18,605% for NVDAX
+        that `record_outcome`'s upsert would never have cleared on its own —
+        the labeller now SKIPS that token, which would have left the bad row in
+        place permanently.
+        """
+        cur = self.conn.execute(
+            "DELETE FROM fomo_outcomes WHERE token_address = ? AND network_id = ?",
+            (token_address, network_id),
+        )
+        return cur.rowcount
+
     def record_outcome(
         self,
         *,
@@ -537,6 +723,28 @@ class FomoStore:
         )
         self.conn.commit()
 
+    def ticker_for(self, token_address: str) -> str | None:
+        """Best-known ticker for a mint, from whichever table has seen it.
+
+        The leaderboard holdings payload carries no symbol, so a copy probe
+        would otherwise record its outcome against a "?" ticker and be unreadable
+        in `fomo_outcomes` months later. Checks the fomo side first because its
+        tickers come from the feed, then the sibling radar's launch table.
+        """
+        for sql in (
+            "SELECT ticker FROM fomo_tokens WHERE token_address=? AND ticker<>''",
+            "SELECT ticker FROM fomo_feed_items WHERE token_address=? AND ticker<>''"
+            " ORDER BY first_seen DESC LIMIT 1",
+            "SELECT ticker FROM tokens WHERE mint=? AND ticker<>''",
+        ):
+            try:
+                row = self.conn.execute(sql, (token_address,)).fetchone()
+            except sqlite3.OperationalError:
+                continue  # sibling table absent in a fomo-only test DB
+            if row and row[0]:
+                return str(row[0])
+        return None
+
     def best_tier_so_far(self, token_address: str, network_id: int) -> str | None:
         """The strongest tier already delivered for this token, if any.
 
@@ -568,22 +776,86 @@ class FomoStore:
         self, *, token_address: str, network_id: int, ticker: str, tier: str,
         score: float, thesis_rank: int, distinct_authors: int,
         leaderboard_authors: int, total_usd: float, reason: str, delivered: bool,
+        suppressed_reason: str | None = None,
     ) -> None:
+        """Record an alert, delivered or not.
+
+        `suppressed_reason` is set when the entry gate refused to notify. It is
+        what separates "we chose not to post this" from "posting broke", which
+        `delivered=0` alone cannot express.
+        """
         self.conn.execute(
             """INSERT INTO fomo_alerts
                (ts,token_address,network_id,ticker,tier,score,thesis_rank,
-                distinct_authors,leaderboard_authors,total_usd,reason,delivered)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+                distinct_authors,leaderboard_authors,total_usd,reason,delivered,
+                suppressed_reason)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (_now(), token_address, network_id, ticker, tier, score, thesis_rank,
-             distinct_authors, leaderboard_authors, total_usd, reason, int(delivered)),
+             distinct_authors, leaderboard_authors, total_usd, reason, int(delivered),
+             suppressed_reason),
         )
         self.conn.commit()
 
     # --------------------------------------------------------- leaderboard
 
-    def record_leaderboard(self, window: str, traders: list[LeaderboardTrader]) -> None:
+    def _holding_changed(
+        self, prev: float, now: float, handle: str, token: str
+    ) -> bool:
+        """True when this position must be written: a trade, or a due heartbeat.
+
+        `HOLDINGS_TRADE_EPS` keeps reported-quantity rounding from registering as
+        a trade. The heartbeat exists so a position that nobody touches still
+        leaves a price trail; without it the table records only trade instants
+        and there is no forward series to measure an outcome against.
+        """
+        if prev <= 0:
+            return True
+        if abs(now / prev - 1.0) > HOLDINGS_TRADE_EPS:
+            return True
+        row = self.conn.execute(
+            """SELECT captured_at FROM fomo_leaderboard_holdings
+               WHERE handle = ? AND token_address = ?
+               ORDER BY captured_at DESC LIMIT 1""",
+            (handle, token),
+        ).fetchone()
+        if row is None or not row[0]:
+            return True
+        last = _parse_ts(str(row[0]))
+        if last is None:
+            return True
+        age = (datetime.now(timezone.utc) - last).total_seconds()
+        return age >= HOLDINGS_HEARTBEAT_S
+
+    def _last_holding_amount(self, handle: str, token: str) -> float | None:
+        row = self.conn.execute(
+            """SELECT human_amount FROM fomo_leaderboard_holdings
+               WHERE handle = ? AND token_address = ?
+               ORDER BY captured_at DESC LIMIT 1""",
+            (handle, token),
+        ).fetchone()
+        return None if row is None or row[0] is None else float(row[0])
+
+    def record_leaderboard(
+        self, window: str, traders: list[LeaderboardTrader],
+        *, dedupe_holdings: bool = True,
+    ) -> list[CopyEvent]:
+        """Persist one leaderboard capture.
+
+        Holdings rows are written only when a trader's token QUANTITY changed,
+        because that is the only thing in this payload that means a trade
+        happened: `value` moves with price on every poll even when nobody did
+        anything. Without the dedupe, polling often enough to be useful as a
+        trade tape costs 264 MB/day (1,320 rows a round at 139 bytes, measured
+        2026-09-17), and 83% of those rows say "no trade".
+
+        `HOLDINGS_HEARTBEAT_S` still forces a row through periodically so the
+        table keeps a coarse price series per position rather than only
+        recording the instants someone traded.
+        """
         captured = _now()
         cur = self.conn.cursor()
+        kept = skipped = 0
+        events: list[CopyEvent] = []
         for rank, t in enumerate(traders, start=1):
             cur.execute(
                 """INSERT OR REPLACE INTO fomo_leaderboard
@@ -596,15 +868,35 @@ class FomoStore:
                  t.total_volume, t.followers, t.total_holdings),
             )
             for h in t.top_holdings:
+                token = str(h.get("tokenAddress") or "")
+                amount = h.get("humanAmount")
+                if token and amount is not None:
+                    prev = self._last_holding_amount(t.handle, token)
+                    if prev is not None and prev > 0 and abs(
+                        float(amount) / prev - 1.0
+                    ) > HOLDINGS_TRADE_EPS:
+                        events.append(CopyEvent(
+                            handle=t.handle, token_address=token,
+                            network_id=h.get("networkId"),
+                            ticker=str(h.get("symbol") or h.get("ticker") or "") or None,
+                            prev_amount=prev, new_amount=float(amount),
+                            price_usd=h.get("price"),
+                        ))
+                    if dedupe_holdings and prev is not None and not self._holding_changed(
+                        prev, float(amount), t.handle, token
+                    ):
+                        skipped += 1
+                        continue
                 cur.execute(
                     """INSERT INTO fomo_leaderboard_holdings
                        (window,captured_at,handle,token_address,network_id,
                         human_amount,price,value,pnl)
                        VALUES (?,?,?,?,?,?,?,?,?)""",
-                    (window, captured, t.handle, str(h.get("tokenAddress") or ""),
+                    (window, captured, t.handle, token,
                      h.get("networkId"), h.get("humanAmount"), h.get("price"),
                      h.get("value"), h.get("pnl")),
                 )
+                kept += 1
             # Feed the radar's existing smart-money table. This is the PRD
             # Phase 2 unblock: a free, PnL-ranked set of Solana addresses.
             if t.solana_address:
@@ -618,6 +910,14 @@ class FomoStore:
                     (t.solana_address, t.pnl, f"fomo:{window}:{t.handle}", captured),
                 )
         self.conn.commit()
+        if skipped:
+            # Reported so the dedupe is auditable. If `kept` ever collapses to 0
+            # the tape has gone silent, which must not look like a quiet market.
+            log.info(
+                "leaderboard %s holdings: %d written, %d unchanged",
+                window, kept, skipped,
+            )
+        return events
 
     def leaderboard_handles(self) -> set[str]:
         """Handles from the most recent capture of every window."""

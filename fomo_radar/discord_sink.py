@@ -16,11 +16,14 @@ from typing import Any
 from memecoin_radar.discord_sink import DiscordSink
 
 from .config import SOLANA_NETWORK_ID
-from .signal import TIER_CONVICTION, TIER_HOT, TIER_PRIORITY, TokenSignal
+from .signal import TIER_CONVICTION, TIER_ENTER, TIER_HOT, TIER_PRIORITY, TokenSignal
 
 log = logging.getLogger("fomo_radar.discord")
 
 TIER_COLOR = {
+    # Only ENTER NOW is ever posted, so this is effectively the one colour that
+    # ships. The rest are kept for a manual re-send of a recorded alert.
+    TIER_ENTER: 0x2ECC71,
     TIER_CONVICTION: 0x2ECC71,
     TIER_HOT: 0xF1C40F,
 }
@@ -115,10 +118,13 @@ def build_embed(sig: TokenSignal) -> dict[str, Any]:
             }
         )
 
+    # Everything delivered has passed the entry gate, so the title says what to
+    # do rather than which tier scored. A notification that does not name an
+    # action is a report, and reports are exactly what this radar stopped sending.
     return {
-        "title": f"{sig.tier} · ${ticker}",
+        "title": f"{TIER_ENTER} · ${ticker}",
         "url": token_url(sig),
-        "color": TIER_COLOR.get(sig.tier or "", DEFAULT_COLOR),
+        "color": TIER_COLOR.get(TIER_ENTER, DEFAULT_COLOR),
         "description": " · ".join(sig.reasons) if sig.reasons else "—",
         "fields": fields,
         "footer": {

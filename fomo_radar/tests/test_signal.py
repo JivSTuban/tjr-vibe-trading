@@ -233,3 +233,50 @@ class TestAgainstMeasuredReality:
         dev = author(handle="x")
         dev.is_dev = True
         assert sig(rank=1, profiles=[dev]).score == sig(rank=1, profiles=[plain]).score
+
+
+class TestFalsifiabilityAndInstrumentGates:
+    """Two gates added 2026-09-17 after one live alert exposed both.
+
+    The $AMD alert (delivered 14:52 UTC) was a tokenised equity at $537.85 with
+    market cap $0 and $9.20 of total conviction capital behind it.
+    """
+
+    def market(self, **kw):
+        base = dict(
+            known=True, liquidity_usd=66_000.0, volume_h1_usd=28_000.0,
+            market_cap_usd=500_000.0, buys_m5=18, sells_m5=8, price_usd=0.0001,
+        )
+        base.update(kw)
+        return LiquidityState(**base)
+
+    def test_an_unknown_market_cap_is_blocked(self):
+        """Not because a low cap is bad, but because it could never be labelled.
+
+        `label_one` measures returns off `market_cap_usd` and treats zero as
+        unusable, so such an alert's outcome is unknowable forever.
+        """
+        s = sig(rank=4, liquidity=self.market(market_cap_usd=0.0))
+        assert "market cap unknown" in " ".join(s.blocked_by)
+
+    def test_a_low_market_cap_is_NOT_blocked(self):
+        """Guard against re-reading the gate above as a market-cap FLOOR.
+
+        A low cap is the whole point: it is what leaves room to run.
+        """
+        s = sig(rank=4, liquidity=self.market(market_cap_usd=1.0))
+        assert "market cap" not in " ".join(s.blocked_by)
+
+    def test_a_wrapped_real_world_asset_is_blocked(self):
+        s = sig(rank=4, liquidity=self.market(price_usd=537.85))
+        assert "wrapped real-world asset" in " ".join(s.blocked_by)
+
+    def test_a_real_meme_coin_price_passes(self):
+        """SPX at $0.4716 was the most expensive genuine meme coin observed."""
+        s = sig(rank=4, liquidity=self.market(price_usd=0.4716))
+        assert "wrapped real-world asset" not in " ".join(s.blocked_by)
+
+    def test_the_price_ceiling_can_be_disabled(self):
+        s = sig(rank=4, liquidity=self.market(price_usd=537.85),
+                cfg=SignalConfig(max_price_usd=0.0))
+        assert "wrapped real-world asset" not in " ".join(s.blocked_by)
