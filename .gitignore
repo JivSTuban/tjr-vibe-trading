@@ -128,3 +128,15 @@ memecoin_radar/data/
 # The aggregates that the findings rest on are in FINDINGS.md; the raw pull is
 # reproducible from the harvester and is deliberately not published here.
 research/fomo/*.json
+
+# Downloaded market-data caches — regenerable, hundreds of MB, never source.
+# (backtesting/eod_1pct_reversal/.cache alone is 331M of Alpaca minute bars.)
+.cache/
+backtesting/**/.cache/
+
+# Large backtest feature/trade dumps. The small runs/*.json summaries ARE kept —
+# they are the banked results the FINDINGS.md files cite.
+backtesting/**/runs/*.csv
+
+# graphify knowledge graph — generated from the source it indexes (56M).
+graphify-out/
