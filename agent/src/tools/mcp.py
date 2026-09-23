@@ -284,6 +284,22 @@ def resolve_mcp_server_tool_name_segments(
     return resolved_segments
 
 
+def read_mcp_tool_input_schema(tool: Any) -> dict[str, Any] | None:
+    """Read a remote tool's JSON schema across MCP SDK versions.
+
+    SDK v2 renamed ``Tool.inputSchema`` to ``input_schema`` and left a deprecation shim
+    behind the old name. Reading only the old name fails **silently** once that shim is
+    dropped: ``getattr(tool, "inputSchema", None)`` returns ``None`` rather than raising,
+    so every wrapper would register with no parameters and the agent would call remote
+    tools with empty arguments. Prefer the new name, keep the old one as a fallback for
+    servers still on v1.
+    """
+    schema = getattr(tool, "input_schema", None)
+    if schema is None:
+        schema = getattr(tool, "inputSchema", None)
+    return schema
+
+
 def normalize_mcp_tool_schema(schema: dict[str, Any] | None) -> dict[str, Any]:
     """Normalize remote MCP input schemas into OpenAI-compatible objects.
 
@@ -424,7 +440,7 @@ class MCPServerAdapter:
                     remote_name=tool.name,
                     local_name=local_name,
                     description=(tool.description or f"Remote MCP tool {tool.name} from {self.server_name}."),
-                    parameters=normalize_mcp_tool_schema(getattr(tool, "inputSchema", None)),
+                    parameters=normalize_mcp_tool_schema(read_mcp_tool_input_schema(tool)),
                     annotations=getattr(tool, "annotations", None),
                 )
             )
