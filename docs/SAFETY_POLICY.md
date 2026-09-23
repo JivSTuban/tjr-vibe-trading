@@ -4,6 +4,20 @@
 
 This policy is **non-negotiable and fail-closed**. Where it references existing enforcement, see `docs/research/VIBE_TRADING_AUDIT.md` for file evidence. Nothing in this fork may weaken a control below without owner (Jiv) sign-off recorded in `knowledge/decisions/`.
 
+## Owner-approved scope exception: Fomo (2026-09-18)
+
+The owner has supplied the required sign-off in
+[`0002-fomo-owner-authorized-execution.md`](../knowledge/decisions/0002-fomo-owner-authorized-execution.md).
+For the Fomo Radar ENTER NOW Solana browser executor, the live prohibition,
+TJR strategy approval/A+ requirements, minimum reward/risk of 2.0, PRD promotion
+stages, and Binance gateway/connection prerequisites no longer apply. The
+specified 20% stop and 10% target are owner-authorized. This exception takes
+precedence over conflicting sections below. It does not waive the signal's
+eligibility checks, fixed-size requirement, duplicate protection, position and
+fill verification, kill switch, or credential protections. Other strategies
+remain under the original policy. Live handler readiness is an implementation
+question, not an outstanding policy approval.
+
 ---
 
 ## 0. Prime directive

@@ -2,6 +2,17 @@
 
 **You are operating in `JivSTuban/tjr-vibe-trading`** (fork of `HKUDS/Vibe-Trading`). This file governs autonomous agents (Codex and others). Read it before doing anything. For dev/contributor mechanics see `AGENT_CONTRIBUTOR_GUIDE.md`; this file is about **trading safety and scope**.
 
+## Owner-authorized Fomo exception (2026-09-18)
+
+For the Fomo Radar ENTER NOW Solana browser executor, follow
+[`knowledge/decisions/0002-fomo-owner-authorized-execution.md`](knowledge/decisions/0002-fomo-owner-authorized-execution.md).
+Jiv removed its repository-policy live-trading prohibition, TJR approval/A+
+requirements, PRD promotion stages, Binance prerequisites, and TJR minimum
+reward/risk. Those restrictions below apply to the original TJR/Binance scope,
+not this Fomo executor. Do not ask for the same policy authorization again.
+Retain the requested 20% stop, 10% target, fixed owner-supplied size, signal
+eligibility, duplicate/fill checks, kill switch, and credential protections.
+
 ## Read first
 - `docs/PRD.md` — product spec (the authority on scope).
 - `docs/SAFETY_POLICY.md` — **binding, fail-closed.** Non-negotiable.
