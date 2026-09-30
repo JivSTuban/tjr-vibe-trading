@@ -13,7 +13,7 @@ Not independent of the taxonomy's authors: the prompts were written after GME / 
 (2026-09), none of which is in this sample, but the sample is small. Read the table as a sanity
 check on direction and on "did it veto a winner", not as a significance test.
 
-    uv run python -m backtesting.insider_cluster.veto_replay [--limit N] [--workers 4]
+    uv run python -m backtesting.insider_cluster.veto_replay [--limit N] [--workers 4] [--arms ins_cat,ins_nocat]
 Results are cached per (ticker, date) under .cache/veto_replay/ so a rerun costs nothing.
 """
 from __future__ import annotations
@@ -44,7 +44,7 @@ def run_one(ticker: str, date: str, *, runner=None) -> dict:
         if runner is not None:
             res = runner(ticker, date)
         else:
-            r = subprocess.run(["node", _ENGINE, ticker, "--asof", date, "--json"], capture_output=True, text=True, timeout=900)
+            r = subprocess.run(["node", _ENGINE, ticker, "--asof", date, "--json"], capture_output=True, text=True, timeout=3600)   # a serial ATM issuer (MSTR) has 20+ filings
             res = json.loads(r.stdout)[0]
             if r.returncode != 0 and "verdict" not in res:
                 raise RuntimeError(r.stderr[-200:])
@@ -87,9 +87,12 @@ def why(res: dict) -> str:
     return "; ".join(k[:3])
 
 
-def main(limit: int | None = None, workers: int = 4) -> None:
+def main(limit: int | None = None, workers: int = 4, arms: tuple = ("ins_cat",)) -> None:
+    """Default arms = ins_cat only. In production the beat gate refuses a bare insider buy BEFORE the
+    veto runs, so the veto's real population is the names that already have a public beat; vetoing
+    the ins_nocat events would cost ~3x as much and answer a question nobody asks."""
     res = F.rescore_retest_window()
-    events = [(arm, t, d, r) for arm in ("ins_cat", "ins_nocat") for (t, d, r, *_ ) in res[arm]["graded"]]
+    events = [(arm, t, d, r) for arm in arms for (t, d, r, *_ ) in res[arm]["graded"]]
     events.sort(key=lambda e: (e[2], e[1]))
     if limit:
         events = events[:limit]
@@ -115,4 +118,5 @@ def main(limit: int | None = None, workers: int = 4) -> None:
 
 if __name__ == "__main__":
     a = sys.argv[1:]
-    main(int(a[a.index("--limit") + 1]) if "--limit" in a else None, int(a[a.index("--workers") + 1]) if "--workers" in a else 4)
+    main(int(a[a.index("--limit") + 1]) if "--limit" in a else None, int(a[a.index("--workers") + 1]) if "--workers" in a else 4,
+         tuple(a[a.index("--arms") + 1].split(",")) if "--arms" in a else ("ins_cat",))
