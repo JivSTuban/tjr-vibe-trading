@@ -100,6 +100,14 @@ test("listFilings: honours an injected clock and flags a truncated list", () => 
   assert.equal(b.truncatedList, true, "recent page ends inside the window and older pages exist");
 });
 
+test("listFilings: an as-of replay never reads filings made after the as-of date", () => {
+  const s = sub(["2026-09-25", "2026-09-05", "2026-08-20"]);
+  const r = listFilings(s, { now: Date.parse("2026-09-10"), days: 90 });
+  assert.deepEqual(r.rows.map((x) => x.date), ["2026-09-05", "2026-08-20"], "the 09-25 filing is in the future of the replay date");
+  const same = listFilings(s, { now: Date.parse("2026-09-25"), days: 90 });
+  assert.equal(same.rows.length, 3, "a filing on the as-of day itself is public and counts");
+});
+
 test("windowsFrom: finds the exchange, reports caps by name not count", () => {
   const w = windowsFrom(GME);
   assert.ok(w.windows.some((x) => x.text.includes("55.5 million shares")));

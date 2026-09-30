@@ -285,10 +285,10 @@ export function coverageGaps(f, cutStrong) {
   return { unknowns, notes };
 }
 
-export async function vetoTicker(ticker, { days = 90, p1 = runClaude, p2, p2Engine = "claude", runP2 = true, collect = collectFilingEvents, cache = cached } = {}) {
+export async function vetoTicker(ticker, { days = 90, asOf = null, p1 = runClaude, p2, p2Engine = "claude", runP2 = true, collect = collectFilingEvents, cache = cached } = {}) {
   p2 = p2 || (p2Engine === "claude" ? (a) => runClaude({ ...a, model: process.env.VETO_P2_MODEL || "claude-haiku-4-5" }) : runCodex);
   if (p2Engine !== "claude" && p2Engine !== "codex") throw new Error(`unknown --p2 engine "${p2Engine}" (claude|codex)`);
-  const ev = await collect(ticker, { days });
+  const ev = await collect(ticker, { days, ...(asOf ? { now: Date.parse(asOf) + 86400e3 - 1 } : {}) });
   if (ev.error) return { ticker, verdict: "CAVEAT", unknowns: [ev.error], rows: [], filings: 0 };
   const unknowns = [], notes = [];
   if (ev.coverage.truncatedList) unknowns.push(`filing list truncated: recent page stops at ${ev.coverage.oldestInRecent}, window starts ${ev.cutoff}`);
@@ -355,14 +355,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const json = args.includes("--json"), runP2 = !args.includes("--no-p2");
   const pe = args.indexOf("--p2");
   const p2Engine = pe >= 0 ? args[pe + 1] : "claude";
+  const ai = args.indexOf("--asof");
+  const asOf = ai >= 0 ? args[ai + 1] : null;
   const di = args.indexOf("--days");
   const days = di >= 0 ? +args[di + 1] : 90;
-  const tickers = args.filter((a, i) => !a.startsWith("--") && args[i - 1] !== "--days" && args[i - 1] !== "--p2");
+  const tickers = args.filter((a, i) => !a.startsWith("--") && args[i - 1] !== "--days" && args[i - 1] !== "--p2" && args[i - 1] !== "--asof");
   let bad = 0;
   const all = [];
   for (const t of tickers) {
     try {
-      const r = await vetoTicker(t, { days, runP2, p2Engine });
+      const r = await vetoTicker(t, { days, asOf, runP2, p2Engine });
       all.push(r);
       if (!json) console.log(render(r));
     } catch (e) {

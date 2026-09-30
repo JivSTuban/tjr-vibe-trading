@@ -86,13 +86,16 @@ export function splitSubmission(txt) {
 
 // Filings in the window from a submissions JSON. Reports when the `recent` page does not
 // reach back to the cutoff (older rows live in filings.files and would be silently missed).
+// `now` is also an UPPER bound: a replay "as of" a past date must not read filings made after it,
+// or the veto would see the future (the look-ahead that made the first n=39 result too good).
 export function listFilings(sub, { now = Date.now(), days = 90 } = {}) {
   const R = sub.filings.recent;
   const cutoff = new Date(now - days * 86400e3).toISOString().slice(0, 10);
+  const upper = new Date(now).toISOString().slice(0, 10);
   const rows = [];
   for (let i = 0; i < R.form.length; i++) {
     if (!/^(8-K|8-K\/A|6-K)$/.test(R.form[i])) continue;
-    if (R.filingDate[i] < cutoff) continue;
+    if (R.filingDate[i] < cutoff || R.filingDate[i] > upper) continue;
     rows.push({
       acc: R.accessionNumber[i],
       form: R.form[i],
