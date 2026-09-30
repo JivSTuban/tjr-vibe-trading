@@ -52,3 +52,27 @@ EQUITY_LINE_OR_ATM_AGREEMENT is a strong presumption the DD must weigh and may o
 reason (what the money is for, how old the raise is, how the stock reacted); every other VETO class
 stays binding. Revisit when a larger replay exists: extend `veto_replay --arms ins_cat,ins_nocat`
 after the forward tracker has more matured events, or replay the catalyst-only arm.
+
+## Pass-2 engine: Codex vs Haiku (2026-10-01)
+
+Ran `veto_extract.mjs <T> --json` (Haiku pass 2, the default) and `--p2 codex` on GME RWT ADC UBER INR
+GIII APTV GRAB. Pass 1 and the prompts are identical, so any difference is the pass-2 model.
+
+- **Verdict: 7 of 8 tickers agree, 1 flips.** GME is VETO on Haiku and CAVEAT on Codex.
+- **Row status: 6 of ~20 graded rows differ** (GME 3, RWT 2, INR 1). Every difference is Codex
+  grading LOWER (CONFIRMED to PROBABLE or REJECTED); none goes the other way.
+- **Why:** Codex reads ordinary closing conditions ("subject to customary conditions", "may be
+  terminated") as `contradicted_nearby`, and judges the quoted span alone. It REJECTED "a maximum of
+  56,473,810 shares may be issued upon conversion of the Notes" (RWT) and "the Existing Noteholders will
+  receive approximately 55.5 million shares" (GME) as "not an actual issuance". Both are real events:
+  the GME 8-K states the exchange completed 2026-09-03, and the RWT 8-K is the 2026-09-15 indenture for notes already issued.
+- **Decision:** Haiku stays the default (it matches the known outcome on both flipped names).
+  `runCodex` and `--p2 codex` are KEPT as a stricter second opinion, per the pre-agreed rule (any label
+  disagreement keeps Codex). Do not treat a Codex REJECTED on an announced-but-unclosed deal as
+  evidence the event did not happen.
+- **Side finding: pass 1 is not deterministic across runs.** ADC's label changed
+  (EQUITY_LINE_OR_ATM_AGREEMENT vs EQUITY_ISSUANCE) and GRAB returned 7 rows vs 6, with the same model
+  and prompt. The two ADC labels land in the same VETO class, so the verdict held; it is unmeasured
+  how often this crosses a class boundary.
+- **Not tested:** whether Codex's stricter grading ever catches a false VETO. n=8 names, no outcome
+  labels beyond GME/RWT.
