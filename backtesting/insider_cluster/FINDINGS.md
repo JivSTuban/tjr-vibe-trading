@@ -1,5 +1,20 @@
 # Insider-cluster-buy backtest — FINDINGS
 
+> **SUPERSEDED HEADLINE (re-tested 2026-09-30, see [RETEST_N39.md](RETEST_N39.md)).** The +11.15%
+> / 67% / n=39 figure below is the uncorrected version. With the real SEC announcement date, entry
+> at the t+2 open, ex-microcap (NYSE 20th percentile, ~$1B) and 150 bps round trip it is **+4.79%
+> median / +8.26% trimmed mean / 67% hit, n=24**, vs catalyst-alone +1.26%. It passes the
+> pre-committed rule but is fragile (dropping the top two winners fails it) and the insider
+> layer's added value is not significant at 90%. The robust part: **insider WITHOUT a catalyst,
+> ex-microcap, net = -3.04% median, 41% hit (n=54).** Also, "coincident" was wrong: insiders
+> bought a median 27 days AFTER the beat was public.
+>
+> **CORRECTED 2026-10-01 (matured trades only, see RETEST_N39.md):** the n=24 figures above included
+> trades with no full 60-day window. On matured trades with refreshed prices: insider + beat +5.23%
+> (n=23), catalyst-alone +3.25% (n=221), difference +1.99pp, 90% CI [-3.48, +6.81], which FAILS the
+> pre-committed 3pp rule. The insider layer is **not established**; the public-beat requirement and
+> the bare-insider refuse (-2.61%, n=54) are the robust parts.
+
 **Verdict (multi-year, 2021–2026): the INTERSECTION is the edge, not either signal alone.**
 - **Insider cluster buys ALONE are a dud** — mean +1.84% vs an unconditional base rate of +4.71% (60d,
   i.e. they *underperform*), **negative in the 2021/2022 regimes**, and **−5.99% after the survivorship
