@@ -63,6 +63,52 @@ class Outcome:
     times_to_multiple: dict[str, float | None]
 
 
+def is_pair_flip(
+    series: list[dict],
+    *,
+    factor: float = 3.0,
+    price_key: str = "price_usd",
+    liq_key: str = "liquidity_usd",
+) -> bool:
+    """True when the series mixes readings from DIFFERENT AMM pairs.
+
+    The discriminator is the liquidity-to-price ratio, not the price. Within one
+    pair that ratio is the share of supply sitting in the pool, which drifts
+    slowly; it cannot jump by an order of magnitude between two polls minutes
+    apart. When it does, `pick_primary` selected a different pair and the two
+    readings are not comparable to each other at all.
+
+    Before the 2026-09-17 fix that function ranked pairs on 5-minute VOLUME, a
+    flow quantity that flips between polls, so any token with more than one pair
+    oscillated. Recorded examples, all from one hour of tracking:
+
+        mint        liq/px seen              what it means
+        FgXkpy...   0.28, 0.015, 1.03        three different pairs
+        A7bdiY...   0.0156 and 62.56         pool worth 62x the whole token
+        pumpCm...   0.0013, 0.0117, 0.0000   one reading claims a $9.1T mcap
+
+    An earlier version of this filter tested the PRICE for a jump up and back
+    down. It missed every one-way switch and let a fake +$485,868 trade on a
+    $100 position through, which was 80% of the reported total. Price alone
+    cannot distinguish a real 100x from a pair change; the ratio can. NVDAX is
+    the canonical case: its price went $217.23 -> $218.04 (flat) while its
+    recorded market cap went 186x, because only the mcap field changed pair.
+
+    The root-cause fix lives in `memecoin_radar.sources.dexscreener.pick_primary`
+    but cannot repair rows already written, so corrupted series must be dropped
+    by every consumer. `label_one` labels on `market_cap_usd`, which is exactly
+    the corrupted field, so the labeller MUST screen with this first.
+    """
+    ratios = [
+        float(s[liq_key]) / float(s[price_key])
+        for s in series
+        if float(s.get(price_key) or 0) > 0 and float(s.get(liq_key) or 0) > 0
+    ]
+    if len(ratios) < 2:
+        return False
+    return max(ratios) > min(ratios) * factor
+
+
 def label_one(snapshots: list[dict]) -> Outcome | None:
     """Label one token from its snapshot series.
 

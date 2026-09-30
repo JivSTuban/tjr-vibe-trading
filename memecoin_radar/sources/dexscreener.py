@@ -129,13 +129,34 @@ def parse_pair(pair: dict[str, Any]) -> PairState:
 def pick_primary(pairs: list[dict[str, Any]]) -> dict[str, Any] | None:
     """Choose the pair that represents the token.
 
-    Highest 5-minute volume wins, because a migrated token briefly has both a
-    bonding-curve pair and an AMM pair, and the active one carries the flow the
-    acceleration features need.
+    Deepest LIQUIDITY wins, with 5-minute volume only as a tie-break.
+
+    This used to select on 5-minute volume alone, and that was a serious bug.
+    m5 volume is a rapidly fluctuating quantity, so on any token with more than
+    one pair the winner flipped between polls and the recorded market cap and
+    liquidity jumped by orders of magnitude with no market move behind it.
+    Measured over the recorded snapshots on 2026-09-17: **29 of the 99 tokens
+    that ever became tradeable (29%) had a series that jumped >3x and back**,
+    including one that alternated between a $41k and a $145M market cap on
+    consecutive polls. Every forward return computed from those rows was
+    fiction, and the live liquidity gate reads the same field, so a token could
+    pass the $15k floor purely because a poll happened to catch the bigger pair.
+
+    Liquidity is the right key because it is a stock, not a flow: it moves
+    smoothly, so the same pair keeps winning across polls and the series stays
+    comparable to itself. A migrating token still resolves correctly, because
+    the AMM pair overtakes the bonding curve on depth as the curve drains, and
+    that transition is monotonic rather than oscillating.
     """
     if not pairs:
         return None
-    return max(pairs, key=lambda p: _f((p.get("volume") or {}).get("m5")))
+    return max(
+        pairs,
+        key=lambda p: (
+            _f((p.get("liquidity") or {}).get("usd")),
+            _f((p.get("volume") or {}).get("m5")),
+        ),
+    )
 
 
 class DexScreenerClient:

@@ -82,6 +82,21 @@ class SignalConfig:
     min_volume_h1_usd: float = 10_000.0
     min_txns_m5: int = 1
 
+    # Reject a token whose market cap we could not read. This is NOT a cap
+    # floor -- a low cap is the whole point, since it is what leaves room to
+    # run. It is a falsifiability gate: `label_one` measures returns off
+    # `market_cap_usd` and treats zero as unusable, so an alert with no cap can
+    # never be labelled and we could never find out whether it worked.
+    require_known_market_cap: bool = True
+
+    # Ceiling on unit price, which is how tokenised real-world assets are told
+    # apart from meme coins on fomo. Measured over the 27 alerts to 2026-09-17:
+    # every genuine meme coin was <= $0.47, every wrapped asset >= $1.14. Those
+    # assets track an underlying and structurally cannot do what this radar
+    # looks for -- and they had quietly become the MAJORITY of what it alerted
+    # on, and 8 of the first 12 labelled outcomes. Set to 0 to disable.
+    max_price_usd: float = 1.0
+
     # A leaderboard author is a quality marker, not a discovery one: the
     # leaderboard's own top-consensus holdings are already-won positions, so
     # this raises a candidate's tier but can never create one on its own.
@@ -105,6 +120,37 @@ class SignalConfig:
     # 20,337-thesis sample, median -40.1%, zero winners. There is no evidence
     # for "developer backed" as a positive, and n=7 cannot support one.
 
+    # --- the ENTER NOW gate ------------------------------------------------
+    # Everything above decides whether a token is INTERESTING. These decide
+    # whether it is ACTIONABLE RIGHT NOW, which is a strictly higher bar and the
+    # only one that earns a notification. A signal you cannot act on is a
+    # report; the $CATE alert was the proof.
+
+    # Rank window for an entry. Tighter than `max_thesis_rank` because the
+    # measured decay is steep inside it: rank 0 median +715.6%, 1-4 +151.2%,
+    # 5-19 +122.9%, then 20-99 collapses to +50.3%. Interesting extends to 20;
+    # actionable stops sooner.
+    entry_max_rank: int = 20
+
+    # How old the triggering thesis may be. This is the gate that did not exist
+    # before and matters most: the discovery sweep evaluates the NEWEST thesis
+    # on a liquid launch, which can easily be hours old, and the backfill path
+    # replays historical theses outright. Alerting on either is a notification
+    # about a trade that already happened.
+    entry_max_thesis_age_s: float = 1800.0
+
+    # Execution budget. `fomo_radar.fill` measures round-trip cost at a given
+    # size against pool depth: at the $15k liquidity floor a $500 position pays
+    # 13.5% to get in and out, which is most of the move on anything but a
+    # moonshot. Refusing to notify above this budget is the difference between a
+    # tradeable alert and an expensive one.
+    entry_max_round_trip_pct: float = 0.06
+
+    # The position the execution budget is evaluated at. Impact is linear in
+    # size, so this is not cosmetic: doubling it roughly doubles the hurdle and
+    # therefore tightens the liquidity a token needs to qualify.
+    entry_size_usd: float = 500.0
+
 
 @dataclass
 class FomoConfig:
@@ -127,13 +173,37 @@ class FomoConfig:
     token_refresh_margin_s: float = 600.0
 
     # The leaderboard changes on a daily cadence, not a per-minute one.
-    leaderboard_interval_s: float = 6 * 3600.0
+    # The leaderboard is polled this often. It used to be 6 hours, which was
+    # right while the holdings were only a trophy case to weight candidates by.
+    # It is wrong now that the same payload is the only free TRADE TAPE we have:
+    # diffing `human_amount` between captures reconstructs what the top 150
+    # traders bought and sold, and at a 6-hour interval a copy-trade signal
+    # would be detected up to 6 hours late. Measured 2026-09-17: roughly 9
+    # genuine buys an hour across 321 traders, so a 60s poll turns ~1 event per
+    # 6h of usable detection into ~200 events a day.
+    #
+    # Cost is 3 calls a minute (one per window, holdings come embedded), against
+    # the ~60-in-a-burst that tripped a real Cloudflare 429. Storage is bounded
+    # by the amount-change dedupe in `store.record_leaderboard`; without it this
+    # interval would write 264 MB/day.
+    leaderboard_interval_s: float = 60.0
 
     headless: bool = False  # headless is BLOCKED by fomo's edge; see session.py
     dry_run: bool = False
 
     max_alerts_per_min: int = 4
     max_alerts_per_hour: int = 20
+
+    # How many tokens carry forward-price tracking, newest clock first.
+    # Tracking is what makes the classifier falsifiable, and it now covers
+    # every token with a thesis rather than only the ones we alerted on, so
+    # this is the bound on that widening. Each due token costs one slot in a
+    # 30-address DexScreener batch and at most one reading per tick, so 300
+    # tokens is ~10 batched requests per tick in the worst case and far fewer
+    # in practice (a token is only due when it crosses an age mark).
+    # 205 tokens had theses over the first two weeks; 300 leaves headroom
+    # without letting a quiet week of accumulation turn into a rate-limit.
+    max_tracked_tokens: int = 300
 
 
 def load_config(dry_run: bool = False) -> FomoConfig:

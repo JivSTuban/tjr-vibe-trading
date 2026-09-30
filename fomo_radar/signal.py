@@ -63,8 +63,22 @@ TIER_WATCH = "WATCH"
 TIER_HOT = "HOT"
 TIER_CONVICTION = "CONVICTION"
 
+# The only tier that is ever notified. See `entry_gate`.
+TIER_ENTER = "ENTER NOW"
+
+# Not a tier the signal can ever assign. It labels rows written by the
+# copy-trade probe in `run._record_copy_probes`, which exist only to accumulate
+# a forward-price sample for an UNVALIDATED strategy. Kept in `fomo_alerts` so
+# the outcome ladder and labeller work on them unchanged, and tagged so the
+# ENTER NOW gate's own counters can exclude them.
+TIER_COPY = "COPY PROBE"
+
 # Priority for the shared Discord rate budget: higher number sheds first.
-TIER_PRIORITY = {TIER_CONVICTION: 1, TIER_HOT: 2, TIER_WATCH: 3}
+# TIER_ENTER outranks everything: once we have told someone to enter, a later
+# "interesting" tier on the same token must not re-alert. Without this entry,
+# `best_tier_so_far` returns None for a delivered ENTER and the token alerts on
+# every subsequent thesis.
+TIER_PRIORITY = {TIER_ENTER: 0, TIER_CONVICTION: 1, TIER_HOT: 2, TIER_WATCH: 3}
 
 # The lowest score a token clearing every hard gate can possibly reach: arriving
 # at the very edge of the early window (+20) with the minimum qualifying
@@ -90,6 +104,13 @@ class LiquidityState:
     market_cap_usd: float = 0.0
     buys_m5: int = 0
     sells_m5: int = 0
+    # Carried purely so the alert can persist an age-0 entry mark. No gate reads
+    # it: `fomo_radar.paper` needs the price at the INSTANT of the alert, and
+    # the earliest tracked snapshot is +5m, which on a token moving this fast is
+    # a different trade.
+    price_usd: float = 0.0
+    # Wall-clock observation time, retained across cache hits for execution staging.
+    observed_at: float = 0.0
 
     @property
     def txns_m5(self) -> int:
@@ -121,6 +142,100 @@ class TokenSignal:
     max_usd: float = 0.0
     minutes_since_first: float = 0.0
     has_x_link: bool = False
+
+
+
+@dataclass(slots=True)
+class EntryVerdict:
+    """Whether this signal is worth waking someone up for, right now.
+
+    A tier says a token is INTERESTING. This says it is ACTIONABLE: early
+    enough that the measured edge exists, recent enough that the move has not
+    already happened, and liquid enough that getting in and out does not cost
+    more than the move is worth.
+
+    `blocked_by` is always populated on a refusal so a silent radar can be told
+    apart from a broken one. That distinction is the single most repeated bug in
+    this project.
+    """
+
+    enter: bool
+    reasons: list[str] = field(default_factory=list)
+    blocked_by: list[str] = field(default_factory=list)
+    round_trip_pct: float = 0.0
+    thesis_age_s: float = 0.0
+
+
+def entry_gate(
+    sig: TokenSignal,
+    *,
+    thesis_age_s: float,
+    cfg: SignalConfig | None = None,
+) -> EntryVerdict:
+    """Decide whether `sig` is an ENTER NOW, the only thing worth notifying.
+
+    Deliberately separate from `evaluate`: scoring answers "is this token
+    interesting", which is a claim about the token, while this answers "should
+    money move right now", which is a claim about the token AND the clock AND
+    the order book. Conflating them is how a radar ends up posting a trophy.
+
+    `thesis_age_s` is measured from the triggering thesis's own `created_at`,
+    not from when we happened to see it. Our polling lag is our problem; the
+    question here is how stale the information is.
+    """
+    cfg = cfg or SignalConfig()
+    reasons: list[str] = []
+    blocked: list[str] = []
+
+    # Inherit every hard gate `evaluate` already applied. An ENTER is strictly a
+    # subset of an alert, never a way around a liquidity or coverage block.
+    if sig.tier is None:
+        blocked.extend(sig.blocked_by or ["no tier"])
+
+    if sig.thesis_rank >= cfg.entry_max_rank:
+        blocked.append(
+            f"thesis #{sig.thesis_rank + 1} is past the entry window "
+            f"(max {cfg.entry_max_rank})"
+        )
+    else:
+        reasons.append(f"thesis #{sig.thesis_rank + 1} of the entry window")
+
+    if thesis_age_s > cfg.entry_max_thesis_age_s:
+        blocked.append(
+            f"thesis is {thesis_age_s / 60:.0f}m old "
+            f"(max {cfg.entry_max_thesis_age_s / 60:.0f}m) — not a live entry"
+        )
+    elif thesis_age_s >= 0:
+        reasons.append(f"posted {thesis_age_s / 60:.0f}m ago")
+
+    # Executability. Imported here rather than at module scope so the scoring
+    # path carries no dependency on the fill model.
+    from .fill import CostModel, round_trip_cost_pct
+
+    round_trip = 0.0
+    liquidity = sig.liquidity.liquidity_usd if sig.liquidity.known else 0.0
+    if liquidity <= 0:
+        blocked.append("no liquidity reading, cannot price an entry")
+    else:
+        cost = CostModel(trade_usd=cfg.entry_size_usd)
+        round_trip = round_trip_cost_pct(liquidity_usd=liquidity, cost=cost)
+        if round_trip > cfg.entry_max_round_trip_pct:
+            blocked.append(
+                f"round trip costs {round_trip * 100:.1f}% at ${cfg.entry_size_usd:,.0f} "
+                f"(max {cfg.entry_max_round_trip_pct * 100:.1f}%) — the pool is too thin to trade"
+            )
+        else:
+            reasons.append(
+                f"${cfg.entry_size_usd:,.0f} round trip costs {round_trip * 100:.1f}%"
+            )
+
+    return EntryVerdict(
+        enter=not blocked,
+        reasons=reasons,
+        blocked_by=blocked,
+        round_trip_pct=round_trip,
+        thesis_age_s=thesis_age_s,
+    )
 
 
 def evaluate(
@@ -165,6 +280,32 @@ def evaluate(
             )
         if liquidity.txns_m5 < cfg.min_txns_m5:
             blocked.append(f"{liquidity.txns_m5} txns in 5m — not being traded")
+        if cfg.require_known_market_cap and liquidity.market_cap_usd <= 0:
+            # NOT a market-cap floor: a low cap is the point, because that is
+            # what leaves room to run. This rejects an UNKNOWN cap, because
+            # `memecoin_radar.backtest.label_one` measures returns off
+            # `market_cap_usd` and treats a zero as unusable, so an alert with
+            # no cap can never be labelled and its outcome is unknowable
+            # forever. Shipping an unfalsifiable alert is this project's
+            # cardinal sin. Observed live: the $AMD alert (2026-09-17 14:52,
+            # delivered) recorded mcap $0 against liquidity $66,212, as did a
+            # $LINK alert at a nonsense $939.
+            blocked.append("market cap unknown — outcome could never be labelled")
+        if liquidity.price_usd > cfg.max_price_usd > 0:
+            # fomo lists tokenised real-world assets alongside meme coins, and
+            # they are a different instrument: they track an underlying, so they
+            # structurally cannot do what this radar is looking for. Measured on
+            # the 27 alerts recorded to 2026-09-17, price separates them
+            # cleanly: every genuine meme coin was <= $0.47 (SPX) while every
+            # wrapped asset was >= $1.14 -- tOpenAI $961, SPYX $768, QQQX $718,
+            # MSFTX $500, GLDX $400, TSLAX $366, GOOGLX $348, NVDAX $218,
+            # SPCXx $154, HOODX $110, CRCLX $84, LINK $11, EURC $1.14.
+            # A heuristic on an observed gap, not a law; revisit if a real meme
+            # coin ever trades above a dollar.
+            blocked.append(
+                f"price ${liquidity.price_usd:,.2f} > ${cfg.max_price_usd:,.2f}"
+                " — a wrapped real-world asset, not a meme coin"
+            )
 
     # --- hard gate 2: we are EARLY in the social timeline -------------------
     # The whole signal. Past this window the measured edge decays to the base

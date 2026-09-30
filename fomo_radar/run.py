@@ -41,16 +41,32 @@ import logging
 import signal as os_signal
 import time
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from dataclasses import replace
 
 from memecoin_radar.sources.dexscreener import DexScreenerClient
 
-from .api import FomoAPI
+from .api import FomoAPI, ThesisItem
 from .config import SOLANA_NETWORK_ID, FomoConfig, load_config
 from .conviction import build_cluster
 from .discord_sink import FomoDiscordSink
-from .discovery import MAX_CHECKS_PER_SWEEP, RECHECK_S, liquid_launches
+from .discovery import (
+    MAX_CHECKS_PER_SWEEP,
+    RECHECK_S,
+    liquid_launches,
+    retired_mints,
+)
 from .session import AuthError, FomoSession, RateLimited
-from .signal import TIER_PRIORITY, LiquidityState, evaluate
+from .execution import ExecutionBlocked, ExecutionStore, positive, propose
+from .signal import (
+    TIER_COPY,
+    TIER_ENTER,
+    TIER_PRIORITY,
+    LiquidityState,
+    TokenSignal,
+    entry_gate,
+    evaluate,
+)
 from .store import FomoStore
 
 log = logging.getLogger("fomo_radar.run")
@@ -62,6 +78,22 @@ def _parse_iso(ts: str) -> datetime | None:
         return datetime.fromisoformat(ts.replace("Z", "+00:00"))
     except (ValueError, AttributeError):
         return None
+
+
+def _thesis_age_s(item: ThesisItem) -> float:
+    """Seconds since the triggering thesis was POSTED.
+
+    Measured from the author's own `created_at`, not from when we polled it, so
+    our lag is not laundered into the signal looking fresh. An unparseable
+    timestamp returns infinity, which fails the freshness gate: unknown age must
+    never read as "just happened".
+    """
+    posted = _parse_iso(item.created_at)
+    if posted is None:
+        return float("inf")
+    if posted.tzinfo is None:
+        posted = posted.replace(tzinfo=timezone.utc)
+    return max(0.0, (datetime.now(timezone.utc) - posted).total_seconds())
 
 
 # Verified live: only these three exist on /v2/leaderboard/{window}. The UI's
@@ -101,12 +133,31 @@ OUTCOME_TICK_S = 120.0
 
 # How often to sweep the sibling radar's launch stream for socially-young
 # tokens. Social footprint grows over minutes to hours, so this is deliberately
-# slower than the feed poll.
-DISCOVERY_TICK_S = 180.0
+# slower than the feed poll (20s).
+#
+# The value is set by a rotation constraint, not by taste. Every candidate must
+# be asked about at least once per freshness window, or a thesis can be posted
+# and go stale before we ever poll its mint:
+#
+#     rotation = candidates / MAX_CHECKS_PER_SWEEP * DISCOVERY_TICK_S
+#
+# Measured on the live DB 2026-09-17: 144 candidates after retirement, 12 checks
+# a sweep. At 180s that is a 36-minute rotation against a 30-minute freshness
+# rule -- wider than the window, so some fresh theses are missed by construction.
+# At 120s it is 24 minutes, which fits with margin, and retirement only shrinks
+# the candidate count further from here. The per-sweep BURST stays at 12, which
+# is what matters for Cloudflare: 60 calls in one burst is what tripped a real
+# 429, and a backoff blocks the feed poll too.
+DISCOVERY_TICK_S = 120.0
 
 
 class FomoRadar:
-    def __init__(self, cfg: FomoConfig) -> None:
+    def __init__(self, cfg: FomoConfig, *, execution_store: ExecutionStore | None = None,
+                 execution_size_usd: float | None = None) -> None:
+        if execution_store is not None and (execution_size_usd is None or not positive(execution_size_usd)):
+            raise ValueError("execution staging requires a positive fixed USD size")
+        self.execution_store = execution_store
+        self.execution_size_usd = execution_size_usd
         self.cfg = cfg
         self.store = FomoStore(cfg.db_path)
         self._backfilled: set[tuple[str, int]] = set()
@@ -119,6 +170,12 @@ class FomoRadar:
         self._last_outcome_tick = 0.0
         self._last_discovery = 0.0
         self._discovery_seen: dict[str, float] = {}
+        # None until the first sweep loads it from the DB; see `_discover_early`.
+        self._discovery_retired: set[str] | None = None
+        # Tokens already probed as copy-trade candidates. One probe per token is
+        # enough: a second trader buying the same name does not give us a second
+        # independent observation of that token's forward path.
+        self._copy_probed: set[tuple[str, int]] = set()
         self._stop = asyncio.Event()
 
     def request_stop(self) -> None:
@@ -306,21 +363,57 @@ class FomoRadar:
                 return
             log.info("$%s upgrading %s -> %s", item.ticker, prior, sig.tier)
 
-        delivered = await sink.send(sig)
+        # The ENTER NOW gate. A tier means the token is interesting; only this
+        # means money should move, and only this is worth a notification. The
+        # refused ones are still recorded, so the gate stays measurable.
+        verdict = entry_gate(sig, thesis_age_s=_thesis_age_s(item), cfg=self.cfg.signal)
+        # Staging is independent of Discord and never authorizes a real order.
+        # Dry-run data must never be mistaken for a live signal proposal.
+        if verdict.enter and self.execution_store is not None and not self.cfg.dry_run:
+            await self._stage_execution(sig, item)
+        if verdict.enter:
+            delivered = await sink.send(sig)
+            suppressed_reason = None
+        else:
+            delivered = False
+            suppressed_reason = "; ".join(verdict.blocked_by)
+            log.info(
+                "no entry for $%s at thesis #%d: %s",
+                sig.ticker, sig.thesis_rank + 1, suppressed_reason,
+            )
+
         self.store.record_alert(
             token_address=sig.token_address,
             network_id=sig.network_id,
             ticker=sig.ticker,
-            tier=sig.tier,
+            tier=TIER_ENTER if verdict.enter else sig.tier,
             score=sig.score,
             thesis_rank=sig.thesis_rank,
             distinct_authors=sig.distinct_authors,
             leaderboard_authors=sig.leaderboard_authors,
             total_usd=sig.total_usd,
-            reason="; ".join(sig.reasons),
+            reason="; ".join(sig.reasons + verdict.reasons),
             delivered=delivered,
+            suppressed_reason=suppressed_reason,
         )
         self.store.mark_alerted(sig.token_address, sig.network_id)
+        # The age-0 entry mark. Without it the earliest price on record is the
+        # +5m snapshot, and `fomo_radar.paper` would be scoring a trade entered
+        # five minutes after the signal — on these tokens, a different trade
+        # entirely. Written for SUPPRESSED alerts too: they are the control
+        # group, and a control with no entry price cannot be compared against.
+        if liquidity.known and liquidity.price_usd > 0:
+            self.store.record_price_snapshot(
+                token_address=sig.token_address,
+                network_id=sig.network_id,
+                age_seconds=0.0,
+                price_usd=liquidity.price_usd,
+                market_cap_usd=liquidity.market_cap_usd,
+                liquidity_usd=liquidity.liquidity_usd,
+                volume_h1_usd=liquidity.volume_h1_usd,
+                buys_m5=liquidity.buys_m5,
+                sells_m5=liquidity.sells_m5,
+            )
         log.info(
             "ALERT %s $%s score=%.0f rank=%d authors=%d lb=%d delivered=%s",
             sig.tier, sig.ticker, sig.score, sig.thesis_rank,
@@ -335,13 +428,32 @@ class FomoRadar:
         launch that just developed a market has almost no social footprint by
         construction. See `discovery.py` for the measurement.
         """
-        candidates = liquid_launches(self.store.conn)
+        if self._discovery_retired is None:
+            # Built once from the DB so a restart does not re-spend the sweep
+            # budget on mints that are already permanently past the rank gate.
+            self._discovery_retired = retired_mints(
+                self.store.conn, self.cfg.signal.max_thesis_rank
+            )
+            log.info(
+                "discovery: %d mints retired as permanently past rank %d",
+                len(self._discovery_retired), self.cfg.signal.max_thesis_rank,
+            )
+
+        candidates = liquid_launches(
+            self.store.conn, exclude=self._discovery_retired
+        )
         if not candidates:
             return
 
         now = time.monotonic()
+        # Rotate strictly by least-recently-checked, never-checked first. In list
+        # order the head is re-eligible after RECHECK_S before the tail is
+        # reached even once, so the tail starves -- and the tail is where the
+        # young tokens live, because the query orders by liquidity.
+        candidates.sort(key=lambda c: self._discovery_seen.get(c.mint, 0.0))
         checked = 0
         early = 0
+        stale = 0
         for cand in candidates:
             last = self._discovery_seen.get(cand.mint, 0.0)
             if last and now - last < RECHECK_S:
@@ -365,18 +477,102 @@ class FomoRadar:
             # the rank correct for every later evaluation.
             self.store.record_items(history)
             if len(history) >= self.cfg.signal.max_thesis_rank:
+                # Thesis count only grows, so this token can never be an
+                # early-rank candidate again. Retire it instead of paying for
+                # the same answer every RECHECK_S.
+                self._discovery_retired.add(cand.mint)
                 continue
             early += 1
             # Evaluate on the newest thesis, which is the one that just told us
             # the token has social traction while still being early.
             newest = max(history, key=lambda h: h.created_at)
+            # Skip candidates whose freshest thesis is already stale. The entry
+            # gate would refuse them anyway, and this saves the DexScreener call
+            # that a refusal would waste. It does NOT permanently drop the
+            # token: `RECHECK_S` brings it back, so a new thesis arriving in ten
+            # minutes is still caught fresh on the next sweep.
+            if _thesis_age_s(newest) > self.cfg.signal.entry_max_thesis_age_s:
+                stale += 1
+                continue
             await self._consider(api, sink, newest)
 
         if checked:
+            # `stale` is reported rather than swallowed: if discovery goes quiet,
+            # this line is what says whether the input dried up or the freshness
+            # rule ate everything. A radar that cannot explain its own silence is
+            # how this project shipped a signal that could not fire.
             log.info(
                 "discovery: checked %d liquid launches, %d were socially early "
-                "(<%d theses)",
-                checked, early, self.cfg.signal.max_thesis_rank,
+                "(<%d theses), %d of those skipped as stale (>%.0fm)",
+                checked, early, self.cfg.signal.max_thesis_rank, stale,
+                self.cfg.signal.entry_max_thesis_age_s / 60,
+            )
+
+    async def _record_copy_probes(self, events: list) -> None:
+        """Log a leaderboard trader's BUY as a non-delivered probe alert.
+
+        Copy-trading is not a validated strategy: measured over 26 completed
+        trades it did WORSE than holding what those traders already held, and
+        `backtesting/copytrade_leaderboard/FINDINGS.md` calls it not proven on
+        that sample. The reason to record it anyway is that the sample is the
+        only thing standing between "not proven" and an answer, and at 26
+        observations the arm-vs-control gap changed sign on four extra events.
+
+        These go through `fomo_alerts` rather than a new table so the machinery
+        that already works picks them up for free: the outcome ladder records
+        forward prices at `OUTCOME_AGES_S`, `fomo_radar.label` labels them, and
+        `fomo_radar.paper` can simulate a causal exit over them. They are
+        written with `delivered = 0` and a `suppressed_reason`, so NOTHING is
+        posted to Discord and the ENTER NOW gate's own counters stay separable
+        by `tier`.
+        """
+        for ev in events:
+            if not ev.is_buy or not ev.token_address:
+                continue
+            network = int(ev.network_id or SOLANA_NETWORK_ID)
+            key = (ev.token_address, network)
+            if key in self._copy_probed:
+                continue
+            self._copy_probed.add(key)
+            self.store.record_alert(
+                token_address=ev.token_address,
+                network_id=network,
+                ticker=ev.ticker or self.store.ticker_for(ev.token_address) or "?",
+                tier=TIER_COPY,
+                score=0.0,
+                thesis_rank=-1,
+                distinct_authors=1,
+                leaderboard_authors=1,
+                total_usd=0.0,
+                reason=(
+                    f"copy probe: {ev.handle} increased position "
+                    f"{ev.delta_pct * 100:+.1f}%"
+                ),
+                delivered=False,
+                suppressed_reason="copy-trade probe, never notified",
+            )
+            # The age-0 entry mark, from DexScreener rather than from the
+            # leaderboard payload. `label_one` only treats a snapshot as usable
+            # when `market_cap_usd > 0`, so writing the fomo price with a zero
+            # market cap would silently discard this row and label the trade
+            # from the +5m snapshot -- a different trade on these tokens.
+            liquidity = await self._liquidity(ev.token_address)
+            if liquidity.known and liquidity.market_cap_usd > 0:
+                self.store.record_price_snapshot(
+                    token_address=ev.token_address,
+                    network_id=network,
+                    age_seconds=0.0,
+                    price_usd=liquidity.price_usd,
+                    market_cap_usd=liquidity.market_cap_usd,
+                    liquidity_usd=liquidity.liquidity_usd,
+                    volume_h1_usd=liquidity.volume_h1_usd,
+                    buys_m5=liquidity.buys_m5,
+                    sells_m5=liquidity.sells_m5,
+                )
+            log.info(
+                "copy probe $%s %s %+.1f%% (not notified)",
+                ev.ticker or self.store.ticker_for(ev.token_address) or "?",
+                ev.handle, ev.delta_pct * 100,
             )
 
     async def _thesis_history(self, api: FomoAPI, mint: str, network_id: int):
@@ -393,16 +589,28 @@ class FomoRadar:
             return []
 
     async def _track_outcomes(self) -> None:
-        """Record forward prices for alerted tokens that are due a reading.
+        """Record forward prices for every token with a thesis that is due one.
 
         Without this the radar can never be validated: it would keep producing
         alerts that are never scored against what happened next, which is the
         state both radars have been in since they shipped (zero labelled
         outcomes). Reads are batched into one DexScreener call.
+
+        The population is deliberately WIDER than the tokens we alerted on.
+        Tracking only our own picks measures how they did but never whether
+        they beat what we passed over, and the signal's dominant term
+        (earliness, 60 of ~86 points) has gone unchecked precisely because the
+        never-alerted tokens carry no forward price. See
+        `Store.tokens_for_outcome_tracking` for the cohort clocks.
         """
         now = datetime.now(timezone.utc)
         due: list[tuple[dict, float]] = []
-        for tok in self.store.alerted_tokens():
+        # Both cohorts: tokens we alerted on (delivered AND suppressed, the
+        # gate's own control) plus every token that merely got a thesis, which
+        # is the base rate the classifier has never been scored against.
+        for tok in self.store.tokens_for_outcome_tracking(
+            limit=self.cfg.max_tracked_tokens
+        ):
             first = _parse_iso(str(tok["first_alert"]))
             if first is None:
                 continue
@@ -449,6 +657,22 @@ class FomoRadar:
         if wrote:
             log.info("outcome tracking: recorded %d price snapshots", wrote)
 
+    async def _stage_execution(self, sig: TokenSignal, item: ThesisItem) -> None:
+        # Do not re-date a cached 90-second-old market observation as fresh.
+        self._liq_cache.pop(sig.token_address, None)
+        fresh = await self._liquidity(sig.token_address)
+        try:
+            proposal = propose(
+                replace(sig, liquidity=fresh), source_id=item.item_id,
+                source_at=item.created_at, trade_usd=self.execution_size_usd,
+                quote_at=fresh.observed_at, cfg=self.cfg.signal,
+            )
+            created = self.execution_store.enqueue(proposal)
+            log.info("execution proposal %s: %s (live disabled)",
+                     proposal.proposal_id[:12], "staged" if created else "duplicate")
+        except (ExecutionBlocked, ValueError) as exc:
+            log.warning("execution proposal refused: %s", exc)
+
     async def _liquidity(self, token_address: str) -> LiquidityState:
         """Current market state for one token, via the sibling radar's client.
 
@@ -480,6 +704,8 @@ class FomoRadar:
                 market_cap_usd=st.market_cap_usd,
                 buys_m5=st.buys_m5,
                 sells_m5=st.sells_m5,
+                price_usd=st.price_usd,
+                observed_at=time.time(),
             )
             if st is not None
             else LiquidityState(known=False)
@@ -513,8 +739,9 @@ class FomoRadar:
             if not traders:
                 log.warning("leaderboard %s returned 0 traders — source failure", window)
                 continue
-            self.store.record_leaderboard(window, traders)
+            events = self.store.record_leaderboard(window, traders)
             log.info("leaderboard %s: %d traders", window, len(traders))
+            await self._record_copy_probes(events)
         self._lb_handles = self.store.leaderboard_handles()
         self._last_leaderboard = time.monotonic()
 
@@ -524,14 +751,26 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true", help="never post to Discord")
     ap.add_argument("--duration", type=float, default=None, help="seconds, then exit")
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--stage-execution-db", type=Path,
+                    help="opt-in proposal journal only; never places trades")
+    ap.add_argument("--execution-size-usd", type=float,
+                    help="required fixed buy size for execution staging")
     args = ap.parse_args()
+    if args.stage_execution_db is not None and (
+        args.execution_size_usd is None or not positive(args.execution_size_usd)
+    ):
+        ap.error("--stage-execution-db requires a positive --execution-size-usd")
+    if args.execution_size_usd is not None and args.stage_execution_db is None:
+        ap.error("--execution-size-usd requires --stage-execution-db")
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
     cfg = load_config(dry_run=args.dry_run)
-    radar = FomoRadar(cfg)
+    execution_store = ExecutionStore(args.stage_execution_db) if args.stage_execution_db else None
+    radar = FomoRadar(cfg, execution_store=execution_store,
+                      execution_size_usd=args.execution_size_usd)
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -546,6 +785,8 @@ def main() -> None:
         loop.run_until_complete(radar.run(duration=args.duration))
     finally:
         radar.store.close()
+        if execution_store is not None:
+            execution_store.close()
         loop.close()
 
 

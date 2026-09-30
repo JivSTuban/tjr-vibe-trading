@@ -303,7 +303,9 @@ def test_build_mcp_tool_wrappers_retries_transient_discovery_failure() -> None:
         "call_calls": 0,
         "call_records": [],
         "list_outcomes": [
-            [McpError(mcp_types.ErrorData(code=mcp_types.CONNECTION_CLOSED, message="Connection closed"))][0],
+            McpError.from_error_data(
+                mcp_types.ErrorData(code=mcp_types.CONNECTION_CLOSED, message="Connection closed")
+            ),
             [mcp_types.Tool(name="quote", description="Quote", inputSchema={"type": "object"})],
         ],
         "call_outcomes": [],
@@ -323,7 +325,7 @@ def test_build_mcp_tool_wrappers_single_attempt_does_not_retry_discovery() -> No
     authorize path passes max_list_tools_attempts=1 so the first transient
     failure propagates immediately and exactly one client context is opened.
     """
-    transient = McpError(
+    transient = McpError.from_error_data(
         mcp_types.ErrorData(code=mcp_types.CONNECTION_CLOSED, message="Connection closed")
     )
     state = {
@@ -528,3 +530,46 @@ def test_build_client_rejects_url_only_config_without_explicit_type() -> None:
 
     with pytest.raises(ValueError, match="explicit type"):
         adapter._build_client()
+
+
+def test_read_mcp_tool_input_schema_survives_the_v2_rename() -> None:
+    """The schema read must not depend on the deprecated ``inputSchema`` alias.
+
+    MCP SDK v2 renamed ``Tool.inputSchema`` to ``input_schema`` and kept a deprecation
+    shim. The old read failed SILENTLY when the shim goes: getattr(..., None) returns
+    None, so every wrapper registers with no parameters instead of raising. Assert the
+    new name is read directly, with no deprecation warning, and that a v1-style object
+    exposing only the old name still works.
+    """
+    import warnings
+
+    from src.tools.mcp import read_mcp_tool_input_schema
+
+    schema = {"type": "object", "properties": {"symbol": {"type": "string"}}}
+
+    # v2 shape: the real SDK object. Reading it must not touch the deprecated alias.
+    tool = mcp_types.Tool(name="quote", description="Quote", inputSchema=schema)
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        assert read_mcp_tool_input_schema(tool) == schema
+    assert not [w for w in caught if "inputSchema" in str(w.message)], (
+        "read must prefer input_schema, not the deprecated alias"
+    )
+
+    # A future SDK that has dropped the shim entirely: only the new name exists.
+    class _NewOnly:
+        input_schema = schema
+
+    assert read_mcp_tool_input_schema(_NewOnly()) == schema
+
+    # v1 shape: only the old name. Still supported for servers that have not moved.
+    class _OldOnly:
+        inputSchema = schema
+
+    assert read_mcp_tool_input_schema(_OldOnly()) == schema
+
+    # No schema at all stays None, so normalize_mcp_tool_schema keeps its own default.
+    class _Neither:
+        pass
+
+    assert read_mcp_tool_input_schema(_Neither()) is None

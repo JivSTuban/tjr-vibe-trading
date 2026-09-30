@@ -15,6 +15,8 @@ Covers:
 
 from __future__ import annotations
 
+import datetime
+
 import pytest
 from fastmcp.client.auth import OAuth
 from fastmcp.client.transports.http import StreamableHttpTransport
@@ -34,6 +36,19 @@ from src.config.schema import (
 from src.tools.mcp import MCPServerAdapter
 
 pytestmark = pytest.mark.unit
+
+
+def _seconds(value: object) -> float:
+    """Read a fastmcp timeout as seconds, however it chooses to carry it.
+
+    fastmcp 2.x stored ``read_timeout_seconds`` as a ``timedelta``; 4.x normalizes it
+    to a float via ``normalize_timeout_to_seconds``. These tests assert the VALUE (the
+    tool timeout is 7s, and widening init_timeout must not widen it), so pin the value
+    and not the representation, or the next upstream flip breaks them again.
+    """
+    if isinstance(value, datetime.timedelta):
+        return value.total_seconds()
+    return float(value)  # type: ignore[arg-type]
 
 
 # --------------------------------------------------------------------------- #
@@ -272,7 +287,7 @@ def test_build_client_uses_explicit_init_timeout_without_widening_tool_timeout()
     client = _build_client(cfg)
 
     assert client._init_timeout == 300
-    assert client._session_kwargs["read_timeout_seconds"].total_seconds() == 7
+    assert _seconds(client._session_kwargs["read_timeout_seconds"]) == 7
 
 
 def test_build_client_keeps_default_init_timeout_floor() -> None:
@@ -287,7 +302,7 @@ def test_build_client_keeps_default_init_timeout_floor() -> None:
     client = _build_client(cfg)
 
     assert client._init_timeout == 30
-    assert client._session_kwargs["read_timeout_seconds"].total_seconds() == 7
+    assert _seconds(client._session_kwargs["read_timeout_seconds"]) == 7
 
 
 def test_static_header_http_path_unchanged() -> None:

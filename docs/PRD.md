@@ -13,6 +13,13 @@
 **Owner:** Jiv Tuban
 **Last updated:** July 23, 2026
 
+**Scope exception, September 18, 2026:** This PRD describes TJR/Binance.
+The separate Fomo Radar ENTER NOW Solana browser executor is owner-authorized
+under [decision 0002](../knowledge/decisions/0002-fomo-owner-authorized-execution.md).
+Its implementation does not require TJR A+ approval, the section 28 promotion
+stages, Binance gateway prerequisites, or the TJR minimum reward/risk of 2.0.
+The requested 20% stop / 10% target supersedes that placeholder for Fomo only.
+
 ---
 
 # 1. Product Summary

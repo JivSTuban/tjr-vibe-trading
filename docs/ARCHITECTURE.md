@@ -8,6 +8,12 @@ This document maps the PRD's constrained execution pipeline (PRD §3, §24, §25
 
 ## 1. Design invariant
 
+Scope: the pipeline below describes TJR/Binance. The Fomo Radar ENTER NOW
+browser executor follows the owner-authorized scope in
+[decision 0002](../knowledge/decisions/0002-fomo-owner-authorized-execution.md);
+it need not pass through the TJR scorer, Binance gateway, or PRD promotion
+stages. Its own signal, sizing, duplicate, fill, exit, and halt controls remain.
+
 Codex may identify, propose, execute, monitor, and review trades — but **every order must pass a deterministic, LLM-independent gate**. No free-form order path exists. This is enforced structurally, not by prompt discipline.
 
 ```text

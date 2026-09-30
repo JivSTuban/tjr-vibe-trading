@@ -1,0 +1,410 @@
+{
+  "L0_all|T+1": {
+    "concentration": {
+      "n_trades": 28452,
+      "n_sessions": 56,
+      "n_tickers": 511,
+      "total_ret_sum": 23.2495,
+      "top1_sessions_share": 0.175,
+      "top1_tickers_share": 0.027,
+      "top3_sessions_share": 0.5,
+      "top3_tickers_share": 0.069,
+      "top5_sessions_share": 0.809,
+      "top5_tickers_share": 0.104,
+      "median_trades_per_session": 508.0,
+      "mean_bps": 8.17,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 6.86
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 14196,
+        "mean_bps": 13.0,
+        "hit_rate": 0.61,
+        "t_stat": 7.16
+      },
+      {
+        "half": "second_half",
+        "n": 14256,
+        "mean_bps": 3.36,
+        "hit_rate": 0.508,
+        "t_stat": 2.0
+      }
+    ]
+  },
+  "L0_all|T+3": {
+    "concentration": {
+      "n_trades": 27432,
+      "n_sessions": 54,
+      "n_tickers": 511,
+      "total_ret_sum": 65.6113,
+      "top1_sessions_share": 0.082,
+      "top1_tickers_share": 0.02,
+      "top3_sessions_share": 0.232,
+      "top3_tickers_share": 0.042,
+      "top5_sessions_share": 0.366,
+      "top5_tickers_share": 0.063,
+      "median_trades_per_session": 508.0,
+      "mean_bps": 23.92,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 22.37
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 13688,
+        "mean_bps": 35.4,
+        "hit_rate": 0.797,
+        "t_stat": 16.42
+      },
+      {
+        "half": "second_half",
+        "n": 13744,
+        "mean_bps": 12.49,
+        "hit_rate": 0.706,
+        "t_stat": 5.43
+      }
+    ]
+  },
+  "L0_all|T+5": {
+    "concentration": {
+      "n_trades": 26412,
+      "n_sessions": 52,
+      "n_tickers": 511,
+      "total_ret_sum": 87.1373,
+      "top1_sessions_share": 0.062,
+      "top1_tickers_share": 0.016,
+      "top3_sessions_share": 0.179,
+      "top3_tickers_share": 0.04,
+      "top5_sessions_share": 0.286,
+      "top5_tickers_share": 0.06,
+      "median_trades_per_session": 508.0,
+      "mean_bps": 32.99,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 31.54
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 13180,
+        "mean_bps": 44.42,
+        "hit_rate": 0.859,
+        "t_stat": 18.37
+      },
+      {
+        "half": "second_half",
+        "n": 13232,
+        "mean_bps": 21.61,
+        "hit_rate": 0.774,
+        "t_stat": 8.58
+      }
+    ]
+  },
+  "L2_red|T+1": {
+    "concentration": {
+      "n_trades": 3592,
+      "n_sessions": 56,
+      "n_tickers": 509,
+      "total_ret_sum": 3.1867,
+      "top1_sessions_share": 0.336,
+      "top1_tickers_share": 0.293,
+      "top3_sessions_share": 0.85,
+      "top3_tickers_share": 0.473,
+      "top5_sessions_share": 1.339,
+      "top5_tickers_share": 0.588,
+      "median_trades_per_session": 61.0,
+      "mean_bps": 8.87,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 5.96
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 1839,
+        "mean_bps": 14.93,
+        "hit_rate": 0.6,
+        "t_stat": 3.03
+      },
+      {
+        "half": "second_half",
+        "n": 1753,
+        "mean_bps": 2.52,
+        "hit_rate": 0.5,
+        "t_stat": 0.39
+      }
+    ]
+  },
+  "L2_red|T+3": {
+    "concentration": {
+      "n_trades": 3399,
+      "n_sessions": 54,
+      "n_tickers": 509,
+      "total_ret_sum": 13.6918,
+      "top1_sessions_share": 0.078,
+      "top1_tickers_share": 0.067,
+      "top3_sessions_share": 0.228,
+      "top3_tickers_share": 0.117,
+      "top5_sessions_share": 0.354,
+      "top5_tickers_share": 0.148,
+      "median_trades_per_session": 59.0,
+      "mean_bps": 40.28,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 37.94
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 1750,
+        "mean_bps": 46.63,
+        "hit_rate": 0.803,
+        "t_stat": 8.82
+      },
+      {
+        "half": "second_half",
+        "n": 1649,
+        "mean_bps": 33.54,
+        "hit_rate": 0.742,
+        "t_stat": 4.43
+      }
+    ]
+  },
+  "L2_red|T+5": {
+    "concentration": {
+      "n_trades": 3317,
+      "n_sessions": 52,
+      "n_tickers": 509,
+      "total_ret_sum": 16.8096,
+      "top1_sessions_share": 0.073,
+      "top1_tickers_share": 0.053,
+      "top3_sessions_share": 0.196,
+      "top3_tickers_share": 0.092,
+      "top5_sessions_share": 0.297,
+      "top5_tickers_share": 0.122,
+      "median_trades_per_session": 61.0,
+      "mean_bps": 50.68,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 48.3
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 1711,
+        "mean_bps": 54.35,
+        "hit_rate": 0.868,
+        "t_stat": 8.96
+      },
+      {
+        "half": "second_half",
+        "n": 1606,
+        "mean_bps": 46.77,
+        "hit_rate": 0.811,
+        "t_stat": 5.86
+      }
+    ]
+  },
+  "L3_late|T+1": {
+    "concentration": {
+      "n_trades": 698,
+      "n_sessions": 56,
+      "n_tickers": 382,
+      "total_ret_sum": 2.6734,
+      "top1_sessions_share": 0.405,
+      "top1_tickers_share": 0.326,
+      "top3_sessions_share": 0.915,
+      "top3_tickers_share": 0.456,
+      "top5_sessions_share": 1.057,
+      "top5_tickers_share": 0.531,
+      "median_trades_per_session": 10.0,
+      "mean_bps": 38.3,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 23.33
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 394,
+        "mean_bps": 25.49,
+        "hit_rate": 0.65,
+        "t_stat": 1.88
+      },
+      {
+        "half": "second_half",
+        "n": 304,
+        "mean_bps": 54.91,
+        "hit_rate": 0.582,
+        "t_stat": 1.88
+      }
+    ]
+  },
+  "L3_late|T+3": {
+    "concentration": {
+      "n_trades": 662,
+      "n_sessions": 54,
+      "n_tickers": 374,
+      "total_ret_sum": 5.2186,
+      "top1_sessions_share": 0.208,
+      "top1_tickers_share": 0.165,
+      "top3_sessions_share": 0.499,
+      "top3_tickers_share": 0.232,
+      "top5_sessions_share": 0.581,
+      "top5_tickers_share": 0.271,
+      "median_trades_per_session": 10.0,
+      "mean_bps": 78.83,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 67.36
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 346,
+        "mean_bps": 54.65,
+        "hit_rate": 0.829,
+        "t_stat": 4.57
+      },
+      {
+        "half": "second_half",
+        "n": 316,
+        "mean_bps": 105.31,
+        "hit_rate": 0.835,
+        "t_stat": 3.47
+      }
+    ]
+  },
+  "L3_late|T+5": {
+    "concentration": {
+      "n_trades": 652,
+      "n_sessions": 52,
+      "n_tickers": 373,
+      "total_ret_sum": 5.8093,
+      "top1_sessions_share": 0.201,
+      "top1_tickers_share": 0.148,
+      "top3_sessions_share": 0.463,
+      "top3_tickers_share": 0.208,
+      "top5_sessions_share": 0.55,
+      "top5_tickers_share": 0.243,
+      "median_trades_per_session": 10.0,
+      "mean_bps": 89.1,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 76.87
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 324,
+        "mean_bps": 64.1,
+        "hit_rate": 0.877,
+        "t_stat": 5.56
+      },
+      {
+        "half": "second_half",
+        "n": 328,
+        "mean_bps": 113.8,
+        "hit_rate": 0.878,
+        "t_stat": 3.84
+      }
+    ]
+  },
+  "L5_range|T+1": {
+    "concentration": {
+      "n_trades": 526,
+      "n_sessions": 56,
+      "n_tickers": 325,
+      "total_ret_sum": 1.656,
+      "top1_sessions_share": 0.526,
+      "top1_tickers_share": 0.148,
+      "top3_sessions_share": 0.902,
+      "top3_tickers_share": 0.27,
+      "top5_sessions_share": 1.104,
+      "top5_tickers_share": 0.387,
+      "median_trades_per_session": 8.0,
+      "mean_bps": 31.48,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 16.14
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 296,
+        "mean_bps": 36.94,
+        "hit_rate": 0.662,
+        "t_stat": 2.39
+      },
+      {
+        "half": "second_half",
+        "n": 230,
+        "mean_bps": 24.46,
+        "hit_rate": 0.587,
+        "t_stat": 2.02
+      }
+    ]
+  },
+  "L5_range|T+3": {
+    "concentration": {
+      "n_trades": 505,
+      "n_sessions": 54,
+      "n_tickers": 317,
+      "total_ret_sum": 3.0822,
+      "top1_sessions_share": 0.317,
+      "top1_tickers_share": 0.08,
+      "top3_sessions_share": 0.525,
+      "top3_tickers_share": 0.145,
+      "top5_sessions_share": 0.643,
+      "top5_tickers_share": 0.208,
+      "median_trades_per_session": 8.0,
+      "mean_bps": 61.03,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 45.27
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 256,
+        "mean_bps": 47.83,
+        "hit_rate": 0.824,
+        "t_stat": 3.34
+      },
+      {
+        "half": "second_half",
+        "n": 249,
+        "mean_bps": 74.61,
+        "hit_rate": 0.827,
+        "t_stat": 3.97
+      }
+    ]
+  },
+  "L5_range|T+5": {
+    "concentration": {
+      "n_trades": 498,
+      "n_sessions": 52,
+      "n_tickers": 316,
+      "total_ret_sum": 3.3035,
+      "top1_sessions_share": 0.306,
+      "top1_tickers_share": 0.074,
+      "top3_sessions_share": 0.503,
+      "top3_tickers_share": 0.135,
+      "top5_sessions_share": 0.626,
+      "top5_tickers_share": 0.194,
+      "median_trades_per_session": 8.0,
+      "mean_bps": 66.34,
+      "median_bps": 100.0,
+      "mean_bps_ex_best_session": 50.03
+    },
+    "halves": [
+      {
+        "half": "first_half",
+        "n": 250,
+        "mean_bps": 58.28,
+        "hit_rate": 0.868,
+        "t_stat": 4.21
+      },
+      {
+        "half": "second_half",
+        "n": 248,
+        "mean_bps": 74.46,
+        "hit_rate": 0.855,
+        "t_stat": 3.79
+      }
+    ]
+  }
+}

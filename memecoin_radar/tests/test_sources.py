@@ -172,3 +172,48 @@ def test_rescue_is_capped():
     asyncio.run(_states(client, mints))
     retries = [r for r in client.requests if len(r) == 1]
     assert len(retries) == RESCUE_LIMIT
+
+
+def _pair(liq, m5vol, mcap):
+    return {
+        "baseToken": {"address": "MINT"},
+        "liquidity": {"usd": liq},
+        "volume": {"m5": m5vol, "h1": m5vol * 10},
+        "marketCap": mcap,
+        "priceUsd": "1.0",
+        "txns": {"m5": {"buys": 1, "sells": 1}},
+    }
+
+
+def test_pick_primary_is_stable_across_volume_swings():
+    """The pair-flip bug: m5 volume decides the winner and flips between polls.
+
+    Measured 2026-09-17, 29 of the 99 ever-tradeable tokens had a series that
+    jumped >3x and back because of this. Selection must not depend on a flow
+    quantity, or every forward return built from the series is fiction.
+    """
+    from memecoin_radar.sources.dexscreener import pick_primary
+
+    deep = _pair(liq=1_000_000.0, m5vol=100.0, mcap=145_000_000.0)
+    shallow = _pair(liq=11_000.0, m5vol=5_000.0, mcap=41_000.0)
+
+    # The shallow pair wins on m5 volume in this poll and loses it in the next.
+    assert pick_primary([deep, shallow])["marketCap"] == 145_000_000.0
+    deep["volume"]["m5"] = 9_999.0
+    assert pick_primary([deep, shallow])["marketCap"] == 145_000_000.0
+    deep["volume"]["m5"] = 0.0
+    assert pick_primary([deep, shallow])["marketCap"] == 145_000_000.0
+
+
+def test_pick_primary_breaks_ties_on_volume():
+    from memecoin_radar.sources.dexscreener import pick_primary
+
+    a = _pair(liq=50_000.0, m5vol=10.0, mcap=1.0)
+    b = _pair(liq=50_000.0, m5vol=900.0, mcap=2.0)
+    assert pick_primary([a, b])["marketCap"] == 2.0
+
+
+def test_pick_primary_empty_is_none():
+    from memecoin_radar.sources.dexscreener import pick_primary
+
+    assert pick_primary([]) is None
